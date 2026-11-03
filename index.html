@@ -110,40 +110,64 @@
           </div>
           <div>
             <h3 class="text-base sm:text-lg font-semibold text-white">1. Discovery Call & Customer Profile</h3>
-            <p class="text-xs text-slate-400">Account metadata, critical business timeline, and participants</p>
+            <p class="text-xs text-slate-400">Account metadata, lead ownership, primary contact, and procurement stage</p>
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="seName">
+              SE Name <span class="text-rose-400">*</span>
+            </label>
+            <input type="text" id="seName" name="seName" required placeholder="Assigned Sales Engineer"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="amName">
+              Account Manager Name <span class="text-rose-400">*</span>
+            </label>
+            <input type="text" id="amName" name="amName" required placeholder="Assigned Account Manager"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
+          </div>
+
+          <div>
             <label class="block text-xs font-medium text-slate-300 mb-1.5" for="customerName">
-              Customer / Company Name <span class="text-rose-400">*</span>
+              Customer Company Name <span class="text-rose-400">*</span>
             </label>
             <input type="text" id="customerName" name="customerName" required placeholder="e.g. Acme Corp Inc."
               class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
           </div>
 
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="seName">
-              Lead Sales Engineer (SE) <span class="text-rose-400">*</span>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="contactPerson">
+              Contact Person Name <span class="text-rose-400">*</span>
             </label>
-            <input type="text" id="seName" name="seName" required placeholder="Your Name"
+            <input type="text" id="contactPerson" name="contactPerson" required placeholder="e.g. Alex Johnson"
               class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
           </div>
 
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="targetGoLive">
-              Target Go-Live / Decision Date
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="mobileNumber">
+              Mobile Number
             </label>
-            <input type="date" id="targetGoLive" name="targetGoLive"
+            <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="+1 (555) 000-0000"
               class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
           </div>
 
-          <div class="md:col-span-2">
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="stakeholders">
-              Key Stakeholders & Titles (e.g., CISO, IT Director, SecOps Lead)
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="emailId">
+              Email ID <span class="text-rose-400">*</span>
             </label>
-            <input type="text" id="stakeholders" name="stakeholders" placeholder="e.g. John Doe (VP of IT), Sarah Smith (Security Architect)"
+            <input type="email" id="emailId" name="emailId" required placeholder="alex.j@company.com"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="designation">
+              Designation / Job Role
+            </label>
+            <input type="text" id="designation" name="designation" placeholder="e.g. Lead Identity Architect / IT Director"
               class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
           </div>
 
@@ -152,18 +176,35 @@
               Budget & Procurement Status
             </label>
             <select id="budgetStatus" name="budgetStatus" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-indigo-500 transition">
-              <option value="Allocated / Approved">Allocated / Approved</option>
-              <option value="Under Review / RFP">Under Review / Active RFP</option>
-              <option value="Exploratory / No Fixed Budget">Exploratory / Need Pricing for FY</option>
-              <option value="Renewal Displaced Budget">Renewal Replacement (Replacing competitor)</option>
+              <option value="Approved & Allocated">Approved & Allocated</option>
+              <option value="Budgeted / Pending Review">Budgeted / Pending Review</option>
+              <option value="RFP / Active Procurement Stage">RFP / Active Procurement Stage</option>
+              <option value="Evaluating / No Fixed Budget">Evaluating / No Fixed Budget</option>
+              <option value="Renewal Displaced Budget (Competitor Replacement)">Renewal Displaced Budget (Competitor Replacement)</option>
             </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="targetGoLive">
+              Target Go-Live / Procurement Timeline
+            </label>
+            <input type="date" id="targetGoLive" name="targetGoLive"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
+          </div>
+
+          <div class="md:col-span-3">
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="stakeholders">
+              Key Stakeholders & Titles (e.g., CISO, SecOps Lead, VP of Infrastructure)
+            </label>
+            <input type="text" id="stakeholders" name="stakeholders" placeholder="e.g. Sarah Miller (CISO), David Clark (Head of Infrastructure), Kevin Patel (SecOps Analyst)"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
           </div>
 
           <div class="md:col-span-3">
             <label class="block text-xs font-medium text-slate-300 mb-1.5" for="primaryPain">
-              Core Business Driver / Primary Pain Point
+              Core Business Driver / Primary Pain Point <span class="text-rose-400">*</span>
             </label>
-            <textarea id="primaryPain" name="primaryPain" rows="2" placeholder="What initiated this evaluation? (e.g., Lack of conditional device checks, migrating from on-prem AD, audit failure, consolidating multiple MDMs and IdP vendors)..."
+            <textarea id="primaryPain" name="primaryPain" rows="2" placeholder="What initiated this evaluation? (e.g., Fragmented IdP and MDM tooling, inability to gate SaaS access on compliance posture, migrating from on-prem AD to cloud, audit deficiency)..."
               class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition"></textarea>
           </div>
         </div>
@@ -255,32 +296,29 @@
         <div class="space-y-4">
           <div>
             <span class="block text-xs font-medium text-slate-300 mb-2">
-              Conditional Access Engine Triggers Required (Check all that apply)
+              Conditional Access Engine Triggers Required (3 Supported Triggers - Check all that apply)
             </span>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
-                <input type="checkbox" name="caEngine" value="Location/Geo-fencing" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" />
-                <span class="text-xs text-slate-200">IP / Geo-Fencing (Trusted Networks)</span>
+                <input type="checkbox" name="caEngine" value="Geo-fencing" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" checked />
+                <div>
+                  <span class="text-xs font-medium text-slate-200 block">Geo-fencing</span>
+                  <span class="text-[11px] text-slate-400">Restrict access based on physical geography & location</span>
+                </div>
               </label>
               <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
-                <input type="checkbox" name="caEngine" value="Device Health & Posture" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" checked />
-                <span class="text-xs text-slate-200">Device Health & Posture Check</span>
+                <input type="checkbox" name="caEngine" value="IP-based" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" checked />
+                <div>
+                  <span class="text-xs font-medium text-slate-200 block">IP-based</span>
+                  <span class="text-[11px] text-slate-400">Allowlist/blocklist trusted corporate & office subnets</span>
+                </div>
               </label>
               <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
-                <input type="checkbox" name="caEngine" value="Enrolled Device Only" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" checked />
-                <span class="text-xs text-slate-200">Enrolled & Managed Check Only</span>
-              </label>
-              <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
-                <input type="checkbox" name="caEngine" value="Time/Working Hours" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" />
-                <span class="text-xs text-slate-200">Time-of-day / Shift Restraints</span>
-              </label>
-              <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
-                <input type="checkbox" name="caEngine" value="User Risk & Impossible Travel" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" />
-                <span class="text-xs text-slate-200">Risk Assessment / Impossible Travel</span>
-              </label>
-              <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
-                <input type="checkbox" name="caEngine" value="OS Version Minimums" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" checked />
-                <span class="text-xs text-slate-200">Minimum OS Patch Level</span>
+                <input type="checkbox" name="caEngine" value="Enrolled and Management check" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" checked />
+                <div>
+                  <span class="text-xs font-medium text-slate-200 block">Enrolled & Management check</span>
+                  <span class="text-[11px] text-slate-400">Enforce device enrollment & active Hexnode UEM management</span>
+                </div>
               </label>
             </div>
           </div>
@@ -546,28 +584,33 @@
         .join(', ');
 
       return {
-        // Metadata
+        // Section 1: Customer Profile & Call Metadata
         timestamp: new Date().toISOString(),
-        customerName: document.getElementById('customerName').value.trim() || 'Untitled Customer',
         seName: document.getElementById('seName').value.trim() || 'N/A',
-        targetGoLive: document.getElementById('targetGoLive').value || 'TBD',
+        amName: document.getElementById('amName').value.trim() || 'N/A',
+        customerName: document.getElementById('customerName').value.trim() || 'Untitled Customer',
+        contactPerson: document.getElementById('contactPerson').value.trim() || 'N/A',
+        mobileNumber: document.getElementById('mobileNumber').value.trim() || 'N/A',
+        emailId: document.getElementById('emailId').value.trim() || 'N/A',
+        designation: document.getElementById('designation').value.trim() || 'N/A',
         stakeholders: document.getElementById('stakeholders').value.trim() || 'N/A',
         budgetStatus: document.getElementById('budgetStatus').value,
+        targetGoLive: document.getElementById('targetGoLive').value || 'TBD',
         primaryPain: document.getElementById('primaryPain').value.trim() || 'N/A',
 
-        // IdP Federation
+        // Section 2: IdP Federation
         primaryIdP: document.getElementById('primaryIdP').value,
         identityUserCount: document.getElementById('identityUserCount').value || '0',
         scimRequired: document.getElementById('scimRequired').value,
         ssoApps: document.getElementById('ssoApps').value.trim() || 'None specified',
         mfaStrategy: document.getElementById('mfaStrategy').value,
 
-        // Access Control
+        // Section 3: Access Control
         caTriggers: caEngines || 'None selected',
         rbacRequirement: document.getElementById('rbacRequirement').value.trim() || 'Standard admin roles',
         tokenSecurity: document.getElementById('tokenSecurity').value.trim() || 'Standard timeout',
 
-        // Device Fleet & UEM
+        // Section 4: Device Fleet & UEM
         corpDeviceCount: document.getElementById('corpDeviceCount').value || '0',
         byodCount: document.getElementById('byodCount').value || '0',
         osPlatforms: osPlatforms || 'None selected',
@@ -575,7 +618,7 @@
         appDeploymentReqs: document.getElementById('appDeploymentReqs').value.trim() || 'Standard packaging',
         identityAwareControl: document.getElementById('identityAwareControl').value,
 
-        // Scorecard
+        // Section 5: Scorecard
         technicalFit: document.getElementById('technicalFit').value,
         nextStep: document.getElementById('nextStep').value,
         agreedActionDate: document.getElementById('agreedActionDate').value || 'TBD',
@@ -600,11 +643,16 @@
       if (!saved) return;
       try {
         const data = JSON.parse(saved);
-        if (data.customerName && data.customerName !== 'Untitled Customer') document.getElementById('customerName').value = data.customerName;
         if (data.seName && data.seName !== 'N/A') document.getElementById('seName').value = data.seName;
-        if (data.targetGoLive && data.targetGoLive !== 'TBD') document.getElementById('targetGoLive').value = data.targetGoLive;
+        if (data.amName && data.amName !== 'N/A') document.getElementById('amName').value = data.amName;
+        if (data.customerName && data.customerName !== 'Untitled Customer') document.getElementById('customerName').value = data.customerName;
+        if (data.contactPerson && data.contactPerson !== 'N/A') document.getElementById('contactPerson').value = data.contactPerson;
+        if (data.mobileNumber && data.mobileNumber !== 'N/A') document.getElementById('mobileNumber').value = data.mobileNumber;
+        if (data.emailId && data.emailId !== 'N/A') document.getElementById('emailId').value = data.emailId;
+        if (data.designation && data.designation !== 'N/A') document.getElementById('designation').value = data.designation;
         if (data.stakeholders && data.stakeholders !== 'N/A') document.getElementById('stakeholders').value = data.stakeholders;
         if (data.budgetStatus) document.getElementById('budgetStatus').value = data.budgetStatus;
+        if (data.targetGoLive && data.targetGoLive !== 'TBD') document.getElementById('targetGoLive').value = data.targetGoLive;
         if (data.primaryPain && data.primaryPain !== 'N/A') document.getElementById('primaryPain').value = data.primaryPain;
 
         if (data.primaryIdP) document.getElementById('primaryIdP').value = data.primaryIdP;
@@ -661,13 +709,18 @@
         ["HEXNODE SALES ENGINEERING DISCOVERY & QUALIFICATION REPORT", ""],
         ["Generated Date", new Date().toLocaleString()],
         ["", ""],
-        ["SECTION 1: CUSTOMER & METADATA", ""],
-        ["Customer / Company Name", d.customerName],
-        ["Sales Engineer", d.seName],
+        ["SECTION 1: DISCOVERY CALL & CUSTOMER PROFILE", ""],
+        ["Sales Engineer (SE) Name", d.seName],
+        ["Account Manager (AM) Name", d.amName],
+        ["Customer Company Name", d.customerName],
+        ["Contact Person Name", d.contactPerson],
+        ["Mobile Number", d.mobileNumber],
+        ["Email ID", d.emailId],
+        ["Designation / Job Role", d.designation],
         ["Key Stakeholders & Titles", d.stakeholders],
-        ["Target Go-Live Date", d.targetGoLive],
-        ["Budget Status", d.budgetStatus],
-        ["Core Pain Point / Business Driver", d.primaryPain],
+        ["Budget & Procurement Status", d.budgetStatus],
+        ["Target Go-Live / Procurement Timeline", d.targetGoLive],
+        ["Core Business Driver / Primary Pain Point", d.primaryPain],
         ["", ""],
         ["SECTION 2: IDENTITY PROVIDER & FEDERATION", ""],
         ["Primary Identity Source", d.primaryIdP],
@@ -677,14 +730,14 @@
         ["MFA Architecture", d.mfaStrategy],
         ["", ""],
         ["SECTION 3: CONDITIONAL ACCESS & POLICIES", ""],
-        ["Conditional Access Triggers", d.caTriggers],
+        ["Conditional Access Triggers (3 Options)", d.caTriggers],
         ["RBAC Requirements", d.rbacRequirement],
         ["Session & Token Constraints", d.tokenSecurity],
         ["", ""],
         ["SECTION 4: FLEET & UEM INTEGRATION", ""],
         ["Company-Owned Endpoints", d.corpDeviceCount],
         ["BYOD Endpoints", d.byodCount],
-        ["Target OS Platforms", d.osPlatforms],
+        ["Target OS Platforms & Devices", d.osPlatforms],
         ["Device Compliance Posture Rules", d.complianceDefinition],
         ["App Distribution Reqs", d.appDeploymentReqs],
         ["Identity-Aware Device Access Control", d.identityAwareControl],
@@ -700,20 +753,29 @@
       const flatTableRows = [
         {
           "Date": dateStr,
-          "Customer": d.customerName,
-          "SE": d.seName,
+          "Customer Company": d.customerName,
+          "SE Name": d.seName,
+          "AM Name": d.amName,
+          "Contact Person": d.contactPerson,
+          "Mobile": d.mobileNumber,
+          "Email": d.emailId,
+          "Designation": d.designation,
+          "Stakeholders": d.stakeholders,
+          "Budget Status": d.budgetStatus,
+          "Target Go-Live": d.targetGoLive,
+          "Primary Pain Point": d.primaryPain,
+          "Identity Source": d.primaryIdP,
+          "Identity Users": d.identityUserCount,
+          "SCIM Needed": d.scimRequired,
+          "CA Triggers": d.caTriggers,
+          "Corporate Devices": d.corpDeviceCount,
+          "BYOD Devices": d.byodCount,
+          "OS Platforms": d.osPlatforms,
+          "Zero-Trust Device Wall": d.identityAwareControl,
           "Fit Verdict": d.technicalFit,
           "Next Step": d.nextStep,
           "Follow-up Date": d.agreedActionDate,
-          "Identity Source": d.primaryIdP,
-          "Users": d.identityUserCount,
-          "SCIM Needed": d.scimRequired,
-          "Corporate Devices": d.corpDeviceCount,
-          "BYOD Devices": d.byodCount,
-          "OS": d.osPlatforms,
-          "Zero-Trust Device Wall": d.identityAwareControl,
-          "Pain Points": d.primaryPain,
-          "Notes": d.seNotes
+          "SE Notes": d.seNotes
         }
       ];
 
@@ -722,8 +784,7 @@
 
       // Summary Sheet
       const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
-      // Auto column widths
-      wsSummary['!cols'] = [{ wch: 38 }, { wch: 65 }];
+      wsSummary['!cols'] = [{ wch: 40 }, { wch: 65 }];
       XLSX.utils.book_append_sheet(wb, wsSummary, "Discovery Report");
 
       // Flat Table Sheet
@@ -758,29 +819,35 @@
     function copySummaryToClipboard() {
       const d = getFormData();
       const text = `=== HEXNODE IDP + UEM DISCOVERY SUMMARY ===
-Customer: ${d.customerName}
-SE: ${d.seName}
-Target Go-Live: ${d.targetGoLive} | Budget: ${d.budgetStatus}
-Driver/Pain: ${d.primaryPain}
+Company: ${d.customerName}
+SE: ${d.seName} | AM: ${d.amName}
+Contact: ${d.contactPerson} (${d.designation})
+Email: ${d.emailId} | Mobile: ${d.mobileNumber}
+Stakeholders: ${d.stakeholders}
+Budget: ${d.budgetStatus} | Target Go-Live: ${d.targetGoLive}
+Driver/Pain Point: ${d.primaryPain}
 
 -- Identity Federation --
-Source: ${d.primaryIdP} (${d.identityUserCount} users)
-SCIM: ${d.scimRequired}
-MFA: ${d.mfaStrategy}
+Primary Source: ${d.primaryIdP} (${d.identityUserCount} users)
+SCIM Provisioning: ${d.scimRequired}
+MFA Strategy: ${d.mfaStrategy}
 SSO Apps: ${d.ssoApps}
 
+-- Access Control --
+Conditional Access: ${d.caTriggers}
+RBAC: ${d.rbacRequirement}
+
 -- Endpoint & UEM --
-Fleet: Corp(${d.corpDeviceCount}), BYOD(${d.byodCount})
-OS: ${d.osPlatforms}
+Fleet Size: Corp(${d.corpDeviceCount}), BYOD(${d.byodCount})
+OS Scope: ${d.osPlatforms}
 Identity-Aware Gate: ${d.identityAwareControl}
 Posture: ${d.complianceDefinition}
 
 -- Qualification --
 Verdict: ${d.technicalFit}
-Next Step: ${d.nextStep} (Target: ${d.agreedActionDate})
-Notes: ${d.seNotes}`;
+Next Action: ${d.nextStep} (Target Date: ${d.agreedActionDate})
+SE Notes: ${d.seNotes}`;
 
-      // Clipboard execution fallback compatible with sandbox frames
       const tempTextArea = document.createElement('textarea');
       tempTextArea.value = text;
       document.body.appendChild(tempTextArea);
