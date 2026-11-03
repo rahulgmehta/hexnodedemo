@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hexnode IdP + UEM | SE Discovery & Lead Qualification Form</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SheetJS (xlsx) CDN for dynamic .xlsx export -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    /* Custom focus states */
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased flex flex-col justify-between selection:bg-indigo-600 selection:text-white">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur border-b border-slate-800 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-indigo-600 to-sky-400 flex items-center justify-center shadow-md shadow-indigo-500/20">
+          <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-base sm:text-lg tracking-tight text-white flex items-center gap-2">
+            Hexnode <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-medium">IdP & UEM</span>
+          </h1>
+          <p class="text-xs text-slate-400">Sales Engineering Lead Qualification</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons in Nav -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <span id="saveStatus" class="hidden sm:inline-flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-2.5 py-1 rounded-md">
+          <i data-lucide="check" class="w-3.5 h-3.5"></i> Auto-saved
+        </span>
+        <button type="button" onclick="exportToExcel()" class="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs sm:text-sm rounded-lg shadow-sm shadow-emerald-700/30 transition-all cursor-pointer">
+          <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+          <span>Export Excel (.xlsx)</span>
+        </button>
+        <button type="button" onclick="exportToJSON()" class="hidden md:inline-flex items-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs rounded-lg transition-all cursor-pointer">
+          <i data-lucide="download" class="w-4 h-4"></i> JSON
+        </button>
+        <button type="button" onclick="confirmReset()" class="p-2 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-lg transition" title="Clear / Reset Form">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Banner -->
+  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 hidden max-w-sm bg-slate-800 text-white px-4 py-3 rounded-xl border border-slate-700 shadow-2xl flex items-center space-x-3 transition-all duration-300 transform translate-y-2">
+    <div id="toastIcon" class="text-emerald-400"><i data-lucide="check-circle" class="w-5 h-5"></i></div>
+    <div id="toastMessage" class="text-xs sm:text-sm">Notification text</div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1">
+    
+    <!-- Architectural Workflow Reminder Banner -->
+    <div class="mb-8 p-4 rounded-xl bg-gradient-to-r from-indigo-950/70 via-slate-900 to-slate-900 border border-indigo-900/40 relative overflow-hidden">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+        <div class="space-y-1">
+          <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400">Integrated Solution Stack</span>
+          <h2 class="text-base sm:text-lg font-semibold text-white">Identity Federation + Zero Trust Endpoint Management</h2>
+          <p class="text-xs text-slate-400 max-w-2xl">
+            Qualify requirements spanning Google Workspace / Microsoft Entra ID federation, automated SCIM provisioning, conditional access, and identity-aware device posture enforcement.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 self-start md:self-auto bg-slate-950/60 border border-slate-800/80 px-3 py-2 rounded-lg text-xs text-slate-300">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Session Auto-Save Active</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Discovery Form -->
+    <form id="discoveryForm" class="space-y-8" onsubmit="event.preventDefault();">
+
+      <!-- SECTION 1: Customer & Call Metadata -->
+      <section class="bg-slate-900/70 rounded-2xl border border-slate-800/90 p-5 sm:p-7 shadow-xl">
+        <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
+          <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg border border-indigo-500/20">
+            <i data-lucide="briefcase" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-semibold text-white">1. Discovery Call & Customer Profile</h3>
+            <p class="text-xs text-slate-400">Account metadata, critical business timeline, and participants</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="customerName">
+              Customer / Company Name <span class="text-rose-400">*</span>
+            </label>
+            <input type="text" id="customerName" name="customerName" required placeholder="e.g. Acme Corp Inc."
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="seName">
+              Lead Sales Engineer (SE) <span class="text-rose-400">*</span>
+            </label>
+            <input type="text" id="seName" name="seName" required placeholder="Your Name"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="targetGoLive">
+              Target Go-Live / Decision Date
+            </label>
+            <input type="date" id="targetGoLive" name="targetGoLive"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="stakeholders">
+              Key Stakeholders & Titles (e.g., CISO, IT Director, SecOps Lead)
+            </label>
+            <input type="text" id="stakeholders" name="stakeholders" placeholder="e.g. John Doe (VP of IT), Sarah Smith (Security Architect)"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="budgetStatus">
+              Budget & Procurement Status
+            </label>
+            <select id="budgetStatus" name="budgetStatus" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-indigo-500 transition">
+              <option value="Allocated / Approved">Allocated / Approved</option>
+              <option value="Under Review / RFP">Under Review / Active RFP</option>
+              <option value="Exploratory / No Fixed Budget">Exploratory / Need Pricing for FY</option>
+              <option value="Renewal Displaced Budget">Renewal Replacement (Replacing competitor)</option>
+            </select>
+          </div>
+
+          <div class="md:col-span-3">
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="primaryPain">
+              Core Business Driver / Primary Pain Point
+            </label>
+            <textarea id="primaryPain" name="primaryPain" rows="2" placeholder="What initiated this evaluation? (e.g., Lack of conditional device checks, migrating from on-prem AD, audit failure, consolidating multiple MDMs and IdP vendors)..."
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: Identity Provider (IdP) & Federation -->
+      <section class="bg-slate-900/70 rounded-2xl border border-slate-800/90 p-5 sm:p-7 shadow-xl">
+        <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
+          <div class="p-2 bg-sky-500/10 text-sky-400 rounded-lg border border-sky-500/20">
+            <i data-lucide="key-round" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-semibold text-white">2. Identity Provider (IdP) & Federation</h3>
+            <p class="text-xs text-slate-400">Directory architecture, SSO requirements, and automated user lifecycle (SCIM)</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">
+              Primary Directory / Identity Source <span class="text-rose-400">*</span>
+            </label>
+            <select id="primaryIdP" name="primaryIdP" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-sky-500 transition">
+              <option value="Microsoft Entra ID (Azure AD)">Microsoft Entra ID (Azure AD)</option>
+              <option value="Google Workspace">Google Workspace</option>
+              <option value="Hybrid (On-prem AD + Entra/Google)">Hybrid (On-prem AD + Cloud)</option>
+              <option value="Okta">Okta</option>
+              <option value="Ping Identity / JumpCloud">Ping Identity / JumpCloud</option>
+              <option value="Hexnode Native Local Directory">Hexnode Native Directory</option>
+              <option value="Other">Other (Specify in notes)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="identityUserCount">
+              Total Identity Users to Manage
+            </label>
+            <input type="number" id="identityUserCount" name="identityUserCount" placeholder="e.g. 850" min="1"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-sky-500 transition" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">
+              Automated SCIM User/Group Sync
+            </label>
+            <select id="scimRequired" name="scimRequired" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-sky-500 transition">
+              <option value="Yes - Critical (Zero-touch JML)">Yes - Critical (Zero-Touch Provisioning)</option>
+              <option value="Yes - Basic scheduled sync">Yes - Standard Sync</option>
+              <option value="No - Manual / CSV import is fine">No - Manual / CSV</option>
+              <option value="Evaluating">Evaluating requirement</option>
+            </select>
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="ssoApps">
+              Key Enterprise Apps for Single Sign-On (SSO)
+            </label>
+            <input type="text" id="ssoApps" name="ssoApps" placeholder="e.g. Salesforce, Jira, GitHub, Slack, Microsoft 365, internal web apps"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-sky-500 transition" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">
+              MFA Enforcement Strategy
+            </label>
+            <select id="mfaStrategy" name="mfaStrategy" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-sky-500 transition">
+              <option value="Native IdP MFA (TOTP / Push / FIDO2)">Native IdP MFA (TOTP / Push / FIDO2)</option>
+              <option value="Third-party MFA (Duo / Cisco)">Third-party MFA (Duo / Cisco)</option>
+              <option value="Hardware Keys Only (YubiKey)">Hardware Keys (FIDO2 / WebAuthn)</option>
+              <option value="Conditional / Risk-based only">Conditional / Step-up Only</option>
+              <option value="None Currently">None Currently</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: Access Control & Security Policies -->
+      <section class="bg-slate-900/70 rounded-2xl border border-slate-800/90 p-5 sm:p-7 shadow-xl">
+        <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
+          <div class="p-2 bg-purple-500/10 text-purple-400 rounded-lg border border-purple-500/20">
+            <i data-lucide="sliders" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-semibold text-white">3. Access Control & Conditional Policies</h3>
+            <p class="text-xs text-slate-400">Contextual trust signals, session security, and role delegation</p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <span class="block text-xs font-medium text-slate-300 mb-2">
+              Conditional Access Engine Triggers Required (Check all that apply)
+            </span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
+                <input type="checkbox" name="caEngine" value="Location/Geo-fencing" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" />
+                <span class="text-xs text-slate-200">IP / Geo-Fencing (Trusted Networks)</span>
+              </label>
+              <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
+                <input type="checkbox" name="caEngine" value="Device Health & Posture" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" checked />
+                <span class="text-xs text-slate-200">Device Health & Posture Check</span>
+              </label>
+              <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
+                <input type="checkbox" name="caEngine" value="Enrolled Device Only" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" checked />
+                <span class="text-xs text-slate-200">Enrolled & Managed Check Only</span>
+              </label>
+              <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
+                <input type="checkbox" name="caEngine" value="Time/Working Hours" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" />
+                <span class="text-xs text-slate-200">Time-of-day / Shift Restraints</span>
+              </label>
+              <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
+                <input type="checkbox" name="caEngine" value="User Risk & Impossible Travel" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" />
+                <span class="text-xs text-slate-200">Risk Assessment / Impossible Travel</span>
+              </label>
+              <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-purple-500/50 cursor-pointer transition">
+                <input type="checkbox" name="caEngine" value="OS Version Minimums" class="w-4 h-4 rounded text-purple-600 bg-slate-900 border-slate-700" checked />
+                <span class="text-xs text-slate-200">Minimum OS Patch Level</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-3">
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5" for="rbacRequirement">
+                Role-Based Access Control (RBAC) & Admin Hierarchy
+              </label>
+              <input type="text" id="rbacRequirement" name="rbacRequirement" placeholder="e.g. Tier 1 Helpdesk (Password reset only), SecOps (Audit logs only)"
+                class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-purple-500 transition" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5" for="tokenSecurity">
+                Session & Token Management Requirements
+              </label>
+              <input type="text" id="tokenSecurity" name="tokenSecurity" placeholder="e.g. 8-hour max session, immediate token revocation on offboarding"
+                class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-purple-500 transition" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: Device Fleet & UEM Integration -->
+      <section class="bg-slate-900/70 rounded-2xl border border-slate-800/90 p-5 sm:p-7 shadow-xl">
+        <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
+          <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg border border-amber-500/20">
+            <i data-lucide="laptop" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-semibold text-white">4. Endpoint Fleet & Hexnode UEM Enforcement</h3>
+            <p class="text-xs text-slate-400">Device fleet makeup, configuration profiles, compliance, and app delivery</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="corpDeviceCount">
+              Company-Owned Devices
+            </label>
+            <input type="number" id="corpDeviceCount" name="corpDeviceCount" placeholder="e.g. 500" min="0"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-amber-500 transition" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="byodCount">
+              BYOD (Personal Devices)
+            </label>
+            <input type="number" id="byodCount" name="byodCount" placeholder="e.g. 250" min="0"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-amber-500 transition" />
+          </div>
+
+          <div class="lg:col-span-2">
+            <span class="block text-xs font-medium text-slate-300 mb-2">Target OS Platforms & Device Types in Scope</span>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
+              <label class="inline-flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs cursor-pointer hover:border-amber-500/60 transition">
+                <input type="checkbox" name="osPlatforms" value="Windows" checked class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700">
+                <span>Windows 10/11</span>
+              </label>
+              <label class="inline-flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs cursor-pointer hover:border-amber-500/60 transition">
+                <input type="checkbox" name="osPlatforms" value="macOS" checked class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700">
+                <span>macOS</span>
+              </label>
+              <label class="inline-flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs cursor-pointer hover:border-amber-500/60 transition">
+                <input type="checkbox" name="osPlatforms" value="iOS / iPadOS" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700">
+                <span>iOS / iPadOS</span>
+              </label>
+              <label class="inline-flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs cursor-pointer hover:border-amber-500/60 transition">
+                <input type="checkbox" name="osPlatforms" value="Android" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700">
+                <span>Android Enterprise</span>
+              </label>
+              <label class="inline-flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs cursor-pointer hover:border-amber-500/60 transition">
+                <input type="checkbox" name="osPlatforms" value="Linux" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700">
+                <span>Linux</span>
+              </label>
+              <label class="inline-flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs cursor-pointer hover:border-amber-500/60 transition">
+                <input type="checkbox" name="osPlatforms" value="Google ChromeOS" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700">
+                <span>Google ChromeOS</span>
+              </label>
+              <label class="inline-flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs cursor-pointer hover:border-amber-500/60 transition">
+                <input type="checkbox" name="osPlatforms" value="Apple tvOS" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700">
+                <span>Apple TV (tvOS)</span>
+              </label>
+              <label class="inline-flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs cursor-pointer hover:border-amber-500/60 transition">
+                <input type="checkbox" name="osPlatforms" value="Apple visionOS" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700">
+                <span>Apple visionOS</span>
+              </label>
+              <label class="inline-flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs cursor-pointer hover:border-amber-500/60 transition">
+                <input type="checkbox" name="osPlatforms" value="Android TV" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700">
+                <span>Android TV</span>
+              </label>
+              <label class="inline-flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs cursor-pointer hover:border-amber-500/60 transition sm:col-span-2 lg:col-span-3">
+                <input type="checkbox" name="osPlatforms" value="Dedicated Kiosks (Android/Win/iOS/Linux)" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700">
+                <span>Dedicated Kiosk Devices (Android / Windows / iOS / Linux)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="complianceDefinition">
+              Compliance Definition Criteria
+            </label>
+            <textarea id="complianceDefinition" name="complianceDefinition" rows="2" placeholder="e.g. BitLocker/FileVault enabled, OS build >= 22H2, Defender real-time protection ON, non-jailbroken/rooted"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-amber-500 transition"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="appDeploymentReqs">
+              App Deployment & Silent Management Needs
+            </label>
+            <textarea id="appDeploymentReqs" name="appDeploymentReqs" rows="2" placeholder="e.g. MSI/PKG distribution, VPP/ABM volume purchasing, Play for Work catalog, mandatory VPN client auto-push"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-amber-500 transition"></textarea>
+          </div>
+        </div>
+
+        <!-- Identity-Aware Device Access Control Highlight -->
+        <div class="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30">
+          <div class="flex items-start gap-3">
+            <div class="p-1.5 bg-amber-500/20 text-amber-300 rounded-md mt-0.5">
+              <i data-lucide="lock" class="w-4 h-4"></i>
+            </div>
+            <div class="flex-1">
+              <label class="block text-xs font-semibold text-amber-200 mb-1" for="identityAwareControl">
+                Identity-Aware Device Access Control Requirement
+              </label>
+              <p class="text-xs text-amber-300/80 mb-2">
+                Must the Hexnode IdP block access to enterprise SSO apps if the requesting endpoint fails compliance in Hexnode UEM?
+              </p>
+              <select id="identityAwareControl" name="identityAwareControl" class="w-full sm:w-80 bg-slate-950 border border-amber-600/50 rounded-lg px-3 py-2 text-sm text-white focus:border-amber-400 transition">
+                <option value="Yes - Critical (Block non-compliant & unmanaged devices)">Yes - Critical (Zero Trust Device Wall)</option>
+                <option value="Yes - Soft warning / Grace period allowed">Yes - Soft warning / 24-hr grace period</option>
+                <option value="Only for sensitive financial/HR apps">Tiered (Only for select critical apps)</option>
+                <option value="Not required at phase 1">Not required at phase 1</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 5: Qualification Scorecard & Next Steps -->
+      <section class="bg-slate-900/70 rounded-2xl border border-slate-800/90 p-5 sm:p-7 shadow-xl">
+        <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
+          <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
+            <i data-lucide="award" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-semibold text-white">5. SE Qualification Scorecard & Next Steps</h3>
+            <p class="text-xs text-slate-400">Technical fit assessment, agreed actions, and sales progression</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">
+              Overall Technical Fit Verdict
+            </label>
+            <select id="technicalFit" name="technicalFit" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm font-medium text-white focus:border-emerald-500 transition">
+              <option value="Strong Fit (Full Out-of-the-Box Alignment)">🟢 Strong Fit (Full OOTB Match)</option>
+              <option value="Moderate Fit (Minor Scripting / Custom IdP app)">🟡 Moderate Fit (Minor Customization)</option>
+              <option value="PoC Required to Validate Edge Cases">🟠 PoC Required (Verify Edge Case)</option>
+              <option value="Disqualified (Critical Feature Gap)">🔴 Disqualified (Platform Gap)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">
+              Next Commercial & Technical Milestone
+            </label>
+            <select id="nextStep" name="nextStep" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-emerald-500 transition">
+              <option value="Technical Deep-Dive / Arch Review">1. Technical Deep-Dive & Architecture</option>
+              <option value="Hands-on Proof of Concept (PoC)">2. Guided PoC Trial Environment</option>
+              <option value="Proposal & Pricing Review">3. Commercial Proposal Review</option>
+              <option value="Security & Compliance Questionnaire">4. Security Review / Infosec Questionnaire</option>
+              <option value="Nurture / Check back next quarter">5. Nurture / Future Project</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="agreedActionDate">
+              Agreed Date for Next Interaction
+            </label>
+            <input type="date" id="agreedActionDate" name="agreedActionDate"
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-emerald-500 transition" />
+          </div>
+
+          <div class="md:col-span-3">
+            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="seNotes">
+              SE Internal Debrief & Competitive Notes
+            </label>
+            <textarea id="seNotes" name="seNotes" rows="3" placeholder="Enter key objection handlers, incumbent vendor pricing info (e.g., Jamf, Intune, Okta), or critical requirements for the PoC plan..."
+              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-emerald-500 transition"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Submission and Quick Action Toolbar -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-slate-900 rounded-2xl border border-slate-800">
+        <div class="flex items-center gap-3 text-xs text-slate-400">
+          <i data-lucide="cloud-check" class="w-4 h-4 text-emerald-400"></i>
+          <span>Data stored locally in browser session storage automatically.</span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-end">
+          <button type="button" onclick="copySummaryToClipboard()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-sm font-medium transition cursor-pointer">
+            <i data-lucide="copy" class="w-4 h-4"></i> Copy Summary
+          </button>
+          <button type="button" onclick="exportToExcel()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg text-sm font-semibold shadow-lg shadow-emerald-900/30 transition cursor-pointer">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export to Excel (.xlsx)
+          </button>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-950 border-t border-slate-900 py-6 mt-12 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>Hexnode IdP & Unified Endpoint Management &bull; SE Field Toolkit</p>
+      <p>Compatible with GitHub Pages &bull; No Backend Dependency Required</p>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    const STORAGE_KEY = 'hexnode_se_discovery_lead_data_v1';
+
+    // Helper: Show floating toast notification
+    function showToast(message, isSuccess = true) {
+      const toast = document.getElementById('toastNotification');
+      const msg = document.getElementById('toastMessage');
+      const icon = document.getElementById('toastIcon');
+
+      msg.textContent = message;
+      icon.innerHTML = isSuccess
+        ? '<i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>'
+        : '<i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400"></i>';
+      lucide.createIcons();
+
+      toast.classList.remove('hidden', 'translate-y-2');
+      setTimeout(() => {
+        toast.classList.add('hidden', 'translate-y-2');
+      }, 3500);
+    }
+
+    // Extract all structured form data into a normalized JS object
+    function getFormData() {
+      const form = document.getElementById('discoveryForm');
+      
+      // Selected checkboxes for Conditional Access
+      const caEngines = Array.from(document.querySelectorAll('input[name="caEngine"]:checked'))
+        .map(el => el.value)
+        .join(', ');
+
+      // Selected checkboxes for Operating Systems
+      const osPlatforms = Array.from(document.querySelectorAll('input[name="osPlatforms"]:checked'))
+        .map(el => el.value)
+        .join(', ');
+
+      return {
+        // Metadata
+        timestamp: new Date().toISOString(),
+        customerName: document.getElementById('customerName').value.trim() || 'Untitled Customer',
+        seName: document.getElementById('seName').value.trim() || 'N/A',
+        targetGoLive: document.getElementById('targetGoLive').value || 'TBD',
+        stakeholders: document.getElementById('stakeholders').value.trim() || 'N/A',
+        budgetStatus: document.getElementById('budgetStatus').value,
+        primaryPain: document.getElementById('primaryPain').value.trim() || 'N/A',
+
+        // IdP Federation
+        primaryIdP: document.getElementById('primaryIdP').value,
+        identityUserCount: document.getElementById('identityUserCount').value || '0',
+        scimRequired: document.getElementById('scimRequired').value,
+        ssoApps: document.getElementById('ssoApps').value.trim() || 'None specified',
+        mfaStrategy: document.getElementById('mfaStrategy').value,
+
+        // Access Control
+        caTriggers: caEngines || 'None selected',
+        rbacRequirement: document.getElementById('rbacRequirement').value.trim() || 'Standard admin roles',
+        tokenSecurity: document.getElementById('tokenSecurity').value.trim() || 'Standard timeout',
+
+        // Device Fleet & UEM
+        corpDeviceCount: document.getElementById('corpDeviceCount').value || '0',
+        byodCount: document.getElementById('byodCount').value || '0',
+        osPlatforms: osPlatforms || 'None selected',
+        complianceDefinition: document.getElementById('complianceDefinition').value.trim() || 'Standard posture',
+        appDeploymentReqs: document.getElementById('appDeploymentReqs').value.trim() || 'Standard packaging',
+        identityAwareControl: document.getElementById('identityAwareControl').value,
+
+        // Scorecard
+        technicalFit: document.getElementById('technicalFit').value,
+        nextStep: document.getElementById('nextStep').value,
+        agreedActionDate: document.getElementById('agreedActionDate').value || 'TBD',
+        seNotes: document.getElementById('seNotes').value.trim() || 'N/A'
+      };
+    }
+
+    // Auto-Save Form to LocalStorage on typing
+    function saveToLocalStorage() {
+      const data = getFormData();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      const status = document.getElementById('saveStatus');
+      status.classList.remove('opacity-0');
+      setTimeout(() => {
+        status.classList.add('opacity-0');
+      }, 1500);
+    }
+
+    // Restore form on load
+    function restoreFromLocalStorage() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return;
+      try {
+        const data = JSON.parse(saved);
+        if (data.customerName && data.customerName !== 'Untitled Customer') document.getElementById('customerName').value = data.customerName;
+        if (data.seName && data.seName !== 'N/A') document.getElementById('seName').value = data.seName;
+        if (data.targetGoLive && data.targetGoLive !== 'TBD') document.getElementById('targetGoLive').value = data.targetGoLive;
+        if (data.stakeholders && data.stakeholders !== 'N/A') document.getElementById('stakeholders').value = data.stakeholders;
+        if (data.budgetStatus) document.getElementById('budgetStatus').value = data.budgetStatus;
+        if (data.primaryPain && data.primaryPain !== 'N/A') document.getElementById('primaryPain').value = data.primaryPain;
+
+        if (data.primaryIdP) document.getElementById('primaryIdP').value = data.primaryIdP;
+        if (data.identityUserCount) document.getElementById('identityUserCount').value = data.identityUserCount;
+        if (data.scimRequired) document.getElementById('scimRequired').value = data.scimRequired;
+        if (data.ssoApps && data.ssoApps !== 'None specified') document.getElementById('ssoApps').value = data.ssoApps;
+        if (data.mfaStrategy) document.getElementById('mfaStrategy').value = data.mfaStrategy;
+
+        if (data.rbacRequirement && data.rbacRequirement !== 'Standard admin roles') document.getElementById('rbacRequirement').value = data.rbacRequirement;
+        if (data.tokenSecurity && data.tokenSecurity !== 'Standard timeout') document.getElementById('tokenSecurity').value = data.tokenSecurity;
+
+        if (data.corpDeviceCount) document.getElementById('corpDeviceCount').value = data.corpDeviceCount;
+        if (data.byodCount) document.getElementById('byodCount').value = data.byodCount;
+        if (data.complianceDefinition && data.complianceDefinition !== 'Standard posture') document.getElementById('complianceDefinition').value = data.complianceDefinition;
+        if (data.appDeploymentReqs && data.appDeploymentReqs !== 'Standard packaging') document.getElementById('appDeploymentReqs').value = data.appDeploymentReqs;
+        if (data.identityAwareControl) document.getElementById('identityAwareControl').value = data.identityAwareControl;
+
+        if (data.technicalFit) document.getElementById('technicalFit').value = data.technicalFit;
+        if (data.nextStep) document.getElementById('nextStep').value = data.nextStep;
+        if (data.agreedActionDate && data.agreedActionDate !== 'TBD') document.getElementById('agreedActionDate').value = data.agreedActionDate;
+        if (data.seNotes && data.seNotes !== 'N/A') document.getElementById('seNotes').value = data.seNotes;
+
+        // Restore checkboxes
+        if (data.caTriggers) {
+          const list = data.caTriggers.split(', ');
+          document.querySelectorAll('input[name="caEngine"]').forEach(cb => {
+            cb.checked = list.includes(cb.value);
+          });
+        }
+        if (data.osPlatforms) {
+          const osList = data.osPlatforms.split(', ');
+          document.querySelectorAll('input[name="osPlatforms"]').forEach(cb => {
+            cb.checked = osList.includes(cb.value);
+          });
+        }
+      } catch (err) {
+        console.error('Failed to parse cached local data:', err);
+      }
+    }
+
+    // Attach real-time input triggers
+    document.getElementById('discoveryForm').addEventListener('input', saveToLocalStorage);
+    document.getElementById('discoveryForm').addEventListener('change', saveToLocalStorage);
+
+    // EXPORT 1: SheetJS Excel (.xlsx) Generation
+    function exportToExcel() {
+      const d = getFormData();
+      const customerSafe = (d.customerName.replace(/[^a-zA-Z0-9_-]/g, '_') || 'Customer');
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const filename = `Hexnode_Discovery_${customerSafe}_${dateStr}.xlsx`;
+
+      // Structure Sheet 1: Key-Value Summary for CRM Upload
+      const summaryRows = [
+        ["HEXNODE SALES ENGINEERING DISCOVERY & QUALIFICATION REPORT", ""],
+        ["Generated Date", new Date().toLocaleString()],
+        ["", ""],
+        ["SECTION 1: CUSTOMER & METADATA", ""],
+        ["Customer / Company Name", d.customerName],
+        ["Sales Engineer", d.seName],
+        ["Key Stakeholders & Titles", d.stakeholders],
+        ["Target Go-Live Date", d.targetGoLive],
+        ["Budget Status", d.budgetStatus],
+        ["Core Pain Point / Business Driver", d.primaryPain],
+        ["", ""],
+        ["SECTION 2: IDENTITY PROVIDER & FEDERATION", ""],
+        ["Primary Identity Source", d.primaryIdP],
+        ["Total Identity Users", d.identityUserCount],
+        ["SCIM Provisioning Requirement", d.scimRequired],
+        ["SaaS SSO Applications Needed", d.ssoApps],
+        ["MFA Architecture", d.mfaStrategy],
+        ["", ""],
+        ["SECTION 3: CONDITIONAL ACCESS & POLICIES", ""],
+        ["Conditional Access Triggers", d.caTriggers],
+        ["RBAC Requirements", d.rbacRequirement],
+        ["Session & Token Constraints", d.tokenSecurity],
+        ["", ""],
+        ["SECTION 4: FLEET & UEM INTEGRATION", ""],
+        ["Company-Owned Endpoints", d.corpDeviceCount],
+        ["BYOD Endpoints", d.byodCount],
+        ["Target OS Platforms", d.osPlatforms],
+        ["Device Compliance Posture Rules", d.complianceDefinition],
+        ["App Distribution Reqs", d.appDeploymentReqs],
+        ["Identity-Aware Device Access Control", d.identityAwareControl],
+        ["", ""],
+        ["SECTION 5: QUALIFICATION & NEXT STEPS", ""],
+        ["Technical Fit Verdict", d.technicalFit],
+        ["Next Milestone Agreed", d.nextStep],
+        ["Agreed Follow-up Date", d.agreedActionDate],
+        ["SE Debrief / Objection Notes", d.seNotes]
+      ];
+
+      // Structure Sheet 2: Flat Table format (Great for Salesforce/HubSpot bulk imports)
+      const flatTableRows = [
+        {
+          "Date": dateStr,
+          "Customer": d.customerName,
+          "SE": d.seName,
+          "Fit Verdict": d.technicalFit,
+          "Next Step": d.nextStep,
+          "Follow-up Date": d.agreedActionDate,
+          "Identity Source": d.primaryIdP,
+          "Users": d.identityUserCount,
+          "SCIM Needed": d.scimRequired,
+          "Corporate Devices": d.corpDeviceCount,
+          "BYOD Devices": d.byodCount,
+          "OS": d.osPlatforms,
+          "Zero-Trust Device Wall": d.identityAwareControl,
+          "Pain Points": d.primaryPain,
+          "Notes": d.seNotes
+        }
+      ];
+
+      // Build Workbook with SheetJS
+      const wb = XLSX.utils.book_new();
+
+      // Summary Sheet
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      // Auto column widths
+      wsSummary['!cols'] = [{ wch: 38 }, { wch: 65 }];
+      XLSX.utils.book_append_sheet(wb, wsSummary, "Discovery Report");
+
+      // Flat Table Sheet
+      const wsTable = XLSX.utils.json_to_sheet(flatTableRows);
+      XLSX.utils.book_append_sheet(wb, wsTable, "CRM Flat Data");
+
+      // Save File
+      XLSX.writeFile(wb, filename);
+      showToast(`Exported "${filename}" successfully!`);
+    }
+
+    // EXPORT 2: Raw JSON file export
+    function exportToJSON() {
+      const d = getFormData();
+      const customerSafe = (d.customerName.replace(/[^a-zA-Z0-9_-]/g, '_') || 'Customer');
+      const filename = `Hexnode_Discovery_${customerSafe}.json`;
+
+      const blob = new Blob([JSON.stringify(d, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showToast("JSON downloaded successfully.");
+    }
+
+    // Clipboard Summary Helper
+    function copySummaryToClipboard() {
+      const d = getFormData();
+      const text = `=== HEXNODE IDP + UEM DISCOVERY SUMMARY ===
+Customer: ${d.customerName}
+SE: ${d.seName}
+Target Go-Live: ${d.targetGoLive} | Budget: ${d.budgetStatus}
+Driver/Pain: ${d.primaryPain}
+
+-- Identity Federation --
+Source: ${d.primaryIdP} (${d.identityUserCount} users)
+SCIM: ${d.scimRequired}
+MFA: ${d.mfaStrategy}
+SSO Apps: ${d.ssoApps}
+
+-- Endpoint & UEM --
+Fleet: Corp(${d.corpDeviceCount}), BYOD(${d.byodCount})
+OS: ${d.osPlatforms}
+Identity-Aware Gate: ${d.identityAwareControl}
+Posture: ${d.complianceDefinition}
+
+-- Qualification --
+Verdict: ${d.technicalFit}
+Next Step: ${d.nextStep} (Target: ${d.agreedActionDate})
+Notes: ${d.seNotes}`;
+
+      // Clipboard execution fallback compatible with sandbox frames
+      const tempTextArea = document.createElement('textarea');
+      tempTextArea.value = text;
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      try {
+        document.execCommand('copy');
+        showToast("Summary copied to clipboard!");
+      } catch (err) {
+        showToast("Failed to copy automatically", false);
+      }
+      document.body.removeChild(tempTextArea);
+    }
+
+    // Form Reset Modal-safe
+    function confirmReset() {
+      if (window.confirm("Are you sure you want to clear this discovery form? This will remove all currently entered values.")) {
+        document.getElementById('discoveryForm').reset();
+        localStorage.removeItem(STORAGE_KEY);
+        showToast("Form cleared & cache reset.");
+      }
+    }
+
+    // Window Load setup
+    window.onload = function() {
+      restoreFromLocalStorage();
+    };
+  </script>
+</body>
+</html>
