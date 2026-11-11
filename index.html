@@ -109,25 +109,21 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- Call Timestamp -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Date & Time (YYYY-MM-DD HH:MM) <span class="text-rose-400">*</span></label>
             <input type="text" id="callDateTime" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white font-mono placeholder-slate-500" placeholder="2026-11-11 16:30">
           </div>
 
-          <!-- Customer Company Name -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Customer Company Name <span class="text-rose-400">*</span></label>
             <input type="text" id="companyName" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="e.g. Acme FinTech Corp">
           </div>
 
-          <!-- Primary Contact Name -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Primary Contact Name <span class="text-rose-400">*</span></label>
             <input type="text" id="primaryContactName" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="e.g. Rachel Adams">
           </div>
 
-          <!-- Primary Role & Persona Selector -->
           <div class="lg:col-span-1">
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Primary Role & Persona <span class="text-rose-400">*</span></label>
             <select id="primaryRoleSelect" onchange="toggleCustomRole('primaryRoleSelect', 'primaryRoleOtherWrap')" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white">
@@ -159,13 +155,11 @@
             </div>
           </div>
 
-          <!-- Email ID -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Email ID <span class="text-rose-400">*</span></label>
             <input type="email" id="emailId" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="radams@acme.com">
           </div>
 
-          <!-- Mobile Number -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Mobile Number</label>
             <input type="tel" id="mobileNumber" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="+1 (555) 019-2834 / +91 98765 43210">
@@ -185,7 +179,6 @@
             </div>
           </div>
 
-          <!-- Conditional Additional Attendee Fields -->
           <div id="additionalAttendeeSection" class="hidden mt-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800 grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label class="block text-xs font-medium text-slate-300 mb-1">Attendee Name</label>
@@ -229,7 +222,7 @@
         </div>
       </section>
 
-      <!-- SECTION 2: Fleet Sizing, Breakdown, On-Prem Servers & Ownership -->
+      <!-- SECTION 2: Fleet Sizing, Breakdown, Specialized Devices & Ownership -->
       <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
         <div class="flex items-center justify-between mb-5 flex-wrap gap-2">
           <div class="flex items-center gap-2">
@@ -260,6 +253,7 @@
               <option value="VMware Workspace ONE">VMware Workspace ONE</option>
               <option value="ManageEngine Endpoint Central">ManageEngine Endpoint Central</option>
               <option value="Kandji / JumpCloud">Kandji / JumpCloud</option>
+              <option value="SOTI MobiControl">SOTI MobiControl</option>
               <option value="Unmanaged / Manual">Unmanaged / No Tool</option>
               <option value="Other">Other</option>
             </select>
@@ -283,9 +277,9 @@
           </div>
         </div>
 
-        <!-- Platform Breakdown & On-Prem Servers Grid -->
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Platform Breakdown & Endpoint / Server Counts</h3>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+        <!-- Platform Breakdown Grid (Endpoints, Servers, Rugged, POS & Zebra) -->
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Platform Breakdown & Endpoint / Specialized Device Counts</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
           
           <!-- Windows -->
           <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
@@ -342,8 +336,8 @@
             <input type="number" id="os_linux_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
           </div>
 
-          <!-- NEW: On-Prem Servers -->
-          <div class="p-3 rounded-xl bg-sky-950/40 border border-sky-800/70 flex flex-col justify-between">
+          <!-- On-Prem Servers -->
+          <div class="p-3 rounded-xl bg-sky-950/30 border border-sky-800/60 flex flex-col justify-between">
             <div class="flex items-center justify-between mb-2">
               <label class="text-xs font-bold text-sky-200 flex items-center gap-1.5">
                 <input type="checkbox" id="os_servers_active" onchange="toggleOsQty('os_servers_active', 'os_servers_qty')" class="rounded bg-slate-900 border-sky-500 text-sky-500">
@@ -351,6 +345,50 @@
               </label>
             </div>
             <input type="number" id="os_servers_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- Zebra Devices (OEMConfig / StageNow) -->
+          <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-800/60 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-amber-300 flex items-center gap-1.5" title="Handheld scanners, TC/MC mobile computers, RFID, StageNow/OEMConfig">
+                <input type="checkbox" id="os_zebra_active" onchange="toggleOsQty('os_zebra_active', 'os_zebra_qty')" class="rounded bg-slate-900 border-amber-500 text-amber-500">
+                Zebra Devices
+              </label>
+            </div>
+            <input type="number" id="os_zebra_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- Rugged Devices (General Rugged: Honeywell, Panasonic Toughbook, Sonim) -->
+          <div class="p-3 rounded-xl bg-amber-950/20 border border-amber-900/60 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-amber-200 flex items-center gap-1.5" title="Honeywell, Sonim, CAT, Toughbooks, Datalogic">
+                <input type="checkbox" id="os_rugged_active" onchange="toggleOsQty('os_rugged_active', 'os_rugged_qty')" class="rounded bg-slate-900 border-amber-500 text-amber-500">
+                Rugged Devices
+              </label>
+            </div>
+            <input type="number" id="os_rugged_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- POS Devices (Point-of-Sale / Payment Terminals: Elo, Pax, Sunmi, Clover) -->
+          <div class="p-3 rounded-xl bg-emerald-950/30 border border-emerald-800/60 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-emerald-300 flex items-center gap-1.5" title="Elo, Sunmi, Pax, Clover, Newland smart POS">
+                <input type="checkbox" id="os_pos_active" onchange="toggleOsQty('os_pos_active', 'os_pos_qty')" class="rounded bg-slate-900 border-emerald-500 text-emerald-500">
+                POS Devices
+              </label>
+            </div>
+            <input type="number" id="os_pos_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- Dedicated Kiosks -->
+          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_kiosk_active" onchange="toggleOsQty('os_kiosk_active', 'os_kiosk_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
+                Dedicated Kiosks
+              </label>
+            </div>
+            <input type="number" id="os_kiosk_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
           </div>
 
           <!-- ChromeOS -->
@@ -362,17 +400,6 @@
               </label>
             </div>
             <input type="number" id="os_chrome_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
-          </div>
-
-          <!-- Kiosk Devices -->
-          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_kiosk_active" onchange="toggleOsQty('os_kiosk_active', 'os_kiosk_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                Dedicated Kiosks
-              </label>
-            </div>
-            <input type="number" id="os_kiosk_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
           </div>
 
           <!-- Apple TV (tvOS) -->
@@ -402,7 +429,7 @@
             <div class="flex items-center justify-between mb-2">
               <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
                 <input type="checkbox" id="os_visionos_active" onchange="toggleOsQty('os_visionos_active', 'os_visionos_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                Apple visionOS
+                visionOS
               </label>
             </div>
             <input type="number" id="os_visionos_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
@@ -410,10 +437,16 @@
 
         </div>
 
-        <!-- Optional Details on On-Prem Server Environment -->
-        <div class="mt-4 pt-3 border-t border-slate-800/80">
-          <label class="block text-xs font-semibold text-slate-300 mb-1.5">On-Prem Server Details & Environment (OS Flavors, Roles, Domain Controllers)</label>
-          <input type="text" id="onPremServerDetails" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500" placeholder="e.g. Windows Server 2022 (AD DS & File Shares), Red Hat Enterprise Linux 9, Ubuntu 24.04 LTS database hosts">
+        <!-- Details on Specialized Hardware & Server Environments -->
+        <div class="mt-4 pt-3 border-t border-slate-800/80 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Specialized Fleet Details (Zebra Models, POS, Rugged OEMConfig, Barcode Scanning)</label>
+            <input type="text" id="specializedFleetDetails" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500" placeholder="e.g. Zebra TC52/TC57 StageNow barcode setup, Elo I-Series Android POS, Honeywell ScanPal">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">On-Prem Server Details & Roles (Windows Server, Linux, AD DS, File Shares)</label>
+            <input type="text" id="onPremServerDetails" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500" placeholder="e.g. Windows Server 2022 (Domain Controllers), RHEL 9 DB hosts">
+          </div>
         </div>
       </section>
 
@@ -425,13 +458,11 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- Productivity Suite & Plan -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Productivity Suite & License Tier</label>
             <input type="text" id="productivityPlan" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. M365 E3/E5, Google Workspace Enterprise Plus">
           </div>
 
-          <!-- Primary Identity Source -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Primary Identity Provider (IdP)</label>
             <select id="primaryIdp" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
@@ -443,7 +474,6 @@
             </select>
           </div>
 
-          <!-- Provisioning Method -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">User & Group Provisioning</label>
             <select id="provisioningMethod" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
@@ -453,7 +483,6 @@
             </select>
           </div>
 
-          <!-- SSO Adoption -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">SSO Adoption Status</label>
             <select id="ssoAdoption" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
@@ -463,13 +492,11 @@
             </select>
           </div>
 
-          <!-- MFA Solution -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">MFA Architecture</label>
             <input type="text" id="mfaDetails" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. MS Authenticator, FIDO2/YubiKey, Duo">
           </div>
 
-          <!-- Core Business Driver / Pain Point -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Core Business Driver / Primary Pain Point</label>
             <input type="text" id="businessPain" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. Identity sprawl, unmanaged macOS, Entra P2 licensing cost">
@@ -517,7 +544,6 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- BitLocker / FileVault -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Disk Encryption (BitLocker / FileVault)</label>
             <select id="diskEncryption" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
@@ -527,7 +553,6 @@
             </select>
           </div>
 
-          <!-- App Deployment -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">App Deployment Model</label>
             <select id="appDeployment" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
@@ -538,7 +563,6 @@
             </select>
           </div>
 
-          <!-- Patching Window -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">OS & Patching Window</label>
             <select id="patchingWindow" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
@@ -548,21 +572,18 @@
             </select>
           </div>
 
-          <!-- Ticketing & ITSM -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Ticketing & ITSM Platform</label>
             <input type="text" id="itsmPlatform" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. ServiceNow, Jira Service Management, Freshservice">
           </div>
 
-          <!-- 3rd-Party Security -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Endpoint Security / EDR / ZTNA</label>
             <input type="text" id="edrPlatform" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. CrowdStrike Falcon, Defender for Endpoint, SentinelOne">
           </div>
 
-          <!-- Identity-Aware Device Access Control Requirement -->
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Identity-Aware Access Control Priority</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Identity-Aware Device Access Control Priority</label>
             <select id="identityAwarePriority" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
               <option value="Critical - Must block unmanaged/unhealthy devices">Critical - Must block unmanaged/unhealthy devices</option>
               <option value="High - Preferred in phase 2 rollout">High - Preferred in phase 2 rollout</option>
@@ -580,7 +601,6 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <!-- Commitment Status -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Commitment to POC</label>
             <select id="pocCommitment" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white font-semibold">
@@ -591,13 +611,11 @@
             </select>
           </div>
 
-          <!-- Target Go-Live -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Target Go-Live / Cutover Date</label>
             <input type="text" id="targetGoLive" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. Q1 2027 / Within 60 Days">
           </div>
 
-          <!-- POC Duration Scoped -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Agreed POC Duration</label>
             <select id="pocDuration" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
@@ -607,7 +625,6 @@
             </select>
           </div>
 
-          <!-- Commercial Decision Maker Participation -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Decision Maker in POC Review?</label>
             <select id="decisionMakerInPoc" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
@@ -618,10 +635,9 @@
           </div>
         </div>
 
-        <!-- Agreed Success Criteria / Next Steps -->
         <div class="mt-4">
           <label class="block text-xs font-semibold text-slate-300 mb-1.5">Agreed POC Success Criteria & Technical Next Steps</label>
-          <textarea id="pocSuccessCriteria" rows="3" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 custom-scroll" placeholder="e.g. 1) Successfully federate Entra ID via SCIM. 2) Deploy BitLocker policy on 5 test Windows laptops. 3) Test Conditional Access by blocking unmanaged device access."></textarea>
+          <textarea id="pocSuccessCriteria" rows="3" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 custom-scroll" placeholder="e.g. 1) Successfully federate Entra ID via SCIM. 2) Deploy OEMConfig profile across 10 Zebra TC57 devices. 3) Configure single-app kiosk on POS terminals. 4) Block non-compliant devices via CA engine."></textarea>
         </div>
       </section>
 
@@ -635,7 +651,7 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'hexnode_se_discovery_form_v3';
+    const STORAGE_KEY = 'hexnode_se_discovery_form_v4';
 
     // Auto-populate Call Date & Time on load if empty
     window.addEventListener('DOMContentLoaded', () => {
@@ -698,11 +714,12 @@
       saveFormData();
     }
 
-    // Calculate real-time sum of OS and Server fleets
+    // Calculate real-time sum of OS, Servers, Rugged, POS & Zebra fleets
     function calculateFleetSum() {
       const osFields = [
         'os_win_qty', 'os_mac_qty', 'os_ios_qty', 'os_android_qty', 
-        'os_linux_qty', 'os_servers_qty', 'os_chrome_qty', 'os_kiosk_qty', 
+        'os_linux_qty', 'os_servers_qty', 'os_zebra_qty', 'os_rugged_qty', 
+        'os_pos_qty', 'os_kiosk_qty', 'os_chrome_qty', 
         'os_appletv_qty', 'os_androidtv_qty', 'os_visionos_qty'
       ];
       let sum = 0;
@@ -718,7 +735,7 @@
       return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
     }
 
-    // Get Primary Role string (accounting for Other)
+    // Get Primary Role string
     function getEffectiveRole(selectId, otherId) {
       const selVal = document.getElementById(selectId)?.value || '';
       if (selVal === 'Other') {
@@ -728,7 +745,7 @@
       return selVal;
     }
 
-    // Collect all data into a clean object
+    // Gather all form inputs into a unified data structure
     function gatherData() {
       const additionalJoined = !document.getElementById('additionalAttendeeSection').classList.contains('hidden');
 
@@ -745,12 +762,13 @@
         secondaryContactEmail: additionalJoined ? (document.getElementById('secondaryContactEmail')?.value || '') : '',
         secondaryRole: additionalJoined ? getEffectiveRole('secondaryRoleSelect', 'secondaryRoleOther') : '',
 
-        // Section 2: Fleet Sizing & Breakdown
+        // Section 2: Fleet Sizing, Breakdown & Specialized Hardware
         totalDevicesReported: document.getElementById('totalDevicesReported')?.value || '0',
         totalUsersReported: document.getElementById('totalUsersReported')?.value || '0',
         calculatedFleetSum: document.getElementById('calculatedFleetSum')?.textContent || '0',
         incumbentUem: document.getElementById('incumbentUem')?.value || '',
         ownershipModel: getCheckedValues('ownershipModel').join(', '),
+        specializedFleetDetails: document.getElementById('specializedFleetDetails')?.value || '',
         onPremServerDetails: document.getElementById('onPremServerDetails')?.value || '',
         osBreakdown: {
           windows: document.getElementById('os_win_active')?.checked ? (document.getElementById('os_win_qty')?.value || 0) : 0,
@@ -759,8 +777,11 @@
           android: document.getElementById('os_android_active')?.checked ? (document.getElementById('os_android_qty')?.value || 0) : 0,
           linux: document.getElementById('os_linux_active')?.checked ? (document.getElementById('os_linux_qty')?.value || 0) : 0,
           onPremServers: document.getElementById('os_servers_active')?.checked ? (document.getElementById('os_servers_qty')?.value || 0) : 0,
-          chromeOS: document.getElementById('os_chrome_active')?.checked ? (document.getElementById('os_chrome_qty')?.value || 0) : 0,
+          zebra: document.getElementById('os_zebra_active')?.checked ? (document.getElementById('os_zebra_qty')?.value || 0) : 0,
+          rugged: document.getElementById('os_rugged_active')?.checked ? (document.getElementById('os_rugged_qty')?.value || 0) : 0,
+          pos: document.getElementById('os_pos_active')?.checked ? (document.getElementById('os_pos_qty')?.value || 0) : 0,
           kiosks: document.getElementById('os_kiosk_active')?.checked ? (document.getElementById('os_kiosk_qty')?.value || 0) : 0,
+          chromeOS: document.getElementById('os_chrome_active')?.checked ? (document.getElementById('os_chrome_qty')?.value || 0) : 0,
           appleTV: document.getElementById('os_appletv_active')?.checked ? (document.getElementById('os_appletv_qty')?.value || 0) : 0,
           androidTV: document.getElementById('os_androidtv_active')?.checked ? (document.getElementById('os_androidtv_qty')?.value || 0) : 0,
           visionOS: document.getElementById('os_visionos_active')?.checked ? (document.getElementById('os_visionos_qty')?.value || 0) : 0
@@ -803,7 +824,7 @@
       }
     }
 
-    // Attach real-time listeners for autosave
+    // Attach listeners
     document.getElementById('discoveryForm').addEventListener('input', () => {
       saveFormData();
     });
@@ -811,7 +832,7 @@
       saveFormData();
     });
 
-    // Load persisted data
+    // Load cached data
     function loadFormData() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
@@ -858,6 +879,7 @@
         if (d.totalDevicesReported) document.getElementById('totalDevicesReported').value = d.totalDevicesReported;
         if (d.totalUsersReported) document.getElementById('totalUsersReported').value = d.totalUsersReported;
         if (d.incumbentUem) document.getElementById('incumbentUem').value = d.incumbentUem;
+        if (d.specializedFleetDetails) document.getElementById('specializedFleetDetails').value = d.specializedFleetDetails;
         if (d.onPremServerDetails) document.getElementById('onPremServerDetails').value = d.onPremServerDetails;
 
         // Restore Platform Quantities
@@ -868,8 +890,11 @@
           android: ['os_android_active', 'os_android_qty'],
           linux: ['os_linux_active', 'os_linux_qty'],
           onPremServers: ['os_servers_active', 'os_servers_qty'],
-          chromeOS: ['os_chrome_active', 'os_chrome_qty'],
+          zebra: ['os_zebra_active', 'os_zebra_qty'],
+          rugged: ['os_rugged_active', 'os_rugged_qty'],
+          pos: ['os_pos_active', 'os_pos_qty'],
           kiosks: ['os_kiosk_active', 'os_kiosk_qty'],
+          chromeOS: ['os_chrome_active', 'os_chrome_qty'],
           appleTV: ['os_appletv_active', 'os_appletv_qty'],
           androidTV: ['os_androidtv_active', 'os_androidtv_qty'],
           visionOS: ['os_visionos_active', 'os_visionos_qty']
@@ -881,7 +906,7 @@
             const val = parseInt(d.osBreakdown[key], 10);
             const active = val > 0 || (d.osBreakdown[key] !== 0 && d.osBreakdown[key] !== '0');
             const cb = document.getElementById(cbId);
-            const inp = document.getElementById(inputId);
+            const inp = document.getElementById(inpId);
             if (cb && inp) {
               cb.checked = active;
               inp.value = active ? val : 0;
@@ -937,8 +962,11 @@
       if (d.osBreakdown.android > 0) osParts.push(`Android: ${d.osBreakdown.android}`);
       if (d.osBreakdown.linux > 0) osParts.push(`Linux: ${d.osBreakdown.linux}`);
       if (d.osBreakdown.onPremServers > 0) osParts.push(`On-Prem Servers: ${d.osBreakdown.onPremServers}`);
-      if (d.osBreakdown.chromeOS > 0) osParts.push(`ChromeOS: ${d.osBreakdown.chromeOS}`);
+      if (d.osBreakdown.zebra > 0) osParts.push(`Zebra: ${d.osBreakdown.zebra}`);
+      if (d.osBreakdown.rugged > 0) osParts.push(`Rugged: ${d.osBreakdown.rugged}`);
+      if (d.osBreakdown.pos > 0) osParts.push(`POS: ${d.osBreakdown.pos}`);
       if (d.osBreakdown.kiosks > 0) osParts.push(`Kiosks: ${d.osBreakdown.kiosks}`);
+      if (d.osBreakdown.chromeOS > 0) osParts.push(`ChromeOS: ${d.osBreakdown.chromeOS}`);
       if (d.osBreakdown.appleTV > 0) osParts.push(`Apple TV: ${d.osBreakdown.appleTV}`);
       if (d.osBreakdown.androidTV > 0) osParts.push(`Android TV: ${d.osBreakdown.androidTV}`);
       if (d.osBreakdown.visionOS > 0) osParts.push(`visionOS: ${d.osBreakdown.visionOS}`);
@@ -946,6 +974,11 @@
       let attendeeLine = "";
       if (d.additionalAttendeeJoined === 'Yes' && d.secondaryContactName) {
         attendeeLine = `\n- Additional Customer Attendee: ${d.secondaryContactName} | ${d.secondaryRole} | ${d.secondaryContactEmail}`;
+      }
+
+      let specLine = "";
+      if (d.specializedFleetDetails) {
+        specLine = `\n- Specialized Hardware Details: ${d.specializedFleetDetails}`;
       }
 
       let serverDetailsLine = "";
@@ -961,7 +994,7 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
 - Primary Contact & Role:    ${d.primaryContactName || 'N/A'} | ${d.primaryRole || 'N/A'}
 - Email & Phone:             ${d.emailId || 'N/A'} | ${d.mobileNumber || 'N/A'}${attendeeLine}
 - Fleet Sizing & Scale:      Total Devices: ${d.totalDevicesReported} | Total Users: ${d.totalUsersReported} (Sum Breakdown: ${d.calculatedFleetSum})
-- Device & Server Breakdown: ${osParts.length ? osParts.join(' | ') : 'None Specified'}${serverDetailsLine}
+- Device & Fleet Breakdown:  ${osParts.length ? osParts.join(' | ') : 'None Specified'}${specLine}${serverDetailsLine}
 - Ownership Model:           ${d.ownershipModel || 'None'}
 - Productivity & IdP:        Suite: ${d.productivityPlan || 'N/A'} | IdP: ${d.primaryIdp}
 - Provisioning & SSO:        Provisioning: ${d.provisioningMethod} | SSO: ${d.ssoAdoption}
@@ -1004,8 +1037,11 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
       if (d.osBreakdown.android > 0) osParts.push(`Android: ${d.osBreakdown.android}`);
       if (d.osBreakdown.linux > 0) osParts.push(`Linux: ${d.osBreakdown.linux}`);
       if (d.osBreakdown.onPremServers > 0) osParts.push(`On-Prem Servers: ${d.osBreakdown.onPremServers}`);
-      if (d.osBreakdown.chromeOS > 0) osParts.push(`ChromeOS: ${d.osBreakdown.chromeOS}`);
+      if (d.osBreakdown.zebra > 0) osParts.push(`Zebra: ${d.osBreakdown.zebra}`);
+      if (d.osBreakdown.rugged > 0) osParts.push(`Rugged: ${d.osBreakdown.rugged}`);
+      if (d.osBreakdown.pos > 0) osParts.push(`POS: ${d.osBreakdown.pos}`);
       if (d.osBreakdown.kiosks > 0) osParts.push(`Kiosks: ${d.osBreakdown.kiosks}`);
+      if (d.osBreakdown.chromeOS > 0) osParts.push(`ChromeOS: ${d.osBreakdown.chromeOS}`);
       if (d.osBreakdown.appleTV > 0) osParts.push(`Apple TV: ${d.osBreakdown.appleTV}`);
       if (d.osBreakdown.androidTV > 0) osParts.push(`Android TV: ${d.osBreakdown.androidTV}`);
       if (d.osBreakdown.visionOS > 0) osParts.push(`visionOS: ${d.osBreakdown.visionOS}`);
@@ -1027,7 +1063,7 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
         ["Attendee Role & Persona", d.secondaryRole],
         ["Attendee Email", d.secondaryContactEmail],
         ["", ""],
-        ["[ 2. FLEET SIZING, BREAKDOWN & ON-PREM SERVERS ]", ""],
+        ["[ 2. FLEET SIZING, BREAKDOWN & SPECIALIZED HARDWARE ]", ""],
         ["Total Devices Reported", d.totalDevicesReported],
         ["Total Identity Users", d.totalUsersReported],
         ["Calculated Breakdown Sum", d.calculatedFleetSum],
@@ -1038,12 +1074,16 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
         ["Android Devices", d.osBreakdown.android],
         ["Linux Endpoints", d.osBreakdown.linux],
         ["On-Prem Servers", d.osBreakdown.onPremServers],
-        ["On-Prem Server Details", d.onPremServerDetails],
-        ["ChromeOS Devices", d.osBreakdown.chromeOS],
+        ["Zebra Handhelds / Scanners", d.osBreakdown.zebra],
+        ["Rugged Devices (Honeywell/Panasonic/Sonim)", d.osBreakdown.rugged],
+        ["POS Devices (Elo/Pax/Sunmi/Clover)", d.osBreakdown.pos],
         ["Dedicated Kiosks", d.osBreakdown.kiosks],
+        ["ChromeOS Devices", d.osBreakdown.chromeOS],
         ["Apple TV (tvOS)", d.osBreakdown.appleTV],
         ["Android TV", d.osBreakdown.androidTV],
         ["Apple visionOS", d.osBreakdown.visionOS],
+        ["Specialized Hardware Details", d.specializedFleetDetails],
+        ["On-Prem Server Details", d.onPremServerDetails],
         ["Incumbent UEM / MDM", d.incumbentUem],
         ["Ownership Model", d.ownershipModel],
         ["", ""],
@@ -1072,12 +1112,13 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
         ["Agreed Success Criteria & Next Steps", d.pocSuccessCriteria]
       ];
 
-      // SHEET 2: CRM Flat Data Row (Easy upload into Salesforce / HubSpot / Zoho)
+      // SHEET 2: CRM Flat Data Row
       const crmHeaders = [
         "Call_DateTime", "Company_Name", "Primary_Contact", "Primary_Role", "Email", "Mobile",
         "Additional_Attendee", "Attendee_Name", "Attendee_Role", "Attendee_Email",
         "Total_Devices", "Total_Users", "Windows_Count", "Mac_Count", "iOS_Count", "Android_Count", 
-        "Linux_Count", "OnPrem_Servers_Count", "OnPrem_Server_Details", "ChromeOS_Count", "Kiosk_Count", "Fleet_Sum", "Ownership", "Incumbent_UEM",
+        "Linux_Count", "OnPrem_Servers_Count", "Zebra_Count", "Rugged_Count", "POS_Count", "Kiosk_Count", "ChromeOS_Count", 
+        "Specialized_Fleet_Details", "OnPrem_Server_Details", "Fleet_Sum", "Ownership", "Incumbent_UEM",
         "Productivity_Plan", "IdP_Source", "SCIM_Provisioning", "SSO_Adoption", "MFA_Type", "CA_Triggers", "Pain_Point",
         "Encryption_State", "App_Deployment", "Patch_Window", "ITSM_Tool", "EDR_Tool", "Identity_Aware_Access",
         "POC_Commitment", "Target_Go_Live", "POC_Duration", "DM_In_POC", "POC_Success_Criteria"
@@ -1087,7 +1128,8 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
         d.callDateTime, d.companyName, d.primaryContactName, d.primaryRole, d.emailId, d.mobileNumber,
         d.additionalAttendeeJoined, d.secondaryContactName, d.secondaryRole, d.secondaryContactEmail,
         d.totalDevicesReported, d.totalUsersReported, d.osBreakdown.windows, d.osBreakdown.macOS, d.osBreakdown.iOS, d.osBreakdown.android,
-        d.osBreakdown.linux, d.osBreakdown.onPremServers, d.onPremServerDetails, d.osBreakdown.chromeOS, d.osBreakdown.kiosks, d.calculatedFleetSum, d.ownershipModel, d.incumbentUem,
+        d.osBreakdown.linux, d.osBreakdown.onPremServers, d.osBreakdown.zebra, d.osBreakdown.rugged, d.osBreakdown.pos, d.osBreakdown.kiosks, d.osBreakdown.chromeOS,
+        d.specializedFleetDetails, d.onPremServerDetails, d.calculatedFleetSum, d.ownershipModel, d.incumbentUem,
         d.productivityPlan, d.primaryIdp, d.provisioningMethod, d.ssoAdoption, d.mfaDetails, d.caTriggers, d.businessPain,
         d.diskEncryption, d.appDeployment, d.patchingWindow, d.itsmPlatform, d.edrPlatform, d.identityAwarePriority,
         d.pocCommitment, d.targetGoLive, d.pocDuration, d.decisionMakerInPoc, d.pocSuccessCriteria
@@ -1096,7 +1138,7 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
       // Build Workbook
       const wb = XLSX.utils.book_new();
       const wsReport = XLSX.utils.aoa_to_sheet(reportRows);
-      wsReport['!cols'] = [{ wch: 38 }, { wch: 75 }];
+      wsReport['!cols'] = [{ wch: 40 }, { wch: 80 }];
       XLSX.utils.book_append_sheet(wb, wsReport, "Discovery Report");
 
       const wsCrm = XLSX.utils.aoa_to_sheet([crmHeaders, crmDataRow]);
