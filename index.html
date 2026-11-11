@@ -1,44 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hexnode IdP & UEM - Sales Engineer Discovery Form</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hexnode IdP & UEM — Sales Engineer Discovery</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace']
+            sans: [
+              '"SF Pro Text"',
+              '"SF Pro Icons"',
+              '"Helvetica Neue"',
+              'Helvetica',
+              'Arial',
+              '-apple-system',
+              'BlinkMacSystemFont',
+              'sans-serif'
+            ],
+            mono: [
+              '"SF Mono"',
+              'Menlo',
+              'Monaco',
+              'Consolas',
+              '"Courier New"',
+              'monospace'
+            ]
           },
           colors: {
-            brand: {
-              50: '#f0f7ff',
-              100: '#e0effe',
-              500: '#0284c7',
-              600: '#0369a1',
-              accent: '#38bdf8',
-              surface: '#0f172a',
-              card: '#1e293b',
-              border: '#334155'
+            apple: {
+              bg: '#f5f5f7',
+              card: '#ffffff',
+              border: '#d2d2d7',
+              borderLight: 'rgba(0, 0, 0, 0.08)',
+              text: '#1d1d1f',
+              secondary: '#86868b',
+              tertiary: '#6e6e73',
+              blue: '#0071e3',
+              blueHover: '#0077ed',
+              pillBg: '#e8e8ed',
+              pillHover: '#dcdce2'
             }
+          },
+          boxShadow: {
+            subtle: '0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02)',
+            elevated: '0 12px 32px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.03)',
+            focus: '0 0 0 4px rgba(0, 113, 227, 0.18)'
           }
         }
       }
-    }
+    };
   </script>
   <style>
+    body {
+      background-color: #f5f5f7;
+      color: #1d1d1f;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    input, select, textarea {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
     input:focus, select:focus, textarea:focus {
       outline: none;
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+      border-color: #0071e3;
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
     }
     input[type="number"]::-webkit-inner-spin-button, 
     input[type="number"]::-webkit-outer-spin-button { 
@@ -48,87 +77,117 @@
     input[type="number"] {
       -moz-appearance: textfield;
     }
-    .custom-scroll::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 4px;
-    }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-sky-500/30 selection:text-sky-300">
+<body class="min-h-full flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 text-apple-text">
 
-  <!-- Fixed Global Header -->
-  <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 lg:px-8 py-3.5 shadow-xl">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+  <!-- Apple Minimalist Top Glass Bar -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-black/[0.06] transition-all">
+    <div class="max-w-6xl mx-auto px-5 lg:px-8 h-14 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-sky-600 to-cyan-400 flex items-center justify-center font-extrabold text-white text-lg shadow-lg shadow-sky-500/20">
+        <div class="w-7 h-7 rounded-full bg-apple-text text-white flex items-center justify-center font-bold text-xs tracking-tighter">
           H
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="font-bold text-white tracking-tight">Hexnode IdP & UEM</span>
-            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/30">SE Discovery</span>
-          </div>
-          <p class="text-xs text-slate-400">Technical Qualification & Requirement Scoping</p>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-sm tracking-tight text-apple-text">Hexnode IdP &amp; UEM</span>
+          <span class="text-apple-secondary text-xs font-normal">/ Discovery</span>
         </div>
       </div>
 
       <div class="flex items-center gap-2">
-        <span id="saveStatus" class="text-xs text-emerald-400 font-medium px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 hidden sm:inline-flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          Auto-Saved
+        <span id="saveStatus" class="text-[11px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60 hidden sm:inline-flex items-center gap-1 opacity-0 transition-opacity duration-300">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          Saved
         </span>
-        <button type="button" onclick="copySummaryToClipboard()" class="text-xs font-semibold px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 shadow-sm active:scale-95">
-          <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+
+        <button type="button" onclick="copySummaryToClipboard()" class="text-xs font-medium px-3.5 py-1.5 rounded-full bg-apple-pillBg hover:bg-apple-pillHover text-apple-text transition duration-200 active:scale-95 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-apple-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
           Copy Notes
         </button>
-        <button type="button" onclick="exportToExcel()" class="text-xs font-semibold px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-700/20 transition flex items-center gap-1.5 active:scale-95">
-          <svg class="w-4 h-4 text-emerald-100" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm1.8 14.5l-1.3 1.9-1.3-1.9H12l2 2.7-2 2.8h1.2l1.4-2 1.4 2h1.2l-2-2.8 2-2.7h-1.4zM13 9V3.5L18.5 9H13z"/></svg>
-          Export Excel (.xlsx)
+
+        <button type="button" onclick="exportToExcel()" class="text-xs font-medium px-4 py-1.5 rounded-full bg-apple-blue hover:bg-apple-blueHover text-white shadow-sm transition duration-200 active:scale-95 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-white/90" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm1.8 14.5l-1.3 1.9-1.3-1.9H12l2 2.7-2 2.8h1.2l1.4-2 1.4 2h1.2l-2-2.8 2-2.7h-1.4zM13 9V3.5L18.5 9H13z"/></svg>
+          Export Excel
         </button>
-        <button type="button" onclick="resetFormWithConfirmation()" class="text-xs px-2.5 py-2 rounded-lg bg-slate-800/80 hover:bg-rose-950/40 text-slate-400 hover:text-rose-300 border border-slate-700/60 hover:border-rose-800/60 transition" title="Clear all fields">
+
+        <button type="button" onclick="resetFormWithConfirmation()" class="text-xs font-normal text-apple-secondary hover:text-rose-600 px-2 py-1 transition" title="Clear all fields">
           Reset
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+  <!-- Main Hero & Document Container -->
+  <main class="max-w-5xl mx-auto px-5 lg:px-8 py-10 w-full flex-grow">
+    
+    <!-- Title Section -->
+    <div class="mb-10 text-center max-w-2xl mx-auto">
+      <p class="text-xs font-semibold tracking-wider text-apple-blue uppercase mb-1">Technical Qualification</p>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-apple-text">Sales Engineering Discovery</h1>
+      <p class="text-sm text-apple-secondary mt-2">Capture architecture parameters, directory federation requirements, and device posture constraints in real-time.</p>
+    </div>
+
     <form id="discoveryForm" onsubmit="event.preventDefault();" class="space-y-8">
 
-      <!-- SECTION 1: Call Metadata & Customer Profile -->
-      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-        <div class="absolute -right-16 -top-16 w-60 h-60 bg-sky-500/5 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="flex items-center gap-2 mb-5">
-          <span class="w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">1</span>
-          <h2 class="text-lg font-bold text-white tracking-tight">Call Metadata & Customer Profile</h2>
+      <!-- CARD 1: Call Metadata & Profile -->
+      <section class="bg-apple-card border border-black/[0.06] rounded-3xl p-6 sm:p-8 shadow-subtle transition">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <span class="text-[11px] font-semibold text-apple-blue uppercase tracking-wider">Step 01</span>
+            <h2 class="text-lg font-semibold text-apple-text tracking-tight">Call Metadata &amp; Customer Profile</h2>
+          </div>
+          <span class="text-xs text-apple-secondary">Core Stakeholders</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Call Timestamp -->
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Date & Time (YYYY-MM-DD HH:MM) <span class="text-rose-400">*</span></label>
-            <input type="text" id="callDateTime" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white font-mono placeholder-slate-500" placeholder="2026-11-11 16:30">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Date &amp; Time (YYYY-MM-DD HH:MM)</label>
+            <input type="text" id="callDateTime" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-sm text-apple-text font-mono" placeholder="2026-11-11 16:30">
           </div>
 
+          <!-- SE Name -->
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Customer Company Name <span class="text-rose-400">*</span></label>
-            <input type="text" id="companyName" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="e.g. Acme FinTech Corp">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Sales Engineer Name</label>
+            <input type="text" id="seName" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-sm text-apple-text" placeholder="e.g. Alex Johnson">
           </div>
 
+          <!-- Account Manager Name -->
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Primary Contact Name <span class="text-rose-400">*</span></label>
-            <input type="text" id="primaryContactName" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="e.g. Rachel Adams">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Account Manager Name</label>
+            <input type="text" id="accountManagerName" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-sm text-apple-text" placeholder="e.g. Sarah Connor">
           </div>
 
-          <div class="lg:col-span-1">
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Primary Role & Persona <span class="text-rose-400">*</span></label>
-            <select id="primaryRoleSelect" onchange="toggleCustomRole('primaryRoleSelect', 'primaryRoleOtherWrap')" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white">
-              <option value="" disabled selected>Select Role / Persona...</option>
-              <optgroup label="IT Leadership & Execs">
+          <!-- Partner Name -->
+          <div>
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Partner Name (if partner-led)</label>
+            <input type="text" id="partnerName" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-sm text-apple-text" placeholder="Direct / Insight / Optiv / SHI">
+          </div>
+
+          <!-- Customer Company Name -->
+          <div>
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Customer Company Name</label>
+            <input type="text" id="companyName" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-sm text-apple-text font-medium" placeholder="e.g. Acme FinTech Corp">
+          </div>
+
+          <!-- Location -->
+          <div>
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Location (City, Country)</label>
+            <input type="text" id="customerLocation" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-sm text-apple-text" placeholder="e.g. Austin, USA / London, UK">
+          </div>
+
+          <!-- Primary Contact Name -->
+          <div>
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Primary Contact Name</label>
+            <input type="text" id="primaryContactName" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-sm text-apple-text" placeholder="e.g. Rachel Adams">
+          </div>
+
+          <!-- Primary Role & Persona Selector -->
+          <div>
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Primary Role &amp; Persona</label>
+            <select id="primaryRoleSelect" onchange="toggleCustomRole('primaryRoleSelect', 'primaryRoleOtherWrap')" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-sm text-apple-text appearance-none cursor-pointer">
+              <option value="" disabled selected>Select Persona...</option>
+              <optgroup label="Leadership & Executives">
                 <option value="CIO / VP of IT">CIO / VP of IT</option>
                 <option value="CISO / InfoSec Director">CISO / InfoSec Director</option>
                 <option value="Director / Head of IT Infrastructure">Director / Head of IT Infrastructure</option>
@@ -138,61 +197,66 @@
                 <option value="SecOps / Security Compliance Lead">SecOps / Security Compliance Lead</option>
                 <option value="Compliance & Governance Officer">Compliance & Governance Officer</option>
               </optgroup>
-              <optgroup label="IT Operations & Systems">
+              <optgroup label="Operations & Systems">
                 <option value="IT Manager / Operations Lead">IT Manager / Operations Lead</option>
                 <option value="Senior System Administrator (SysAdmin)">Senior System Administrator (SysAdmin)</option>
                 <option value="Enterprise Mobility / UEM Specialist">Enterprise Mobility / UEM Specialist</option>
                 <option value="Helpdesk / Desktop Support Manager">Helpdesk / Desktop Support Manager</option>
               </optgroup>
-              <optgroup label="Fleet & Frontline Ops">
+              <optgroup label="Specialized Fleet">
                 <option value="Procurement / IT Asset Manager">Procurement / IT Asset Manager</option>
                 <option value="Retail / Warehouse Operations Tech Lead">Retail / Warehouse Operations Tech Lead</option>
               </optgroup>
               <option value="Other">Other (Specify below)</option>
             </select>
             <div id="primaryRoleOtherWrap" class="hidden mt-2">
-              <input type="text" id="primaryRoleOther" class="w-full bg-slate-800/90 border border-sky-500/50 rounded-lg px-3.5 py-1.5 text-xs text-white placeholder-slate-500" placeholder="Enter custom primary role / title">
+              <input type="text" id="primaryRoleOther" class="w-full bg-[#fbfbfd] border border-apple-blue/50 rounded-xl px-3.5 py-1.5 text-xs text-apple-text" placeholder="Enter custom primary role / title">
             </div>
           </div>
 
+          <!-- Email ID -->
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Email ID <span class="text-rose-400">*</span></label>
-            <input type="email" id="emailId" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="radams@acme.com">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Email Address</label>
+            <input type="email" id="emailId" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-sm text-apple-text" placeholder="radams@acme.com">
           </div>
 
+          <!-- Mobile Number -->
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Mobile Number</label>
-            <input type="tel" id="mobileNumber" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="+1 (555) 019-2834 / +91 98765 43210">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Mobile Phone</label>
+            <input type="tel" id="mobileNumber" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-sm text-apple-text" placeholder="+1 (555) 019-2834">
           </div>
         </div>
 
         <!-- Additional Attendee Toggle Card -->
-        <div class="mt-6 pt-5 border-t border-slate-800/80">
-          <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="mt-8 pt-6 border-t border-black/[0.06]">
+          <div class="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <p class="text-xs font-semibold text-slate-200">Did any other person from the customer side join the meeting?</p>
-              <p class="text-[11px] text-slate-400">Capture additional technical evaluators, line-of-business sponsors, or co-admins</p>
+              <p class="text-xs font-semibold text-apple-text">Did any other person from customer side join the meeting?</p>
+              <p class="text-[11px] text-apple-secondary mt-0.5">Capture secondary decision makers, security auditors, or co-admins</p>
             </div>
-            <div class="inline-flex rounded-lg p-1 bg-slate-800 border border-slate-700">
-              <button type="button" id="attendeeToggleNo" onclick="setAdditionalAttendee(false)" class="px-3.5 py-1 rounded text-xs font-medium bg-slate-700 text-white transition">No</button>
-              <button type="button" id="attendeeToggleYes" onclick="setAdditionalAttendee(true)" class="px-3.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white transition">Yes</button>
+            
+            <!-- Apple Segmented Picker -->
+            <div class="inline-flex rounded-full p-1 bg-[#ebebed] border border-black/5">
+              <button type="button" id="attendeeToggleNo" onclick="setAdditionalAttendee(false)" class="px-4 py-1 rounded-full text-xs font-medium bg-white text-apple-text shadow-sm transition">No</button>
+              <button type="button" id="attendeeToggleYes" onclick="setAdditionalAttendee(true)" class="px-4 py-1 rounded-full text-xs font-medium text-apple-secondary hover:text-apple-text transition">Yes</button>
             </div>
           </div>
 
-          <div id="additionalAttendeeSection" class="hidden mt-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Dynamic Attendee Expansion Card -->
+          <div id="additionalAttendeeSection" class="hidden mt-4 p-5 rounded-2xl bg-[#f9f9fb] border border-black/[0.05] grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">Attendee Name</label>
-              <input type="text" id="secondaryContactName" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500" placeholder="e.g. David Miller">
+              <label class="block text-xs font-medium text-apple-secondary mb-1">Attendee Name</label>
+              <input type="text" id="secondaryContactName" class="w-full bg-white border border-black/10 rounded-xl px-3 py-1.5 text-xs text-apple-text" placeholder="e.g. David Miller">
             </div>
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">Attendee Email</label>
-              <input type="email" id="secondaryContactEmail" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500" placeholder="dmiller@acme.com">
+              <label class="block text-xs font-medium text-apple-secondary mb-1">Attendee Email</label>
+              <input type="email" id="secondaryContactEmail" class="w-full bg-white border border-black/10 rounded-xl px-3 py-1.5 text-xs text-apple-text" placeholder="dmiller@acme.com">
             </div>
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">Attendee Role & Persona</label>
-              <select id="secondaryRoleSelect" onchange="toggleCustomRole('secondaryRoleSelect', 'secondaryRoleOtherWrap')" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white">
-                <option value="" selected>Select Role / Persona...</option>
-                <optgroup label="IT Leadership & Execs">
+              <label class="block text-xs font-medium text-apple-secondary mb-1">Attendee Persona</label>
+              <select id="secondaryRoleSelect" onchange="toggleCustomRole('secondaryRoleSelect', 'secondaryRoleOtherWrap')" class="w-full bg-white border border-black/10 rounded-xl px-3 py-1.5 text-xs text-apple-text">
+                <option value="" selected>Select Persona...</option>
+                <optgroup label="Leadership & Executives">
                   <option value="CIO / VP of IT">CIO / VP of IT</option>
                   <option value="CISO / InfoSec Director">CISO / InfoSec Director</option>
                   <option value="Director / Head of IT Infrastructure">Director / Head of IT Infrastructure</option>
@@ -202,52 +266,52 @@
                   <option value="SecOps / Security Compliance Lead">SecOps / Security Compliance Lead</option>
                   <option value="Compliance & Governance Officer">Compliance & Governance Officer</option>
                 </optgroup>
-                <optgroup label="IT Operations & Systems">
+                <optgroup label="Operations & Systems">
                   <option value="IT Manager / Operations Lead">IT Manager / Operations Lead</option>
                   <option value="Senior System Administrator (SysAdmin)">Senior System Administrator (SysAdmin)</option>
                   <option value="Enterprise Mobility / UEM Specialist">Enterprise Mobility / UEM Specialist</option>
                   <option value="Helpdesk / Desktop Support Manager">Helpdesk / Desktop Support Manager</option>
                 </optgroup>
-                <optgroup label="Fleet & Frontline Ops">
+                <optgroup label="Specialized Fleet">
                   <option value="Procurement / IT Asset Manager">Procurement / IT Asset Manager</option>
                   <option value="Retail / Warehouse Operations Tech Lead">Retail / Warehouse Operations Tech Lead</option>
                 </optgroup>
                 <option value="Other">Other (Specify below)</option>
               </select>
               <div id="secondaryRoleOtherWrap" class="hidden mt-2">
-                <input type="text" id="secondaryRoleOther" class="w-full bg-slate-800/90 border border-sky-500/50 rounded-lg px-3 py-1 text-xs text-white placeholder-slate-500" placeholder="Enter custom attendee role">
+                <input type="text" id="secondaryRoleOther" class="w-full bg-white border border-apple-blue/50 rounded-xl px-3 py-1 text-xs text-apple-text" placeholder="Enter attendee role">
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SECTION 2: Fleet Sizing, Breakdown, Specialized Devices & Ownership -->
-      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-        <div class="flex items-center justify-between mb-5 flex-wrap gap-2">
-          <div class="flex items-center gap-2">
-            <span class="w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">2</span>
-            <h2 class="text-lg font-bold text-white tracking-tight">Fleet Sizing, Breakdown & Ownership Model</h2>
+      <!-- CARD 2: Fleet Sizing & Breakdown -->
+      <section class="bg-apple-card border border-black/[0.06] rounded-3xl p-6 sm:p-8 shadow-subtle transition">
+        <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+          <div>
+            <span class="text-[11px] font-semibold text-apple-blue uppercase tracking-wider">Step 02</span>
+            <h2 class="text-lg font-semibold text-apple-text tracking-tight">Fleet Sizing, Breakdown &amp; Ownership</h2>
           </div>
-          <div class="flex items-center gap-3 text-xs bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-            <span class="text-slate-400">Total Calculated Fleet:</span>
-            <span id="calculatedFleetSum" class="font-mono font-bold text-sky-400 text-sm">0</span>
+          <div class="flex items-center gap-2 text-xs bg-[#f0f0f2] px-3 py-1 rounded-full">
+            <span class="text-apple-secondary font-medium">Calculated Fleet:</span>
+            <span id="calculatedFleetSum" class="font-semibold text-apple-text">0</span>
           </div>
         </div>
 
-        <!-- Scale Overview -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-800">
-            <label class="block text-xs font-medium text-slate-400 mb-1">Total Devices (Scope)</label>
-            <input type="number" id="totalDevicesReported" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-base font-bold text-white font-mono" placeholder="500">
+        <!-- High-level KPIs -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div class="p-4 rounded-2xl bg-[#fafafc] border border-black/[0.04]">
+            <span class="text-[11px] font-medium text-apple-secondary block mb-1">Total Devices (Scope)</span>
+            <input type="number" id="totalDevicesReported" class="w-full bg-transparent border-0 p-0 text-xl font-semibold text-apple-text focus:ring-0" placeholder="0">
           </div>
-          <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-800">
-            <label class="block text-xs font-medium text-slate-400 mb-1">Total Identity Users</label>
-            <input type="number" id="totalUsersReported" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-base font-bold text-white font-mono" placeholder="450">
+          <div class="p-4 rounded-2xl bg-[#fafafc] border border-black/[0.04]">
+            <span class="text-[11px] font-medium text-apple-secondary block mb-1">Total Identity Users</span>
+            <input type="number" id="totalUsersReported" class="w-full bg-transparent border-0 p-0 text-xl font-semibold text-apple-text focus:ring-0" placeholder="0">
           </div>
-          <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-800">
-            <label class="block text-xs font-medium text-slate-400 mb-1">Current Incumbent UEM/MDM</label>
-            <select id="incumbentUem" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+          <div class="p-4 rounded-2xl bg-[#fafafc] border border-black/[0.04]">
+            <span class="text-[11px] font-medium text-apple-secondary block mb-1">Current Incumbent UEM</span>
+            <select id="incumbentUem" class="w-full bg-transparent border-0 p-0 text-xs text-apple-text font-medium focus:ring-0 mt-1 cursor-pointer">
               <option value="Microsoft Intune">Microsoft Intune</option>
               <option value="Jamf Pro / Now">Jamf Pro / Now</option>
               <option value="VMware Workspace ONE">VMware Workspace ONE</option>
@@ -258,214 +322,189 @@
               <option value="Other">Other</option>
             </select>
           </div>
-          <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-800">
-            <label class="block text-xs font-medium text-slate-400 mb-1">Device Ownership Model</label>
-            <div class="flex items-center gap-3 mt-1.5">
-              <label class="inline-flex items-center gap-1.5 text-xs text-slate-200">
-                <input type="checkbox" name="ownershipModel" value="COD" checked class="rounded bg-slate-900 border-slate-700 text-sky-500">
+          <div class="p-4 rounded-2xl bg-[#fafafc] border border-black/[0.04]">
+            <span class="text-[11px] font-medium text-apple-secondary block mb-1">Ownership Model</span>
+            <div class="flex items-center gap-2.5 mt-1">
+              <label class="inline-flex items-center gap-1 text-xs text-apple-text font-medium">
+                <input type="checkbox" name="ownershipModel" value="COD" checked class="rounded text-apple-blue focus:ring-0">
                 COD
               </label>
-              <label class="inline-flex items-center gap-1.5 text-xs text-slate-200">
-                <input type="checkbox" name="ownershipModel" value="BYOD" class="rounded bg-slate-900 border-slate-700 text-sky-500">
+              <label class="inline-flex items-center gap-1 text-xs text-apple-text font-medium">
+                <input type="checkbox" name="ownershipModel" value="BYOD" class="rounded text-apple-blue focus:ring-0">
                 BYOD
               </label>
-              <label class="inline-flex items-center gap-1.5 text-xs text-slate-200">
-                <input type="checkbox" name="ownershipModel" value="Shared Kiosk" class="rounded bg-slate-900 border-slate-700 text-sky-500">
-                Shared Device
+              <label class="inline-flex items-center gap-1 text-xs text-apple-text font-medium">
+                <input type="checkbox" name="ownershipModel" value="Shared Kiosk" class="rounded text-apple-blue focus:ring-0">
+                Kiosk
               </label>
             </div>
           </div>
         </div>
 
-        <!-- Platform Breakdown Grid (Endpoints, Servers, Rugged, POS & Zebra) -->
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Platform Breakdown & Endpoint / Specialized Device Counts</h3>
+        <!-- Clean Platform Cards Grid -->
+        <p class="text-xs font-semibold text-apple-secondary uppercase tracking-wider mb-3">Endpoint &amp; Infrastructure Breakdown</p>
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
           
           <!-- Windows -->
-          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_win_active" onchange="toggleOsQty('os_win_active', 'os_win_qty')" checked class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                Windows
-              </label>
-            </div>
-            <input type="number" id="os_win_qty" oninput="calculateFleetSum()" value="0" class="w-full bg-slate-900 border border-slate-700 rounded-md px-2.5 py-1 text-sm font-mono text-right text-white" placeholder="0">
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer">
+              <span>Windows</span>
+              <input type="checkbox" id="os_win_active" onchange="toggleOsQty('os_win_active', 'os_win_qty')" checked class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_win_qty" oninput="calculateFleetSum()" value="0" class="w-full bg-white border border-black/10 rounded-lg px-2.5 py-1 text-xs text-right font-medium text-apple-text" placeholder="0">
           </div>
 
           <!-- macOS -->
-          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_mac_active" onchange="toggleOsQty('os_mac_active', 'os_mac_qty')" checked class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                macOS
-              </label>
-            </div>
-            <input type="number" id="os_mac_qty" oninput="calculateFleetSum()" value="0" class="w-full bg-slate-900 border border-slate-700 rounded-md px-2.5 py-1 text-sm font-mono text-right text-white" placeholder="0">
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer">
+              <span>macOS</span>
+              <input type="checkbox" id="os_mac_active" onchange="toggleOsQty('os_mac_active', 'os_mac_qty')" checked class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_mac_qty" oninput="calculateFleetSum()" value="0" class="w-full bg-white border border-black/10 rounded-lg px-2.5 py-1 text-xs text-right font-medium text-apple-text" placeholder="0">
           </div>
 
           <!-- iOS / iPadOS -->
-          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_ios_active" onchange="toggleOsQty('os_ios_active', 'os_ios_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                iOS / iPadOS
-              </label>
-            </div>
-            <input type="number" id="os_ios_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer">
+              <span>iOS / iPadOS</span>
+              <input type="checkbox" id="os_ios_active" onchange="toggleOsQty('os_ios_active', 'os_ios_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_ios_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
           <!-- Android -->
-          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_android_active" onchange="toggleOsQty('os_android_active', 'os_android_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                Android
-              </label>
-            </div>
-            <input type="number" id="os_android_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer">
+              <span>Android</span>
+              <input type="checkbox" id="os_android_active" onchange="toggleOsQty('os_android_active', 'os_android_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_android_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
           <!-- Linux Endpoints -->
-          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_linux_active" onchange="toggleOsQty('os_linux_active', 'os_linux_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                Linux Endpoints
-              </label>
-            </div>
-            <input type="number" id="os_linux_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer">
+              <span>Linux</span>
+              <input type="checkbox" id="os_linux_active" onchange="toggleOsQty('os_linux_active', 'os_linux_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_linux_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
           <!-- On-Prem Servers -->
-          <div class="p-3 rounded-xl bg-sky-950/30 border border-sky-800/60 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-sky-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_servers_active" onchange="toggleOsQty('os_servers_active', 'os_servers_qty')" class="rounded bg-slate-900 border-sky-500 text-sky-500">
-                On-Prem Servers
-              </label>
-            </div>
-            <input type="number" id="os_servers_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <div class="p-3.5 rounded-2xl bg-[#f0f4f9] border border-sky-100 flex flex-col justify-between">
+            <label class="text-xs font-semibold text-apple-blue flex items-center justify-between mb-2 cursor-pointer">
+              <span>On-Prem Servers</span>
+              <input type="checkbox" id="os_servers_active" onchange="toggleOsQty('os_servers_active', 'os_servers_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_servers_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
-          <!-- Zebra Devices (OEMConfig / StageNow) -->
-          <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-800/60 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-amber-300 flex items-center gap-1.5" title="Handheld scanners, TC/MC mobile computers, RFID, StageNow/OEMConfig">
-                <input type="checkbox" id="os_zebra_active" onchange="toggleOsQty('os_zebra_active', 'os_zebra_qty')" class="rounded bg-slate-900 border-amber-500 text-amber-500">
-                Zebra Devices
-              </label>
-            </div>
-            <input type="number" id="os_zebra_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <!-- Zebra Devices -->
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer" title="Zebra TC/MC Handhelds, StageNow, OEMConfig">
+              <span>Zebra</span>
+              <input type="checkbox" id="os_zebra_active" onchange="toggleOsQty('os_zebra_active', 'os_zebra_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_zebra_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
-          <!-- Rugged Devices (General Rugged: Honeywell, Panasonic Toughbook, Sonim) -->
-          <div class="p-3 rounded-xl bg-amber-950/20 border border-amber-900/60 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-amber-200 flex items-center gap-1.5" title="Honeywell, Sonim, CAT, Toughbooks, Datalogic">
-                <input type="checkbox" id="os_rugged_active" onchange="toggleOsQty('os_rugged_active', 'os_rugged_qty')" class="rounded bg-slate-900 border-amber-500 text-amber-500">
-                Rugged Devices
-              </label>
-            </div>
-            <input type="number" id="os_rugged_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <!-- Rugged Devices -->
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer" title="Honeywell, Toughbook, Sonim">
+              <span>Rugged</span>
+              <input type="checkbox" id="os_rugged_active" onchange="toggleOsQty('os_rugged_active', 'os_rugged_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_rugged_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
-          <!-- POS Devices (Point-of-Sale / Payment Terminals: Elo, Pax, Sunmi, Clover) -->
-          <div class="p-3 rounded-xl bg-emerald-950/30 border border-emerald-800/60 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-emerald-300 flex items-center gap-1.5" title="Elo, Sunmi, Pax, Clover, Newland smart POS">
-                <input type="checkbox" id="os_pos_active" onchange="toggleOsQty('os_pos_active', 'os_pos_qty')" class="rounded bg-slate-900 border-emerald-500 text-emerald-500">
-                POS Devices
-              </label>
-            </div>
-            <input type="number" id="os_pos_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <!-- POS Devices -->
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer" title="Elo, Sunmi, Clover, Pax">
+              <span>POS Terminals</span>
+              <input type="checkbox" id="os_pos_active" onchange="toggleOsQty('os_pos_active', 'os_pos_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_pos_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
           <!-- Dedicated Kiosks -->
-          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_kiosk_active" onchange="toggleOsQty('os_kiosk_active', 'os_kiosk_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                Dedicated Kiosks
-              </label>
-            </div>
-            <input type="number" id="os_kiosk_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer">
+              <span>Kiosks</span>
+              <input type="checkbox" id="os_kiosk_active" onchange="toggleOsQty('os_kiosk_active', 'os_kiosk_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_kiosk_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
           <!-- ChromeOS -->
-          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_chrome_active" onchange="toggleOsQty('os_chrome_active', 'os_chrome_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                ChromeOS
-              </label>
-            </div>
-            <input type="number" id="os_chrome_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer">
+              <span>ChromeOS</span>
+              <input type="checkbox" id="os_chrome_active" onchange="toggleOsQty('os_chrome_active', 'os_chrome_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_chrome_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
           <!-- Apple TV (tvOS) -->
-          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_appletv_active" onchange="toggleOsQty('os_appletv_active', 'os_appletv_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                Apple TV (tvOS)
-              </label>
-            </div>
-            <input type="number" id="os_appletv_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer">
+              <span>Apple TV</span>
+              <input type="checkbox" id="os_appletv_active" onchange="toggleOsQty('os_appletv_active', 'os_appletv_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_appletv_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
           <!-- Android TV -->
-          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_androidtv_active" onchange="toggleOsQty('os_androidtv_active', 'os_androidtv_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                Android TV
-              </label>
-            </div>
-            <input type="number" id="os_androidtv_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer">
+              <span>Android TV</span>
+              <input type="checkbox" id="os_androidtv_active" onchange="toggleOsQty('os_androidtv_active', 'os_androidtv_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_androidtv_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
           <!-- Apple visionOS -->
-          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <input type="checkbox" id="os_visionos_active" onchange="toggleOsQty('os_visionos_active', 'os_visionos_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
-                visionOS
-              </label>
-            </div>
-            <input type="number" id="os_visionos_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          <div class="p-3.5 rounded-2xl bg-[#fafafc] border border-black/[0.04] flex flex-col justify-between">
+            <label class="text-xs font-medium text-apple-text flex items-center justify-between mb-2 cursor-pointer">
+              <span>visionOS</span>
+              <input type="checkbox" id="os_visionos_active" onchange="toggleOsQty('os_visionos_active', 'os_visionos_qty')" class="rounded text-apple-blue focus:ring-0">
+            </label>
+            <input type="number" id="os_visionos_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right" placeholder="0">
           </div>
 
         </div>
 
-        <!-- Details on Specialized Hardware & Server Environments -->
-        <div class="mt-4 pt-3 border-t border-slate-800/80 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Infrastructure Details -->
+        <div class="mt-6 pt-5 border-t border-black/[0.06] grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Specialized Fleet Details (Zebra Models, POS, Rugged OEMConfig, Barcode Scanning)</label>
-            <input type="text" id="specializedFleetDetails" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500" placeholder="e.g. Zebra TC52/TC57 StageNow barcode setup, Elo I-Series Android POS, Honeywell ScanPal">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Specialized Fleet Details (Zebra Models, StageNow, POS)</label>
+            <input type="text" id="specializedFleetDetails" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text" placeholder="e.g. Zebra TC52/TC57 StageNow profiles, Elo I-Series Android POS">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">On-Prem Server Details & Roles (Windows Server, Linux, AD DS, File Shares)</label>
-            <input type="text" id="onPremServerDetails" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500" placeholder="e.g. Windows Server 2022 (Domain Controllers), RHEL 9 DB hosts">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">On-Prem Server Details &amp; Roles (AD DS, File Servers, Linux)</label>
+            <input type="text" id="onPremServerDetails" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text" placeholder="e.g. Windows Server 2022 (Domain Controllers), RHEL 9 DB clusters">
           </div>
         </div>
       </section>
 
-      <!-- SECTION 3: Productivity Suite, IdP Federation & SSO -->
-      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-        <div class="flex items-center gap-2 mb-5">
-          <span class="w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">3</span>
-          <h2 class="text-lg font-bold text-white tracking-tight">Productivity Suite, IdP Federation & SSO</h2>
+      <!-- CARD 3: Identity & Conditional Access -->
+      <section class="bg-apple-card border border-black/[0.06] rounded-3xl p-6 sm:p-8 shadow-subtle transition">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <span class="text-[11px] font-semibold text-apple-blue uppercase tracking-wider">Step 03</span>
+            <h2 class="text-lg font-semibold text-apple-text tracking-tight">Productivity Suite, IdP &amp; Conditional Access</h2>
+          </div>
+          <span class="text-xs text-apple-secondary">Identity Federation</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Productivity Suite & License Tier</label>
-            <input type="text" id="productivityPlan" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. M365 E3/E5, Google Workspace Enterprise Plus">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Productivity Suite &amp; Plan</label>
+            <input type="text" id="productivityPlan" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text" placeholder="e.g. M365 E3/E5, Google Workspace Enterprise">
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Primary Identity Provider (IdP)</label>
-            <select id="primaryIdp" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Primary Identity Provider (IdP)</label>
+            <select id="primaryIdp" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text cursor-pointer">
               <option value="Microsoft Entra ID (Azure AD)">Microsoft Entra ID (Azure AD)</option>
               <option value="Google Workspace">Google Workspace</option>
               <option value="Hybrid (On-Prem AD + Entra Connect)">Hybrid (On-Prem AD + Entra Connect)</option>
@@ -475,8 +514,8 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">User & Group Provisioning</label>
-            <select id="provisioningMethod" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">User &amp; Group Provisioning</label>
+            <select id="provisioningMethod" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text cursor-pointer">
               <option value="SCIM Automated Provisioning">SCIM Automated Provisioning</option>
               <option value="Direct Directory Sync (Entra/Google API)">Direct Directory Sync (Entra/Google API)</option>
               <option value="Manual CSV / Bulk Upload">Manual CSV / Bulk Upload</option>
@@ -484,8 +523,8 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">SSO Adoption Status</label>
-            <select id="ssoAdoption" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">SSO Adoption Status</label>
+            <select id="ssoAdoption" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text cursor-pointer">
               <option value="Enforced for all enterprise SaaS">Enforced for all enterprise SaaS</option>
               <option value="Partially deployed (Key apps only)">Partially deployed (Key apps only)</option>
               <option value="None / Looking to consolidate SSO with Hexnode">None / Looking to consolidate SSO with Hexnode</option>
@@ -493,42 +532,42 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">MFA Architecture</label>
-            <input type="text" id="mfaDetails" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. MS Authenticator, FIDO2/YubiKey, Duo">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">MFA Architecture</label>
+            <input type="text" id="mfaDetails" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text" placeholder="e.g. MS Authenticator, FIDO2/YubiKey, Duo">
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Core Business Driver / Primary Pain Point</label>
-            <input type="text" id="businessPain" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. Identity sprawl, unmanaged macOS, Entra P2 licensing cost">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Primary Pain Point / Driver</label>
+            <input type="text" id="businessPain" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text" placeholder="e.g. Identity sprawl, unmanaged Mac fleet, licensing cost">
           </div>
         </div>
 
-        <!-- Conditional Access Triggers (3 Supported Conditions) -->
-        <div class="mt-6 pt-5 border-t border-slate-800">
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Conditional Access Engine Triggers Required (Hexnode Supported)</label>
+        <!-- 3 Supported Hexnode Conditions -->
+        <div class="mt-8 pt-6 border-t border-black/[0.06]">
+          <p class="text-xs font-semibold text-apple-secondary uppercase tracking-wider mb-4">Supported Conditional Access Triggers</p>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             
-            <label class="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 hover:border-sky-500/50 cursor-pointer transition flex items-start gap-3">
-              <input type="checkbox" name="caTrigger" value="Geo-fencing" checked class="mt-1 rounded bg-slate-900 border-slate-600 text-sky-500">
+            <label class="p-4 rounded-2xl bg-[#fafafc] border border-black/[0.06] hover:border-apple-blue/40 cursor-pointer transition flex items-start gap-3">
+              <input type="checkbox" name="caTrigger" value="Geo-fencing" checked class="mt-0.5 rounded text-apple-blue focus:ring-0">
               <div>
-                <p class="text-xs font-bold text-white">1. Geo-fencing</p>
-                <p class="text-[11px] text-slate-400 mt-0.5">Restrict SaaS & IdP authentication strictly within authorized countries, states, or geographic coordinates.</p>
+                <p class="text-xs font-semibold text-apple-text">1. Geo-fencing</p>
+                <p class="text-[11px] text-apple-secondary mt-1 leading-relaxed">Restrict IdP login strictly within approved geographic boundaries or countries.</p>
               </div>
             </label>
 
-            <label class="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 hover:border-sky-500/50 cursor-pointer transition flex items-start gap-3">
-              <input type="checkbox" name="caTrigger" value="IP-based" checked class="mt-1 rounded bg-slate-900 border-slate-600 text-sky-500">
+            <label class="p-4 rounded-2xl bg-[#fafafc] border border-black/[0.06] hover:border-apple-blue/40 cursor-pointer transition flex items-start gap-3">
+              <input type="checkbox" name="caTrigger" value="IP-based" checked class="mt-0.5 rounded text-apple-blue focus:ring-0">
               <div>
-                <p class="text-xs font-bold text-white">2. IP-based Restriction</p>
-                <p class="text-[11px] text-slate-400 mt-0.5">Restrict access based on static corporate egress IPs, trusted VPN gateways, or designated subnet ranges.</p>
+                <p class="text-xs font-semibold text-apple-text">2. IP-based Restriction</p>
+                <p class="text-[11px] text-apple-secondary mt-1 leading-relaxed">Limit SaaS access strictly to corporate egress IPs, trusted subnets, or VPNs.</p>
               </div>
             </label>
 
-            <label class="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 hover:border-sky-500/50 cursor-pointer transition flex items-start gap-3">
-              <input type="checkbox" name="caTrigger" value="Enrolled and Management check" checked class="mt-1 rounded bg-slate-900 border-slate-600 text-sky-500">
+            <label class="p-4 rounded-2xl bg-[#fafafc] border border-black/[0.06] hover:border-apple-blue/40 cursor-pointer transition flex items-start gap-3">
+              <input type="checkbox" name="caTrigger" value="Enrolled and Management check" checked class="mt-0.5 rounded text-apple-blue focus:ring-0">
               <div>
-                <p class="text-xs font-bold text-white">3. Enrolled & Management Check</p>
-                <p class="text-[11px] text-slate-400 mt-0.5">Allow login exclusively from devices actively enrolled and verified compliant under Hexnode UEM.</p>
+                <p class="text-xs font-semibold text-apple-text">3. Enrolled &amp; Management Check</p>
+                <p class="text-[11px] text-apple-secondary mt-1 leading-relaxed">Enforce that authentication only succeeds from managed, compliant Hexnode endpoints.</p>
               </div>
             </label>
 
@@ -536,26 +575,29 @@
         </div>
       </section>
 
-      <!-- SECTION 4: Security & IT Operations -->
-      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-        <div class="flex items-center gap-2 mb-5">
-          <span class="w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">4</span>
-          <h2 class="text-lg font-bold text-white tracking-tight">Security & IT Operations Posture</h2>
+      <!-- CARD 4: Security & IT Operations -->
+      <section class="bg-apple-card border border-black/[0.06] rounded-3xl p-6 sm:p-8 shadow-subtle transition">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <span class="text-[11px] font-semibold text-apple-blue uppercase tracking-wider">Step 04</span>
+            <h2 class="text-lg font-semibold text-apple-text tracking-tight">Security &amp; IT Operations Posture</h2>
+          </div>
+          <span class="text-xs text-apple-secondary">Compliance &amp; Policy</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Disk Encryption (BitLocker / FileVault)</label>
-            <select id="diskEncryption" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
-              <option value="Centrally Enforced & Escrowed">Centrally Enforced & Escrowed</option>
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Disk Encryption (BitLocker / FileVault)</label>
+            <select id="diskEncryption" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text cursor-pointer">
+              <option value="Centrally Enforced & Escrowed">Centrally Enforced &amp; Escrowed</option>
               <option value="Enabled Manually / Keys Not Escrowed">Enabled Manually / Keys Not Escrowed</option>
               <option value="Unmanaged / Looking to enforce via Hexnode">Unmanaged / Looking to enforce via Hexnode</option>
             </select>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">App Deployment Model</label>
-            <select id="appDeployment" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">App Deployment Model</label>
+            <select id="appDeployment" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text cursor-pointer">
               <option value="Enterprise Custom (MSI/PKG/EXE scripts)">Enterprise Custom (MSI/PKG/EXE scripts)</option>
               <option value="Store Apps (VPP / Managed Google Play)">Store Apps (VPP / Managed Google Play)</option>
               <option value="Hybrid (Store + Custom In-House)">Hybrid (Store + Custom In-House)</option>
@@ -564,8 +606,8 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">OS & Patching Window</label>
-            <select id="patchingWindow" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">OS &amp; Patching Window</label>
+            <select id="patchingWindow" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text cursor-pointer">
               <option value="Automated 0-7 Days Cadence">Automated 0-7 Days Cadence</option>
               <option value="Delayed (30-60 Days Ring Deployment)">Delayed (30-60 Days Ring Deployment)</option>
               <option value="WSUS / Ad-hoc / End-user Discretion">WSUS / Ad-hoc / End-user Discretion</option>
@@ -573,18 +615,18 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Ticketing & ITSM Platform</label>
-            <input type="text" id="itsmPlatform" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. ServiceNow, Jira Service Management, Freshservice">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Ticketing &amp; ITSM Platform</label>
+            <input type="text" id="itsmPlatform" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text" placeholder="e.g. ServiceNow, Jira Service Management, Freshservice">
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Endpoint Security / EDR / ZTNA</label>
-            <input type="text" id="edrPlatform" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. CrowdStrike Falcon, Defender for Endpoint, SentinelOne">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Endpoint Security / EDR / ZTNA</label>
+            <input type="text" id="edrPlatform" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text" placeholder="e.g. CrowdStrike Falcon, Defender for Endpoint, SentinelOne">
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Identity-Aware Device Access Control Priority</label>
-            <select id="identityAwarePriority" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Identity-Aware Device Control Priority</label>
+            <select id="identityAwarePriority" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text cursor-pointer">
               <option value="Critical - Must block unmanaged/unhealthy devices">Critical - Must block unmanaged/unhealthy devices</option>
               <option value="High - Preferred in phase 2 rollout">High - Preferred in phase 2 rollout</option>
               <option value="Exploratory - Nice to have">Exploratory - Nice to have</option>
@@ -593,17 +635,20 @@
         </div>
       </section>
 
-      <!-- SECTION 5: Qualification & Commitment to POC -->
-      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-        <div class="flex items-center gap-2 mb-5">
-          <span class="w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">5</span>
-          <h2 class="text-lg font-bold text-white tracking-tight">Qualification & Commitment to POC (Proof of Concept)</h2>
+      <!-- CARD 5: Qualification & POC -->
+      <section class="bg-apple-card border border-black/[0.06] rounded-3xl p-6 sm:p-8 shadow-subtle transition">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <span class="text-[11px] font-semibold text-apple-blue uppercase tracking-wider">Step 05</span>
+            <h2 class="text-lg font-semibold text-apple-text tracking-tight">Qualification &amp; Commitment to POC</h2>
+          </div>
+          <span class="text-xs text-apple-secondary">Evaluation Next Steps</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Commitment to POC</label>
-            <select id="pocCommitment" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white font-semibold">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Commitment to POC</label>
+            <select id="pocCommitment" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text font-medium cursor-pointer">
               <option value="Committed - High Urgency">Committed - High Urgency</option>
               <option value="Conditional on Security Review">Conditional on Security Review</option>
               <option value="Need Executive Buy-in First">Need Executive Buy-in First</option>
@@ -612,13 +657,13 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Target Go-Live / Cutover Date</label>
-            <input type="text" id="targetGoLive" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. Q1 2027 / Within 60 Days">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Target Go-Live / Cutover Date</label>
+            <input type="text" id="targetGoLive" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text" placeholder="e.g. Q1 2027 / Within 60 Days">
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Agreed POC Duration</label>
-            <select id="pocDuration" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Agreed POC Duration</label>
+            <select id="pocDuration" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text cursor-pointer">
               <option value="14 Days (Standard)">14 Days (Standard)</option>
               <option value="30 Days (Complex Multi-OS)">30 Days (Complex Multi-OS)</option>
               <option value="7 Days Fast-Track">7 Days Fast-Track</option>
@@ -626,8 +671,8 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Decision Maker in POC Review?</label>
-            <select id="decisionMakerInPoc" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+            <label class="block text-xs font-medium text-apple-secondary mb-1.5">Decision Maker in POC Review?</label>
+            <select id="decisionMakerInPoc" class="w-full bg-[#fbfbfd] border border-black/10 rounded-xl px-3.5 py-2 text-xs text-apple-text cursor-pointer">
               <option value="Yes - Direct sponsor of POC">Yes - Direct sponsor of POC</option>
               <option value="No - Technical gatekeeper first">No - Technical gatekeeper first</option>
               <option value="Attending final readout demo">Attending final readout demo</option>
@@ -635,23 +680,23 @@
           </div>
         </div>
 
-        <div class="mt-4">
-          <label class="block text-xs font-semibold text-slate-300 mb-1.5">Agreed POC Success Criteria & Technical Next Steps</label>
-          <textarea id="pocSuccessCriteria" rows="3" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 custom-scroll" placeholder="e.g. 1) Successfully federate Entra ID via SCIM. 2) Deploy OEMConfig profile across 10 Zebra TC57 devices. 3) Configure single-app kiosk on POS terminals. 4) Block non-compliant devices via CA engine."></textarea>
+        <div class="mt-5">
+          <label class="block text-xs font-medium text-apple-secondary mb-1.5">Agreed POC Success Criteria &amp; Technical Next Steps</label>
+          <textarea id="pocSuccessCriteria" rows="3" class="w-full bg-[#fbfbfd] border border-black/10 rounded-2xl px-4 py-3 text-xs text-apple-text leading-relaxed" placeholder="e.g. 1) Test SCIM provisioning with Entra ID. 2) Deploy Zebra OEMConfig & single-app kiosk. 3) Enforce Conditional Access to block unmanaged devices."></textarea>
         </div>
       </section>
 
     </form>
   </main>
 
-  <!-- Notification Toast -->
-  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 px-4 py-3 rounded-xl bg-slate-900 border border-sky-500/40 text-slate-100 text-xs shadow-2xl flex items-center gap-2">
-    <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+  <!-- Notification Toast (Apple Floating Capsule) -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-12 opacity-0 transition-all duration-300 pointer-events-none px-4 py-2.5 rounded-full bg-apple-text text-white text-xs font-medium shadow-elevated flex items-center gap-2">
+    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
     <span id="toastMsg">Notification message</span>
   </div>
 
   <script>
-    const STORAGE_KEY = 'hexnode_se_discovery_form_v4';
+    const STORAGE_KEY = 'hexnode_se_discovery_apple_v1';
 
     // Auto-populate Call Date & Time on load if empty
     window.addEventListener('DOMContentLoaded', () => {
@@ -685,12 +730,12 @@
       const sec = document.getElementById('additionalAttendeeSection');
 
       if (hasAdditional) {
-        yesBtn.className = 'px-3.5 py-1 rounded text-xs font-medium bg-sky-600 text-white transition';
-        noBtn.className = 'px-3.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white transition';
+        yesBtn.className = 'px-4 py-1 rounded-full text-xs font-medium bg-white text-apple-text shadow-sm transition';
+        noBtn.className = 'px-4 py-1 rounded-full text-xs font-medium text-apple-secondary hover:text-apple-text transition';
         sec.classList.remove('hidden');
       } else {
-        noBtn.className = 'px-3.5 py-1 rounded text-xs font-medium bg-slate-700 text-white transition';
-        yesBtn.className = 'px-3.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white transition';
+        noBtn.className = 'px-4 py-1 rounded-full text-xs font-medium bg-white text-apple-text shadow-sm transition';
+        yesBtn.className = 'px-4 py-1 rounded-full text-xs font-medium text-apple-secondary hover:text-apple-text transition';
         sec.classList.add('hidden');
       }
       saveFormData();
@@ -702,19 +747,19 @@
       const inp = document.getElementById(inputId);
       if (cb.checked) {
         inp.disabled = false;
-        inp.className = "w-full bg-slate-900 border border-slate-700 rounded-md px-2.5 py-1 text-sm font-mono text-right text-white";
+        inp.className = "w-full bg-white border border-black/10 rounded-lg px-2.5 py-1 text-xs text-right font-medium text-apple-text";
         if (inp.value == 0) inp.value = '';
         inp.focus();
       } else {
         inp.disabled = true;
         inp.value = 0;
-        inp.className = "w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right";
+        inp.className = "w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right";
       }
       calculateFleetSum();
       saveFormData();
     }
 
-    // Calculate real-time sum of OS, Servers, Rugged, POS & Zebra fleets
+    // Calculate real-time sum of OS and Specialized fleets
     function calculateFleetSum() {
       const osFields = [
         'os_win_qty', 'os_mac_qty', 'os_ios_qty', 'os_android_qty', 
@@ -730,12 +775,10 @@
       document.getElementById('calculatedFleetSum').textContent = sum.toLocaleString();
     }
 
-    // Helper to get selected values from multi-checkboxes
     function getCheckedValues(name) {
       return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
     }
 
-    // Get Primary Role string
     function getEffectiveRole(selectId, otherId) {
       const selVal = document.getElementById(selectId)?.value || '';
       if (selVal === 'Other') {
@@ -745,13 +788,16 @@
       return selVal;
     }
 
-    // Gather all form inputs into a unified data structure
+    // Gather all form inputs into a unified object
     function gatherData() {
       const additionalJoined = !document.getElementById('additionalAttendeeSection').classList.contains('hidden');
 
       return {
-        // Section 1: Call Metadata & Profile
         callDateTime: document.getElementById('callDateTime')?.value || '',
+        seName: document.getElementById('seName')?.value || '',
+        accountManagerName: document.getElementById('accountManagerName')?.value || '',
+        partnerName: document.getElementById('partnerName')?.value || '',
+        customerLocation: document.getElementById('customerLocation')?.value || '',
         companyName: document.getElementById('companyName')?.value || '',
         primaryContactName: document.getElementById('primaryContactName')?.value || '',
         primaryRole: getEffectiveRole('primaryRoleSelect', 'primaryRoleOther'),
@@ -762,7 +808,6 @@
         secondaryContactEmail: additionalJoined ? (document.getElementById('secondaryContactEmail')?.value || '') : '',
         secondaryRole: additionalJoined ? getEffectiveRole('secondaryRoleSelect', 'secondaryRoleOther') : '',
 
-        // Section 2: Fleet Sizing, Breakdown & Specialized Hardware
         totalDevicesReported: document.getElementById('totalDevicesReported')?.value || '0',
         totalUsersReported: document.getElementById('totalUsersReported')?.value || '0',
         calculatedFleetSum: document.getElementById('calculatedFleetSum')?.textContent || '0',
@@ -787,7 +832,6 @@
           visionOS: document.getElementById('os_visionos_active')?.checked ? (document.getElementById('os_visionos_qty')?.value || 0) : 0
         },
 
-        // Section 3: Identity & Conditional Access
         productivityPlan: document.getElementById('productivityPlan')?.value || '',
         primaryIdp: document.getElementById('primaryIdp')?.value || '',
         provisioningMethod: document.getElementById('provisioningMethod')?.value || '',
@@ -796,7 +840,6 @@
         businessPain: document.getElementById('businessPain')?.value || '',
         caTriggers: getCheckedValues('caTrigger').join(', '),
 
-        // Section 4: Security & Ops
         diskEncryption: document.getElementById('diskEncryption')?.value || '',
         appDeployment: document.getElementById('appDeployment')?.value || '',
         patchingWindow: document.getElementById('patchingWindow')?.value || '',
@@ -804,7 +847,6 @@
         edrPlatform: document.getElementById('edrPlatform')?.value || '',
         identityAwarePriority: document.getElementById('identityAwarePriority')?.value || '',
 
-        // Section 5: POC & Commitment
         pocCommitment: document.getElementById('pocCommitment')?.value || '',
         targetGoLive: document.getElementById('targetGoLive')?.value || '',
         pocDuration: document.getElementById('pocDuration')?.value || '',
@@ -813,26 +855,21 @@
       };
     }
 
-    // Auto-save to localStorage
     function saveFormData() {
       const data = gatherData();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       const status = document.getElementById('saveStatus');
       if (status) {
-        status.classList.remove('hidden');
-        setTimeout(() => status.classList.add('hidden'), 1500);
+        status.style.opacity = '1';
+        setTimeout(() => {
+          status.style.opacity = '0';
+        }, 1500);
       }
     }
 
-    // Attach listeners
-    document.getElementById('discoveryForm').addEventListener('input', () => {
-      saveFormData();
-    });
-    document.getElementById('discoveryForm').addEventListener('change', () => {
-      saveFormData();
-    });
+    document.getElementById('discoveryForm').addEventListener('input', saveFormData);
+    document.getElementById('discoveryForm').addEventListener('change', saveFormData);
 
-    // Load cached data
     function loadFormData() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
@@ -840,12 +877,15 @@
         const d = JSON.parse(raw);
 
         if (d.callDateTime) document.getElementById('callDateTime').value = d.callDateTime;
+        if (d.seName) document.getElementById('seName').value = d.seName;
+        if (d.accountManagerName) document.getElementById('accountManagerName').value = d.accountManagerName;
+        if (d.partnerName) document.getElementById('partnerName').value = d.partnerName;
+        if (d.customerLocation) document.getElementById('customerLocation').value = d.customerLocation;
         if (d.companyName) document.getElementById('companyName').value = d.companyName;
         if (d.primaryContactName) document.getElementById('primaryContactName').value = d.primaryContactName;
         if (d.emailId) document.getElementById('emailId').value = d.emailId;
         if (d.mobileNumber) document.getElementById('mobileNumber').value = d.mobileNumber;
 
-        // Restore Primary Role
         if (d.primaryRole) {
           if (d.primaryRole.startsWith('Other')) {
             document.getElementById('primaryRoleSelect').value = 'Other';
@@ -857,7 +897,6 @@
           }
         }
 
-        // Restore Attendee
         if (d.additionalAttendeeJoined === 'Yes') {
           setAdditionalAttendee(true);
           if (d.secondaryContactName) document.getElementById('secondaryContactName').value = d.secondaryContactName;
@@ -882,7 +921,6 @@
         if (d.specializedFleetDetails) document.getElementById('specializedFleetDetails').value = d.specializedFleetDetails;
         if (d.onPremServerDetails) document.getElementById('onPremServerDetails').value = d.onPremServerDetails;
 
-        // Restore Platform Quantities
         const osMap = {
           windows: ['os_win_active', 'os_win_qty'],
           macOS: ['os_mac_active', 'os_mac_qty'],
@@ -912,13 +950,12 @@
               inp.value = active ? val : 0;
               inp.disabled = !active;
               inp.className = active 
-                ? "w-full bg-slate-900 border border-slate-700 rounded-md px-2.5 py-1 text-sm font-mono text-right text-white" 
-                : "w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right";
+                ? "w-full bg-white border border-black/10 rounded-lg px-2.5 py-1 text-xs text-right font-medium text-apple-text" 
+                : "w-full bg-[#f2f2f5] border border-black/5 text-apple-secondary rounded-lg px-2.5 py-1 text-xs text-right";
             }
           });
         }
 
-        // Section 3 & 4 dropdowns/inputs
         ['productivityPlan', 'primaryIdp', 'provisioningMethod', 'ssoAdoption', 
          'mfaDetails', 'businessPain', 'diskEncryption', 'appDeployment', 
          'patchingWindow', 'itsmPlatform', 'edrPlatform', 'identityAwarePriority', 
@@ -932,27 +969,24 @@
       }
     }
 
-    // Reset Form confirmation
     function resetFormWithConfirmation() {
-      if (confirm("Reset the discovery form? All unsaved inputs will be cleared.")) {
+      if (confirm("Reset the discovery form? All inputs will be cleared.")) {
         localStorage.removeItem(STORAGE_KEY);
         location.reload();
       }
     }
 
-    // Toast notification
     function showToast(msg) {
       const toast = document.getElementById('toast');
       document.getElementById('toastMsg').textContent = msg;
-      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.remove('translate-y-12', 'opacity-0');
       toast.classList.add('translate-y-0', 'opacity-100');
       setTimeout(() => {
         toast.classList.remove('translate-y-0', 'opacity-100');
-        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.add('translate-y-12', 'opacity-0');
       }, 2500);
     }
 
-    // Copy formatted discovery summary to clipboard
     function copySummaryToClipboard() {
       const d = gatherData();
       const osParts = [];
@@ -978,51 +1012,54 @@
 
       let specLine = "";
       if (d.specializedFleetDetails) {
-        specLine = `\n- Specialized Hardware Details: ${d.specializedFleetDetails}`;
+        specLine = `\n- Specialized Hardware:        ${d.specializedFleetDetails}`;
       }
 
       let serverDetailsLine = "";
       if (d.onPremServerDetails) {
-        serverDetailsLine = `\n- On-Prem Server Environment:  ${d.onPremServerDetails}`;
+        serverDetailsLine = `\n- On-Prem Servers:            ${d.onPremServerDetails}`;
       }
 
       const summary = `=====================================================
-HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
+HEXNODE IdP + UEM — SALES ENGINEER DISCOVERY
 =====================================================
 - Date & Time:               ${d.callDateTime}
-- Customer Company Name:     ${d.companyName || 'N/A'}
+- SE Name:                   ${d.seName || 'N/A'}
+- Account Manager:           ${d.accountManagerName || 'N/A'}
+- Partner:                   ${d.partnerName || 'Direct'}
+- Location:                  ${d.customerLocation || 'N/A'}
+- Customer Company:          ${d.companyName || 'N/A'}
 - Primary Contact & Role:    ${d.primaryContactName || 'N/A'} | ${d.primaryRole || 'N/A'}
 - Email & Phone:             ${d.emailId || 'N/A'} | ${d.mobileNumber || 'N/A'}${attendeeLine}
-- Fleet Sizing & Scale:      Total Devices: ${d.totalDevicesReported} | Total Users: ${d.totalUsersReported} (Sum Breakdown: ${d.calculatedFleetSum})
-- Device & Fleet Breakdown:  ${osParts.length ? osParts.join(' | ') : 'None Specified'}${specLine}${serverDetailsLine}
+- Fleet Sizing & Scale:      Total Devices: ${d.totalDevicesReported} | Total Users: ${d.totalUsersReported} (Calculated Sum: ${d.calculatedFleetSum})
+- Fleet Breakdown:           ${osParts.length ? osParts.join(' | ') : 'None Specified'}${specLine}${serverDetailsLine}
 - Ownership Model:           ${d.ownershipModel || 'None'}
 - Productivity & IdP:        Suite: ${d.productivityPlan || 'N/A'} | IdP: ${d.primaryIdp}
 - Provisioning & SSO:        Provisioning: ${d.provisioningMethod} | SSO: ${d.ssoAdoption}
 - Conditional Access:        ${d.caTriggers || 'None'}
-- Current UEM / Incumbent:   ${d.incumbentUem}
-- Security & Operations:     Encryption: ${d.diskEncryption}
+- Current UEM:               ${d.incumbentUem}
+- Security Posture:          Encryption: ${d.diskEncryption}
                              App Deployment: ${d.appDeployment}
                              Patching: ${d.patchingWindow}
-                             ITSM: ${d.itsmPlatform || 'N/A'} | EDR/ZTNA: ${d.edrPlatform || 'N/A'}
-                             Identity-Aware Control: ${d.identityAwarePriority}
+                             ITSM: ${d.itsmPlatform || 'N/A'} | EDR: ${d.edrPlatform || 'N/A'}
+                             Identity-Aware Access: ${d.identityAwarePriority}
 - Primary Pain Point:        ${d.businessPain || 'N/A'}
 - Commitment to POC:         ${d.pocCommitment} (Agreed Duration: ${d.pocDuration})
-- Target Cutover / Go-Live:  ${d.targetGoLive || 'N/A'}
+- Target Cutover:            ${d.targetGoLive || 'N/A'}
 - Decision Maker in POC:     ${d.decisionMakerInPoc}
 - Agreed Success Criteria:   ${d.pocSuccessCriteria || 'Pending follow-up'}
 =====================================================`;
 
       navigator.clipboard.writeText(summary).then(() => {
-        showToast("Summary copied to clipboard!");
+        showToast("Summary copied to clipboard");
       }).catch(() => {
-        showToast("Clipboard copy failed. Check browser permissions.");
+        showToast("Clipboard copy failed");
       });
     }
 
-    // Export to multi-tab Excel Workbook (.xlsx)
     function exportToExcel() {
       if (typeof XLSX === 'undefined') {
-        alert("Excel export library is still loading. Please check your internet connection and try again.");
+        alert("Excel export library is still loading. Please check internet connection.");
         return;
       }
 
@@ -1048,11 +1085,15 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
 
       // SHEET 1: Formatted Discovery Report
       const reportRows = [
-        ["HEXNODE IdP + UEM - TECHNICAL DISCOVERY REPORT", ""],
+        ["HEXNODE IdP + UEM — TECHNICAL DISCOVERY REPORT", ""],
         ["Generated", new Date().toISOString()],
         ["", ""],
         ["[ 1. CALL METADATA & CUSTOMER PROFILE ]", ""],
         ["Call Date & Time", d.callDateTime],
+        ["Sales Engineer (SE) Name", d.seName],
+        ["Account Manager (AM) Name", d.accountManagerName],
+        ["Partner Name", d.partnerName],
+        ["Location", d.customerLocation],
         ["Customer Company Name", d.companyName],
         ["Primary Contact Name", d.primaryContactName],
         ["Primary Role & Persona", d.primaryRole],
@@ -1075,8 +1116,8 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
         ["Linux Endpoints", d.osBreakdown.linux],
         ["On-Prem Servers", d.osBreakdown.onPremServers],
         ["Zebra Handhelds / Scanners", d.osBreakdown.zebra],
-        ["Rugged Devices (Honeywell/Panasonic/Sonim)", d.osBreakdown.rugged],
-        ["POS Devices (Elo/Pax/Sunmi/Clover)", d.osBreakdown.pos],
+        ["Rugged Devices", d.osBreakdown.rugged],
+        ["POS Devices", d.osBreakdown.pos],
         ["Dedicated Kiosks", d.osBreakdown.kiosks],
         ["ChromeOS Devices", d.osBreakdown.chromeOS],
         ["Apple TV (tvOS)", d.osBreakdown.appleTV],
@@ -1114,7 +1155,7 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
 
       // SHEET 2: CRM Flat Data Row
       const crmHeaders = [
-        "Call_DateTime", "Company_Name", "Primary_Contact", "Primary_Role", "Email", "Mobile",
+        "Call_DateTime", "SE_Name", "Account_Manager", "Partner_Name", "Location", "Company_Name", "Primary_Contact", "Primary_Role", "Email", "Mobile",
         "Additional_Attendee", "Attendee_Name", "Attendee_Role", "Attendee_Email",
         "Total_Devices", "Total_Users", "Windows_Count", "Mac_Count", "iOS_Count", "Android_Count", 
         "Linux_Count", "OnPrem_Servers_Count", "Zebra_Count", "Rugged_Count", "POS_Count", "Kiosk_Count", "ChromeOS_Count", 
@@ -1125,7 +1166,7 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
       ];
 
       const crmDataRow = [
-        d.callDateTime, d.companyName, d.primaryContactName, d.primaryRole, d.emailId, d.mobileNumber,
+        d.callDateTime, d.seName, d.accountManagerName, d.partnerName, d.customerLocation, d.companyName, d.primaryContactName, d.primaryRole, d.emailId, d.mobileNumber,
         d.additionalAttendeeJoined, d.secondaryContactName, d.secondaryRole, d.secondaryContactEmail,
         d.totalDevicesReported, d.totalUsersReported, d.osBreakdown.windows, d.osBreakdown.macOS, d.osBreakdown.iOS, d.osBreakdown.android,
         d.osBreakdown.linux, d.osBreakdown.onPremServers, d.osBreakdown.zebra, d.osBreakdown.rugged, d.osBreakdown.pos, d.osBreakdown.kiosks, d.osBreakdown.chromeOS,
@@ -1135,17 +1176,16 @@ HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
         d.pocCommitment, d.targetGoLive, d.pocDuration, d.decisionMakerInPoc, d.pocSuccessCriteria
       ];
 
-      // Build Workbook
       const wb = XLSX.utils.book_new();
       const wsReport = XLSX.utils.aoa_to_sheet(reportRows);
-      wsReport['!cols'] = [{ wch: 40 }, { wch: 80 }];
+      wsReport['!cols'] = [{ wch: 38 }, { wch: 75 }];
       XLSX.utils.book_append_sheet(wb, wsReport, "Discovery Report");
 
       const wsCrm = XLSX.utils.aoa_to_sheet([crmHeaders, crmDataRow]);
       XLSX.utils.book_append_sheet(wb, wsCrm, "CRM Flat Data");
 
       XLSX.writeFile(wb, filename);
-      showToast("Excel workbook downloaded successfully!");
+      showToast("Excel workbook downloaded");
     }
   </script>
 </body>
