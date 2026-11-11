@@ -1,1269 +1,1110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hexnode IdP + UEM | SE Discovery & Lead Qualification Form</title>
-  <!-- Tailwind CSS CDN -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hexnode IdP & UEM - Sales Engineer Discovery Form</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- SheetJS (xlsx) CDN for dynamic .xlsx export -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              accent: '#38bdf8',
+              surface: '#0f172a',
+              card: '#1e293b',
+              border: '#334155'
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    body {
-      font-family: 'Inter', sans-serif;
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
     }
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+    input[type="number"]::-webkit-inner-spin-button, 
+    input[type="number"]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
     }
-    ::-webkit-scrollbar-track {
-      background: #0f172a;
+    input[type="number"] {
+      -moz-appearance: textfield;
     }
-    ::-webkit-scrollbar-thumb {
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
       background: #334155;
       border-radius: 4px;
     }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #475569;
-    }
-    /* Custom focus states */
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
-    }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen antialiased flex flex-col justify-between selection:bg-indigo-600 selection:text-white">
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-sky-500/30 selection:text-sky-300">
 
-  <!-- Top Navigation Bar -->
-  <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur border-b border-slate-800 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-indigo-600 to-sky-400 flex items-center justify-center shadow-md shadow-indigo-500/20">
-          <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+  <!-- Fixed Global Header -->
+  <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 lg:px-8 py-3.5 shadow-xl">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-sky-600 to-cyan-400 flex items-center justify-center font-extrabold text-white text-lg shadow-lg shadow-sky-500/20">
+          H
         </div>
         <div>
-          <h1 class="font-bold text-base sm:text-lg tracking-tight text-white flex items-center gap-2">
-            Hexnode <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-medium">IdP & UEM</span>
-          </h1>
-          <p class="text-xs text-slate-400">Sales Engineering Lead Qualification</p>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-white tracking-tight">Hexnode IdP & UEM</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/30">SE Discovery</span>
+          </div>
+          <p class="text-xs text-slate-400">Technical Qualification & Requirement Scoping</p>
         </div>
       </div>
 
-      <!-- Action Buttons in Nav -->
-      <div class="flex items-center space-x-2 sm:space-x-3">
-        <span id="saveStatus" class="hidden sm:inline-flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-2.5 py-1 rounded-md transition-opacity">
-          <i data-lucide="check" class="w-3.5 h-3.5"></i> Auto-saved
+      <div class="flex items-center gap-2">
+        <span id="saveStatus" class="text-xs text-emerald-400 font-medium px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 hidden sm:inline-flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Auto-Saved
         </span>
-        <button type="button" onclick="copySummaryToClipboard()" class="hidden md:inline-flex items-center gap-1.5 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs sm:text-sm rounded-lg transition cursor-pointer">
-          <i data-lucide="copy" class="w-4 h-4"></i>
-          <span>Copy Summary</span>
+        <button type="button" onclick="copySummaryToClipboard()" class="text-xs font-semibold px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 shadow-sm active:scale-95">
+          <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+          Copy Notes
         </button>
-        <button type="button" onclick="exportToExcel()" class="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs sm:text-sm rounded-lg shadow-sm shadow-emerald-700/30 transition-all cursor-pointer">
-          <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-          <span>Export Excel (.xlsx)</span>
+        <button type="button" onclick="exportToExcel()" class="text-xs font-semibold px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-700/20 transition flex items-center gap-1.5 active:scale-95">
+          <svg class="w-4 h-4 text-emerald-100" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm1.8 14.5l-1.3 1.9-1.3-1.9H12l2 2.7-2 2.8h1.2l1.4-2 1.4 2h1.2l-2-2.8 2-2.7h-1.4zM13 9V3.5L18.5 9H13z"/></svg>
+          Export Excel (.xlsx)
         </button>
-        <button type="button" onclick="confirmReset()" class="p-2 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-lg transition" title="Clear / Reset Form">
-          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+        <button type="button" onclick="resetFormWithConfirmation()" class="text-xs px-2.5 py-2 rounded-lg bg-slate-800/80 hover:bg-rose-950/40 text-slate-400 hover:text-rose-300 border border-slate-700/60 hover:border-rose-800/60 transition" title="Clear all fields">
+          Reset
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Notification Banner -->
-  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 hidden max-w-sm bg-slate-800 text-white px-4 py-3 rounded-xl border border-slate-700 shadow-2xl flex items-center space-x-3 transition-all duration-300 transform translate-y-2">
-    <div id="toastIcon" class="text-emerald-400"><i data-lucide="check-circle" class="w-5 h-5"></i></div>
-    <div id="toastMessage" class="text-xs sm:text-sm">Notification text</div>
-  </div>
-
   <!-- Main Container -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1">
-    
-    <!-- Architectural Workflow Reminder Banner -->
-    <div class="mb-8 p-4 rounded-xl bg-gradient-to-r from-indigo-950/70 via-slate-900 to-slate-900 border border-indigo-900/40 relative overflow-hidden">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-        <div class="space-y-1">
-          <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400">Integrated Solution Stack</span>
-          <h2 class="text-base sm:text-lg font-semibold text-white">Identity Federation + Zero Trust Endpoint Management</h2>
-          <p class="text-xs text-slate-400 max-w-2xl">
-            Streamlined technical qualification for Hexnode IdP (Authentication, SCIM, Conditional Access) and Hexnode UEM (Device Compliance, OS Security, Identity-Aware Access Control).
-          </p>
-        </div>
-        <div class="flex items-center gap-2 self-start md:self-auto bg-slate-950/60 border border-slate-800/80 px-3 py-2 rounded-lg text-xs text-slate-300">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Live Form Sync Active</span>
-        </div>
-      </div>
-    </div>
+  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+    <form id="discoveryForm" onsubmit="event.preventDefault();" class="space-y-8">
 
-    <!-- The Discovery Form -->
-    <form id="discoveryForm" class="space-y-8" onsubmit="event.preventDefault();">
-
-      <!-- SECTION 1: Customer Profile & Call Metadata -->
-      <section class="bg-slate-900/70 rounded-2xl border border-slate-800/90 p-5 sm:p-7 shadow-xl">
-        <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
-          <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg border border-indigo-500/20">
-            <i data-lucide="calendar-clock" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="text-base sm:text-lg font-semibold text-white">1. Call Metadata & Customer Profile</h3>
-            <p class="text-xs text-slate-400">Call timestamp, organization, primary contact persona, and meeting attendees</p>
-          </div>
+      <!-- SECTION 1: Call Metadata & Customer Profile -->
+      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+        <div class="absolute -right-16 -top-16 w-60 h-60 bg-sky-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex items-center gap-2 mb-5">
+          <span class="w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">1</span>
+          <h2 class="text-lg font-bold text-white tracking-tight">Call Metadata & Customer Profile</h2>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- 1. Date & Time -->
+          <!-- Call Timestamp -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="callDateTime">
-              Date & Time <span class="text-xs text-indigo-400 font-mono">(YYYY-MM-DD HH:MM)</span> <span class="text-rose-400">*</span>
-            </label>
-            <input type="text" id="callDateTime" name="callDateTime" placeholder="2026-11-11 15:30"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 font-mono transition" />
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Date & Time (YYYY-MM-DD HH:MM) <span class="text-rose-400">*</span></label>
+            <input type="text" id="callDateTime" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white font-mono placeholder-slate-500" placeholder="2026-11-11 16:30">
           </div>
 
-          <!-- 2. Customer Company Name -->
+          <!-- Customer Company Name -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="customerName">
-              Customer Company Name <span class="text-rose-400">*</span>
-            </label>
-            <input type="text" id="customerName" name="customerName" required placeholder="Enterprise / Company Name"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Customer Company Name <span class="text-rose-400">*</span></label>
+            <input type="text" id="companyName" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="e.g. Acme FinTech Corp">
           </div>
 
-          <!-- 3. Primary Contact -->
+          <!-- Primary Contact Name -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="primaryContact">
-              Primary Contact <span class="text-rose-400">*</span>
-            </label>
-            <input type="text" id="primaryContact" name="primaryContact" required placeholder="Full Name"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Primary Contact Name <span class="text-rose-400">*</span></label>
+            <input type="text" id="primaryContactName" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="e.g. Rachel Adams">
           </div>
 
-          <!-- 4. Primary Role & Persona -->
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="primaryRole">
-              Primary Role & Persona <span class="text-rose-400">*</span>
-            </label>
-            <select id="primaryRole" name="primaryRole" onchange="handleRoleSelectionChange(this.value, 'customRoleInput')"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-indigo-500 transition">
-              <option value="IT Manager / IT Operations Lead">IT Manager / IT Operations Lead</option>
-              <option value="CISO / InfoSec Director">CISO / InfoSec Director</option>
-              <option value="CIO / VP of IT">CIO / VP of IT</option>
-              <option value="Director / Head of IT Infrastructure">Director / Head of IT Infrastructure</option>
-              <option value="IAM Architect / Identity Lead">IAM Architect / Identity Lead</option>
-              <option value="Senior System Administrator (SysAdmin)">Senior System Administrator (SysAdmin)</option>
-              <option value="Enterprise Mobility / UEM Specialist">Enterprise Mobility / UEM Specialist</option>
-              <option value="SecOps / Security Compliance Lead">SecOps / Security Compliance Lead</option>
-              <option value="Helpdesk / Desktop Support Manager">Helpdesk / Desktop Support Manager</option>
-              <option value="Procurement / IT Asset Manager">Procurement / IT Asset Manager</option>
-              <option value="Retail / Warehouse / Kiosk Operations Lead">Retail / Warehouse / Kiosk Operations Lead</option>
-              <option value="Other">Other</option>
-            </select>
-            <input type="text" id="customRoleInput" placeholder="Specify custom role..."
-              class="hidden mt-2 w-full bg-slate-950/90 border border-indigo-500/50 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-indigo-400 transition" />
-          </div>
-
-          <!-- 5. Email ID -->
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="emailId">
-              Email ID <span class="text-rose-400">*</span>
-            </label>
-            <input type="email" id="emailId" name="emailId" required placeholder="contact@company.com"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
-          </div>
-
-          <!-- 6. Mobile Number -->
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="mobileNumber">
-              Mobile Number
-            </label>
-            <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="+1 (555) 000-0000"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
-          </div>
-
-          <!-- 7. Additional Attendee Selector -->
-          <div class="md:col-span-2 lg:col-span-3">
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="hasAdditionalAttendee">
-              Any other Person from customer join the meeting?
-            </label>
-            <select id="hasAdditionalAttendee" name="hasAdditionalAttendee" onchange="toggleAdditionalAttendee(this.value)"
-              class="w-full sm:w-64 bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-indigo-500 transition">
-              <option value="No">No</option>
-              <option value="Yes">Yes</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Conditional Additional Attendee Sub-Card -->
-        <div id="additionalAttendeeContainer" class="hidden mt-5 p-4 rounded-xl bg-slate-950/60 border border-indigo-900/40">
-          <div class="flex items-center gap-2 mb-3 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
-            <i data-lucide="user-plus" class="w-4 h-4"></i>
-            <span>Additional Customer Attendee Details</span>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1" for="additionalName">Attendee Name</label>
-              <input type="text" id="additionalName" placeholder="Full Name"
-                class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1" for="additionalEmail">Attendee Email</label>
-              <input type="email" id="additionalEmail" placeholder="colleague@company.com"
-                class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-indigo-500 transition" />
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1" for="additionalRole">Primary Role & Persona</label>
-              <select id="additionalRole" onchange="handleRoleSelectionChange(this.value, 'additionalCustomRoleInput')"
-                class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:border-indigo-500 transition">
-                <option value="CISO / InfoSec Director">CISO / InfoSec Director</option>
+          <!-- Primary Role & Persona Selector -->
+          <div class="lg:col-span-1">
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Primary Role & Persona <span class="text-rose-400">*</span></label>
+            <select id="primaryRoleSelect" onchange="toggleCustomRole('primaryRoleSelect', 'primaryRoleOtherWrap')" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white">
+              <option value="" disabled selected>Select Role / Persona...</option>
+              <optgroup label="IT Leadership & Execs">
                 <option value="CIO / VP of IT">CIO / VP of IT</option>
+                <option value="CISO / InfoSec Director">CISO / InfoSec Director</option>
                 <option value="Director / Head of IT Infrastructure">Director / Head of IT Infrastructure</option>
+              </optgroup>
+              <optgroup label="Identity & Security">
                 <option value="IAM Architect / Identity Lead">IAM Architect / Identity Lead</option>
-                <option value="IT Manager / IT Operations Lead">IT Manager / IT Operations Lead</option>
+                <option value="SecOps / Security Compliance Lead">SecOps / Security Compliance Lead</option>
+                <option value="Compliance & Governance Officer">Compliance & Governance Officer</option>
+              </optgroup>
+              <optgroup label="IT Operations & Systems">
+                <option value="IT Manager / Operations Lead">IT Manager / Operations Lead</option>
                 <option value="Senior System Administrator (SysAdmin)">Senior System Administrator (SysAdmin)</option>
                 <option value="Enterprise Mobility / UEM Specialist">Enterprise Mobility / UEM Specialist</option>
-                <option value="SecOps / Security Compliance Lead">SecOps / Security Compliance Lead</option>
                 <option value="Helpdesk / Desktop Support Manager">Helpdesk / Desktop Support Manager</option>
+              </optgroup>
+              <optgroup label="Fleet & Frontline Ops">
                 <option value="Procurement / IT Asset Manager">Procurement / IT Asset Manager</option>
-                <option value="Retail / Warehouse / Kiosk Operations Lead">Retail / Warehouse / Kiosk Operations Lead</option>
-                <option value="Other">Other</option>
-              </select>
-              <input type="text" id="additionalCustomRoleInput" placeholder="Specify custom role..."
-                class="hidden mt-2 w-full bg-slate-950 border border-indigo-500/50 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-indigo-400 transition" />
+                <option value="Retail / Warehouse Operations Tech Lead">Retail / Warehouse Operations Tech Lead</option>
+              </optgroup>
+              <option value="Other">Other (Specify below)</option>
+            </select>
+            <div id="primaryRoleOtherWrap" class="hidden mt-2">
+              <input type="text" id="primaryRoleOther" class="w-full bg-slate-800/90 border border-sky-500/50 rounded-lg px-3.5 py-1.5 text-xs text-white placeholder-slate-500" placeholder="Enter custom primary role / title">
             </div>
           </div>
-        </div>
-      </section>
 
-      <!-- SECTION 2: Fleet Scale, Breakdown & Ownership Model -->
-      <section class="bg-slate-900/70 rounded-2xl border border-slate-800/90 p-5 sm:p-7 shadow-xl">
-        <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
-          <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg border border-amber-500/20">
-            <i data-lucide="laptop" class="w-5 h-5"></i>
-          </div>
+          <!-- Email ID -->
           <div>
-            <h3 class="text-base sm:text-lg font-semibold text-white">2. Fleet Sizing, Breakdown & Ownership Model</h3>
-            <p class="text-xs text-slate-400">Total users, device scale, ownership categories, and granular OS platform counts</p>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Email ID <span class="text-rose-400">*</span></label>
+            <input type="email" id="emailId" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="radams@acme.com">
           </div>
-        </div>
 
-        <!-- Scale & Ownership -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
+          <!-- Mobile Number -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="totalFleetDevices">
-              Total Devices to Manage <span class="text-rose-400">*</span>
-            </label>
-            <input type="number" id="totalFleetDevices" name="totalFleetDevices" placeholder="e.g. 1000" min="0"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-amber-500 transition" />
-          </div>
-
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="totalFleetUsers">
-              Total Users <span class="text-rose-400">*</span>
-            </label>
-            <input type="number" id="totalFleetUsers" name="totalFleetUsers" placeholder="e.g. 750" min="0"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-amber-500 transition" />
-          </div>
-
-          <div class="lg:col-span-2">
-            <label class="block text-xs font-medium text-slate-300 mb-2">
-              Ownership Model (Check all that apply)
-            </label>
-            <div class="grid grid-cols-3 gap-2">
-              <label class="flex items-center gap-2 p-2 bg-slate-950/80 border border-slate-800 rounded-lg cursor-pointer hover:border-amber-500/40 transition">
-                <input type="checkbox" name="ownershipModel" value="Corporate Owned (COD)" checked class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" />
-                <span class="text-xs text-slate-200">COD</span>
-              </label>
-              <label class="flex items-center gap-2 p-2 bg-slate-950/80 border border-slate-800 rounded-lg cursor-pointer hover:border-amber-500/40 transition">
-                <input type="checkbox" name="ownershipModel" value="BYOD" checked class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" />
-                <span class="text-xs text-slate-200">BYOD</span>
-              </label>
-              <label class="flex items-center gap-2 p-2 bg-slate-950/80 border border-slate-800 rounded-lg cursor-pointer hover:border-amber-500/40 transition">
-                <input type="checkbox" name="ownershipModel" value="Shared Kiosk" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" />
-                <span class="text-xs text-slate-200">Shared Kiosk</span>
-              </label>
-            </div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Mobile Number</label>
+            <input type="tel" id="mobileNumber" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-500" placeholder="+1 (555) 019-2834 / +91 98765 43210">
           </div>
         </div>
 
-        <!-- Platform Breakdown & Specific Quantities -->
-        <div class="mb-2">
-          <div class="flex items-center justify-between mb-3">
+        <!-- Additional Attendee Toggle Card -->
+        <div class="mt-6 pt-5 border-t border-slate-800/80">
+          <div class="flex items-center justify-between flex-wrap gap-3">
             <div>
-              <span class="block text-xs font-semibold text-slate-200">Device Breakdown & Individual Quantities</span>
-              <span class="text-[11px] text-slate-400">Windows: ___ | macOS: ___ | iOS: ___ | Android: ___ | Linux/Kiosk: ___</span>
+              <p class="text-xs font-semibold text-slate-200">Did any other person from the customer side join the meeting?</p>
+              <p class="text-[11px] text-slate-400">Capture additional technical evaluators, line-of-business sponsors, or co-admins</p>
             </div>
-            <div class="text-right">
-              <span class="text-xs text-slate-400">Sum of OS inputs: </span>
-              <span id="calculatedTotalBadge" class="text-sm font-bold text-amber-400 font-mono">0</span>
+            <div class="inline-flex rounded-lg p-1 bg-slate-800 border border-slate-700">
+              <button type="button" id="attendeeToggleNo" onclick="setAdditionalAttendee(false)" class="px-3.5 py-1 rounded text-xs font-medium bg-slate-700 text-white transition">No</button>
+              <button type="button" id="attendeeToggleYes" onclick="setAdditionalAttendee(true)" class="px-3.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white transition">Yes</button>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3" id="platformGrid">
-            <!-- Windows -->
-            <div class="p-3 bg-slate-950/70 border border-slate-800/90 rounded-xl flex flex-col justify-between hover:border-amber-500/40 transition">
-              <label class="flex items-center gap-2 cursor-pointer mb-2">
-                <input type="checkbox" name="osCheckbox" data-platform="Windows" checked class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" onchange="togglePlatformQty(this)">
-                <span class="text-xs font-medium text-slate-200">Windows</span>
-              </label>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-400 font-mono">QTY:</span>
-                <input type="number" min="0" id="qty_Windows" placeholder="0" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-xs text-white text-right focus:border-amber-400 font-mono" oninput="calculateTotalFleet()" />
-              </div>
+          <!-- Conditional Additional Attendee Fields -->
+          <div id="additionalAttendeeSection" class="hidden mt-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">Attendee Name</label>
+              <input type="text" id="secondaryContactName" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500" placeholder="e.g. David Miller">
             </div>
-
-            <!-- macOS -->
-            <div class="p-3 bg-slate-950/70 border border-slate-800/90 rounded-xl flex flex-col justify-between hover:border-amber-500/40 transition">
-              <label class="flex items-center gap-2 cursor-pointer mb-2">
-                <input type="checkbox" name="osCheckbox" data-platform="macOS" checked class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" onchange="togglePlatformQty(this)">
-                <span class="text-xs font-medium text-slate-200">macOS</span>
-              </label>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-400 font-mono">QTY:</span>
-                <input type="number" min="0" id="qty_macOS" placeholder="0" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-xs text-white text-right focus:border-amber-400 font-mono" oninput="calculateTotalFleet()" />
-              </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">Attendee Email</label>
+              <input type="email" id="secondaryContactEmail" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500" placeholder="dmiller@acme.com">
             </div>
-
-            <!-- iOS -->
-            <div class="p-3 bg-slate-950/70 border border-slate-800/90 rounded-xl flex flex-col justify-between hover:border-amber-500/40 transition">
-              <label class="flex items-center gap-2 cursor-pointer mb-2">
-                <input type="checkbox" name="osCheckbox" data-platform="iOS" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" onchange="togglePlatformQty(this)">
-                <span class="text-xs font-medium text-slate-200">iOS</span>
-              </label>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-400 font-mono">QTY:</span>
-                <input type="number" min="0" id="qty_iOS" placeholder="0" disabled class="w-full bg-slate-900/50 opacity-60 border border-slate-800 rounded px-2 py-1 text-xs text-white text-right focus:border-amber-400 font-mono" oninput="calculateTotalFleet()" />
-              </div>
-            </div>
-
-            <!-- Android -->
-            <div class="p-3 bg-slate-950/70 border border-slate-800/90 rounded-xl flex flex-col justify-between hover:border-amber-500/40 transition">
-              <label class="flex items-center gap-2 cursor-pointer mb-2">
-                <input type="checkbox" name="osCheckbox" data-platform="Android" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" onchange="togglePlatformQty(this)">
-                <span class="text-xs font-medium text-slate-200">Android</span>
-              </label>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-400 font-mono">QTY:</span>
-                <input type="number" min="0" id="qty_Android" placeholder="0" disabled class="w-full bg-slate-900/50 opacity-60 border border-slate-800 rounded px-2 py-1 text-xs text-white text-right focus:border-amber-400 font-mono" oninput="calculateTotalFleet()" />
-              </div>
-            </div>
-
-            <!-- Linux -->
-            <div class="p-3 bg-slate-950/70 border border-slate-800/90 rounded-xl flex flex-col justify-between hover:border-amber-500/40 transition">
-              <label class="flex items-center gap-2 cursor-pointer mb-2">
-                <input type="checkbox" name="osCheckbox" data-platform="Linux" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" onchange="togglePlatformQty(this)">
-                <span class="text-xs font-medium text-slate-200">Linux</span>
-              </label>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-400 font-mono">QTY:</span>
-                <input type="number" min="0" id="qty_Linux" placeholder="0" disabled class="w-full bg-slate-900/50 opacity-60 border border-slate-800 rounded px-2 py-1 text-xs text-white text-right focus:border-amber-400 font-mono" oninput="calculateTotalFleet()" />
-              </div>
-            </div>
-
-            <!-- Google ChromeOS -->
-            <div class="p-3 bg-slate-950/70 border border-slate-800/90 rounded-xl flex flex-col justify-between hover:border-amber-500/40 transition">
-              <label class="flex items-center gap-2 cursor-pointer mb-2">
-                <input type="checkbox" name="osCheckbox" data-platform="Google ChromeOS" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" onchange="togglePlatformQty(this)">
-                <span class="text-xs font-medium text-slate-200">ChromeOS</span>
-              </label>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-400 font-mono">QTY:</span>
-                <input type="number" min="0" id="qty_Google ChromeOS" placeholder="0" disabled class="w-full bg-slate-900/50 opacity-60 border border-slate-800 rounded px-2 py-1 text-xs text-white text-right focus:border-amber-400 font-mono" oninput="calculateTotalFleet()" />
-              </div>
-            </div>
-
-            <!-- Apple tvOS -->
-            <div class="p-3 bg-slate-950/70 border border-slate-800/90 rounded-xl flex flex-col justify-between hover:border-amber-500/40 transition">
-              <label class="flex items-center gap-2 cursor-pointer mb-2">
-                <input type="checkbox" name="osCheckbox" data-platform="Apple tvOS" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" onchange="togglePlatformQty(this)">
-                <span class="text-xs font-medium text-slate-200">Apple tvOS</span>
-              </label>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-400 font-mono">QTY:</span>
-                <input type="number" min="0" id="qty_Apple tvOS" placeholder="0" disabled class="w-full bg-slate-900/50 opacity-60 border border-slate-800 rounded px-2 py-1 text-xs text-white text-right focus:border-amber-400 font-mono" oninput="calculateTotalFleet()" />
-              </div>
-            </div>
-
-            <!-- Apple visionOS -->
-            <div class="p-3 bg-slate-950/70 border border-slate-800/90 rounded-xl flex flex-col justify-between hover:border-amber-500/40 transition">
-              <label class="flex items-center gap-2 cursor-pointer mb-2">
-                <input type="checkbox" name="osCheckbox" data-platform="Apple visionOS" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" onchange="togglePlatformQty(this)">
-                <span class="text-xs font-medium text-slate-200">visionOS</span>
-              </label>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-400 font-mono">QTY:</span>
-                <input type="number" min="0" id="qty_Apple visionOS" placeholder="0" disabled class="w-full bg-slate-900/50 opacity-60 border border-slate-800 rounded px-2 py-1 text-xs text-white text-right focus:border-amber-400 font-mono" oninput="calculateTotalFleet()" />
-              </div>
-            </div>
-
-            <!-- Android TV -->
-            <div class="p-3 bg-slate-950/70 border border-slate-800/90 rounded-xl flex flex-col justify-between hover:border-amber-500/40 transition">
-              <label class="flex items-center gap-2 cursor-pointer mb-2">
-                <input type="checkbox" name="osCheckbox" data-platform="Android TV" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" onchange="togglePlatformQty(this)">
-                <span class="text-xs font-medium text-slate-200">Android TV</span>
-              </label>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-400 font-mono">QTY:</span>
-                <input type="number" min="0" id="qty_Android TV" placeholder="0" disabled class="w-full bg-slate-900/50 opacity-60 border border-slate-800 rounded px-2 py-1 text-xs text-white text-right focus:border-amber-400 font-mono" oninput="calculateTotalFleet()" />
-              </div>
-            </div>
-
-            <!-- Dedicated Kiosks -->
-            <div class="p-3 bg-slate-950/70 border border-slate-800/90 rounded-xl flex flex-col justify-between hover:border-amber-500/40 transition">
-              <label class="flex items-center gap-2 cursor-pointer mb-2">
-                <input type="checkbox" name="osCheckbox" data-platform="Dedicated Kiosks" class="w-4 h-4 rounded text-amber-500 bg-slate-900 border-slate-700" onchange="togglePlatformQty(this)">
-                <span class="text-xs font-medium text-slate-200">Kiosk Devices</span>
-              </label>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-400 font-mono">QTY:</span>
-                <input type="number" min="0" id="qty_Dedicated Kiosks" placeholder="0" disabled class="w-full bg-slate-900/50 opacity-60 border border-slate-800 rounded px-2 py-1 text-xs text-white text-right focus:border-amber-400 font-mono" oninput="calculateTotalFleet()" />
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">Attendee Role & Persona</label>
+              <select id="secondaryRoleSelect" onchange="toggleCustomRole('secondaryRoleSelect', 'secondaryRoleOtherWrap')" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white">
+                <option value="" selected>Select Role / Persona...</option>
+                <optgroup label="IT Leadership & Execs">
+                  <option value="CIO / VP of IT">CIO / VP of IT</option>
+                  <option value="CISO / InfoSec Director">CISO / InfoSec Director</option>
+                  <option value="Director / Head of IT Infrastructure">Director / Head of IT Infrastructure</option>
+                </optgroup>
+                <optgroup label="Identity & Security">
+                  <option value="IAM Architect / Identity Lead">IAM Architect / Identity Lead</option>
+                  <option value="SecOps / Security Compliance Lead">SecOps / Security Compliance Lead</option>
+                  <option value="Compliance & Governance Officer">Compliance & Governance Officer</option>
+                </optgroup>
+                <optgroup label="IT Operations & Systems">
+                  <option value="IT Manager / Operations Lead">IT Manager / Operations Lead</option>
+                  <option value="Senior System Administrator (SysAdmin)">Senior System Administrator (SysAdmin)</option>
+                  <option value="Enterprise Mobility / UEM Specialist">Enterprise Mobility / UEM Specialist</option>
+                  <option value="Helpdesk / Desktop Support Manager">Helpdesk / Desktop Support Manager</option>
+                </optgroup>
+                <optgroup label="Fleet & Frontline Ops">
+                  <option value="Procurement / IT Asset Manager">Procurement / IT Asset Manager</option>
+                  <option value="Retail / Warehouse Operations Tech Lead">Retail / Warehouse Operations Tech Lead</option>
+                </optgroup>
+                <option value="Other">Other (Specify below)</option>
+              </select>
+              <div id="secondaryRoleOtherWrap" class="hidden mt-2">
+                <input type="text" id="secondaryRoleOther" class="w-full bg-slate-800/90 border border-sky-500/50 rounded-lg px-3 py-1 text-xs text-white placeholder-slate-500" placeholder="Enter custom attendee role">
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SECTION 3: Productivity Suite, IdP & SSO -->
-      <section class="bg-slate-900/70 rounded-2xl border border-slate-800/90 p-5 sm:p-7 shadow-xl">
-        <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
-          <div class="p-2 bg-sky-500/10 text-sky-400 rounded-lg border border-sky-500/20">
-            <i data-lucide="key-round" class="w-5 h-5"></i>
+      <!-- SECTION 2: Fleet Sizing, Breakdown, On-Prem Servers & Ownership -->
+      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div class="flex items-center justify-between mb-5 flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">2</span>
+            <h2 class="text-lg font-bold text-white tracking-tight">Fleet Sizing, Breakdown & Ownership Model</h2>
           </div>
-          <div>
-            <h3 class="text-base sm:text-lg font-semibold text-white">3. Productivity, IdP & SSO</h3>
-            <p class="text-xs text-slate-400">Collaboration suite, identity directory, user provisioning, and conditional access triggers</p>
+          <div class="flex items-center gap-3 text-xs bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
+            <span class="text-slate-400">Total Calculated Fleet:</span>
+            <span id="calculatedFleetSum" class="font-mono font-bold text-sky-400 text-sm">0</span>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
+        <!-- Scale Overview -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-800">
+            <label class="block text-xs font-medium text-slate-400 mb-1">Total Devices (Scope)</label>
+            <input type="number" id="totalDevicesReported" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-base font-bold text-white font-mono" placeholder="500">
+          </div>
+          <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-800">
+            <label class="block text-xs font-medium text-slate-400 mb-1">Total Identity Users</label>
+            <input type="number" id="totalUsersReported" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-base font-bold text-white font-mono" placeholder="450">
+          </div>
+          <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-800">
+            <label class="block text-xs font-medium text-slate-400 mb-1">Current Incumbent UEM/MDM</label>
+            <select id="incumbentUem" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+              <option value="Microsoft Intune">Microsoft Intune</option>
+              <option value="Jamf Pro / Now">Jamf Pro / Now</option>
+              <option value="VMware Workspace ONE">VMware Workspace ONE</option>
+              <option value="ManageEngine Endpoint Central">ManageEngine Endpoint Central</option>
+              <option value="Kandji / JumpCloud">Kandji / JumpCloud</option>
+              <option value="Unmanaged / Manual">Unmanaged / No Tool</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-800">
+            <label class="block text-xs font-medium text-slate-400 mb-1">Device Ownership Model</label>
+            <div class="flex items-center gap-3 mt-1.5">
+              <label class="inline-flex items-center gap-1.5 text-xs text-slate-200">
+                <input type="checkbox" name="ownershipModel" value="COD" checked class="rounded bg-slate-900 border-slate-700 text-sky-500">
+                COD
+              </label>
+              <label class="inline-flex items-center gap-1.5 text-xs text-slate-200">
+                <input type="checkbox" name="ownershipModel" value="BYOD" class="rounded bg-slate-900 border-slate-700 text-sky-500">
+                BYOD
+              </label>
+              <label class="inline-flex items-center gap-1.5 text-xs text-slate-200">
+                <input type="checkbox" name="ownershipModel" value="Shared Kiosk" class="rounded bg-slate-900 border-slate-700 text-sky-500">
+                Kiosk
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Platform Breakdown & On-Prem Servers Grid -->
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Platform Breakdown & Endpoint / Server Counts</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+          
+          <!-- Windows -->
+          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_win_active" onchange="toggleOsQty('os_win_active', 'os_win_qty')" checked class="rounded bg-slate-900 border-slate-600 text-sky-500">
+                Windows
+              </label>
+            </div>
+            <input type="number" id="os_win_qty" oninput="calculateFleetSum()" value="0" class="w-full bg-slate-900 border border-slate-700 rounded-md px-2.5 py-1 text-sm font-mono text-right text-white" placeholder="0">
+          </div>
+
+          <!-- macOS -->
+          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_mac_active" onchange="toggleOsQty('os_mac_active', 'os_mac_qty')" checked class="rounded bg-slate-900 border-slate-600 text-sky-500">
+                macOS
+              </label>
+            </div>
+            <input type="number" id="os_mac_qty" oninput="calculateFleetSum()" value="0" class="w-full bg-slate-900 border border-slate-700 rounded-md px-2.5 py-1 text-sm font-mono text-right text-white" placeholder="0">
+          </div>
+
+          <!-- iOS / iPadOS -->
+          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_ios_active" onchange="toggleOsQty('os_ios_active', 'os_ios_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
+                iOS / iPadOS
+              </label>
+            </div>
+            <input type="number" id="os_ios_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- Android -->
+          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_android_active" onchange="toggleOsQty('os_android_active', 'os_android_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
+                Android
+              </label>
+            </div>
+            <input type="number" id="os_android_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- Linux Endpoints -->
+          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_linux_active" onchange="toggleOsQty('os_linux_active', 'os_linux_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
+                Linux Endpoints
+              </label>
+            </div>
+            <input type="number" id="os_linux_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- NEW: On-Prem Servers -->
+          <div class="p-3 rounded-xl bg-sky-950/40 border border-sky-800/70 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-sky-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_servers_active" onchange="toggleOsQty('os_servers_active', 'os_servers_qty')" class="rounded bg-slate-900 border-sky-500 text-sky-500">
+                On-Prem Servers
+              </label>
+            </div>
+            <input type="number" id="os_servers_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- ChromeOS -->
+          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_chrome_active" onchange="toggleOsQty('os_chrome_active', 'os_chrome_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
+                ChromeOS
+              </label>
+            </div>
+            <input type="number" id="os_chrome_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- Kiosk Devices -->
+          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_kiosk_active" onchange="toggleOsQty('os_kiosk_active', 'os_kiosk_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
+                Dedicated Kiosks
+              </label>
+            </div>
+            <input type="number" id="os_kiosk_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- Apple TV (tvOS) -->
+          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_appletv_active" onchange="toggleOsQty('os_appletv_active', 'os_appletv_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
+                Apple TV (tvOS)
+              </label>
+            </div>
+            <input type="number" id="os_appletv_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- Android TV -->
+          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_androidtv_active" onchange="toggleOsQty('os_androidtv_active', 'os_androidtv_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
+                Android TV
+              </label>
+            </div>
+            <input type="number" id="os_androidtv_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+          <!-- Apple visionOS -->
+          <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <input type="checkbox" id="os_visionos_active" onchange="toggleOsQty('os_visionos_active', 'os_visionos_qty')" class="rounded bg-slate-900 border-slate-600 text-sky-500">
+                Apple visionOS
+              </label>
+            </div>
+            <input type="number" id="os_visionos_qty" oninput="calculateFleetSum()" value="0" disabled class="w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right" placeholder="0">
+          </div>
+
+        </div>
+
+        <!-- Optional Details on On-Prem Server Environment -->
+        <div class="mt-4 pt-3 border-t border-slate-800/80">
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5">On-Prem Server Details & Environment (OS Flavors, Roles, Domain Controllers)</label>
+          <input type="text" id="onPremServerDetails" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500" placeholder="e.g. Windows Server 2022 (AD DS & File Shares), Red Hat Enterprise Linux 9, Ubuntu 24.04 LTS database hosts">
+        </div>
+      </section>
+
+      <!-- SECTION 3: Productivity Suite, IdP Federation & SSO -->
+      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div class="flex items-center gap-2 mb-5">
+          <span class="w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">3</span>
+          <h2 class="text-lg font-bold text-white tracking-tight">Productivity Suite, IdP Federation & SSO</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <!-- Productivity Suite & Plan -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="productivitySuite">
-              Productivity Suite & Plan
-            </label>
-            <input type="text" id="productivitySuite" name="productivitySuite" placeholder="e.g. M365 (E3/E5/Business Premium) or Google Workspace (Enterprise)"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-sky-500 transition" />
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Productivity Suite & License Tier</label>
+            <input type="text" id="productivityPlan" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. M365 E3/E5, Google Workspace Enterprise Plus">
           </div>
 
-          <!-- Primary IdP -->
+          <!-- Primary Identity Source -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="primaryIdP">
-              Primary Identity Provider (IdP)
-            </label>
-            <select id="primaryIdP" name="primaryIdP" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-sky-500 transition">
-              <option value="Microsoft Entra ID">Microsoft Entra ID (Azure AD)</option>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Primary Identity Provider (IdP)</label>
+            <select id="primaryIdp" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+              <option value="Microsoft Entra ID (Azure AD)">Microsoft Entra ID (Azure AD)</option>
               <option value="Google Workspace">Google Workspace</option>
-              <option value="Okta">Okta</option>
-              <option value="On-prem Active Directory / Hybrid">On-prem Active Directory / Hybrid</option>
-              <option value="Ping Identity / JumpCloud">Ping Identity / JumpCloud</option>
-              <option value="Hexnode Native Directory">Hexnode Native Directory</option>
+              <option value="Hybrid (On-Prem AD + Entra Connect)">Hybrid (On-Prem AD + Entra Connect)</option>
+              <option value="Okta / Ping / OneLogin">Okta / Ping / OneLogin</option>
               <option value="Other">Other</option>
             </select>
           </div>
 
-          <!-- Provisioning -->
+          <!-- Provisioning Method -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="scimRequired">
-              Provisioning Method
-            </label>
-            <select id="scimRequired" name="scimRequired" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-sky-500 transition">
-              <option value="SCIM automated">SCIM automated (Zero-touch JML)</option>
-              <option value="Manual CSV">Manual CSV import</option>
-              <option value="Scripted / API-based">Scripted / API-based</option>
-              <option value="None / Not configured">None / Not configured</option>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">User & Group Provisioning</label>
+            <select id="provisioningMethod" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+              <option value="SCIM Automated Provisioning">SCIM Automated Provisioning</option>
+              <option value="Direct Directory Sync (Entra/Google API)">Direct Directory Sync (Entra/Google API)</option>
+              <option value="Manual CSV / Bulk Upload">Manual CSV / Bulk Upload</option>
             </select>
           </div>
 
           <!-- SSO Adoption -->
-          <div class="md:col-span-2">
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="ssoAdoption">
-              SSO Adoption Status & Target Apps
-            </label>
-            <select id="ssoAdoption" name="ssoAdoption" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-sky-500 transition">
-              <option value="Active for all SaaS">Active for all SaaS</option>
-              <option value="Interested in adding SSO via Hexnode">Interested in adding SSO via Hexnode</option>
-              <option value="Hybrid / Partial (Select apps federated)">Hybrid / Partial (Select apps federated)</option>
-              <option value="None">None</option>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">SSO Adoption Status</label>
+            <select id="ssoAdoption" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+              <option value="Enforced for all enterprise SaaS">Enforced for all enterprise SaaS</option>
+              <option value="Partially deployed (Key apps only)">Partially deployed (Key apps only)</option>
+              <option value="None / Looking to consolidate SSO with Hexnode">None / Looking to consolidate SSO with Hexnode</option>
             </select>
           </div>
 
+          <!-- MFA Solution -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="ssoTargetApps">
-              Target Apps for SSO (if applicable)
-            </label>
-            <input type="text" id="ssoTargetApps" name="ssoTargetApps" placeholder="e.g. Salesforce, Slack, Jira, Zoom"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-sky-500 transition" />
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">MFA Architecture</label>
+            <input type="text" id="mfaDetails" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. MS Authenticator, FIDO2/YubiKey, Duo">
+          </div>
+
+          <!-- Core Business Driver / Pain Point -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Core Business Driver / Primary Pain Point</label>
+            <input type="text" id="businessPain" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. Identity sprawl, unmanaged macOS, Entra P2 licensing cost">
           </div>
         </div>
 
-        <!-- Conditional Access Triggers -->
-        <div class="pt-2 border-t border-slate-800/80">
-          <span class="block text-xs font-medium text-slate-300 mb-2">
-            Conditional Access Engine Triggers Required (Hexnode Supported - Check all that apply)
-          </span>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-sky-500/50 cursor-pointer transition">
-              <input type="checkbox" name="caEngine" value="Geo-fencing" class="w-4 h-4 rounded text-sky-500 bg-slate-900 border-slate-700" checked />
+        <!-- Conditional Access Triggers (3 Supported Conditions) -->
+        <div class="mt-6 pt-5 border-t border-slate-800">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Conditional Access Engine Triggers Required (Hexnode Supported)</label>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <label class="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 hover:border-sky-500/50 cursor-pointer transition flex items-start gap-3">
+              <input type="checkbox" name="caTrigger" value="Geo-fencing" checked class="mt-1 rounded bg-slate-900 border-slate-600 text-sky-500">
               <div>
-                <span class="text-xs font-medium text-slate-200 block">Geo-fencing</span>
-                <span class="text-[11px] text-slate-400">Restrict access based on physical geography & location</span>
+                <p class="text-xs font-bold text-white">1. Geo-fencing</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">Restrict SaaS & IdP authentication strictly within authorized countries, states, or geographic coordinates.</p>
               </div>
             </label>
-            <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-sky-500/50 cursor-pointer transition">
-              <input type="checkbox" name="caEngine" value="IP-based" class="w-4 h-4 rounded text-sky-500 bg-slate-900 border-slate-700" checked />
+
+            <label class="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 hover:border-sky-500/50 cursor-pointer transition flex items-start gap-3">
+              <input type="checkbox" name="caTrigger" value="IP-based" checked class="mt-1 rounded bg-slate-900 border-slate-600 text-sky-500">
               <div>
-                <span class="text-xs font-medium text-slate-200 block">IP-based</span>
-                <span class="text-[11px] text-slate-400">Allowlist/blocklist trusted corporate networks & CIDR</span>
+                <p class="text-xs font-bold text-white">2. IP-based Restriction</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">Restrict access based on static corporate egress IPs, trusted VPN gateways, or designated subnet ranges.</p>
               </div>
             </label>
-            <label class="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-sky-500/50 cursor-pointer transition">
-              <input type="checkbox" name="caEngine" value="Enrolled and Management check" class="w-4 h-4 rounded text-sky-500 bg-slate-900 border-slate-700" checked />
+
+            <label class="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 hover:border-sky-500/50 cursor-pointer transition flex items-start gap-3">
+              <input type="checkbox" name="caTrigger" value="Enrolled and Management check" checked class="mt-1 rounded bg-slate-900 border-slate-600 text-sky-500">
               <div>
-                <span class="text-xs font-medium text-slate-200 block">Enrolled & Management check</span>
-                <span class="text-[11px] text-slate-400">Enforce device enrollment & active Hexnode UEM management</span>
+                <p class="text-xs font-bold text-white">3. Enrolled & Management Check</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">Allow login exclusively from devices actively enrolled and verified compliant under Hexnode UEM.</p>
               </div>
             </label>
+
           </div>
         </div>
       </section>
 
-      <!-- SECTION 4: Incumbent UEM & Security Operations -->
-      <section class="bg-slate-900/70 rounded-2xl border border-slate-800/90 p-5 sm:p-7 shadow-xl">
-        <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
-          <div class="p-2 bg-purple-500/10 text-purple-400 rounded-lg border border-purple-500/20">
-            <i data-lucide="shield" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="text-base sm:text-lg font-semibold text-white">4. Incumbent UEM & Security Operations</h3>
-            <p class="text-xs text-slate-400">Current MDM/UEM tool, encryption, app delivery, patching, ITSM, and EDR stack</p>
-          </div>
+      <!-- SECTION 4: Security & IT Operations -->
+      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div class="flex items-center gap-2 mb-5">
+          <span class="w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">4</span>
+          <h2 class="text-lg font-bold text-white tracking-tight">Security & IT Operations Posture</h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
-          <!-- Current UEM / Incumbent -->
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="incumbentUem">
-              Current UEM / Incumbent
-            </label>
-            <select id="incumbentUem" name="incumbentUem" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-purple-500 transition">
-              <option value="Microsoft Intune">Microsoft Intune</option>
-              <option value="Jamf (Pro / Now)">Jamf (Pro / Now)</option>
-              <option value="Omnissa / VMware Workspace ONE">Omnissa / VMware Workspace ONE</option>
-              <option value="ManageEngine Endpoint Central">ManageEngine Endpoint Central</option>
-              <option value="Ivanti / MobileIron">Ivanti / MobileIron</option>
-              <option value="Kandji / Addigy">Kandji / Addigy</option>
-              <option value="Unmanaged / Fragmented tools">Unmanaged / Fragmented tools</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <!-- BitLocker / FileVault -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="encryptionStatus">
-              BitLocker / FileVault Encryption
-            </label>
-            <select id="encryptionStatus" name="encryptionStatus" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-purple-500 transition">
-              <option value="Enforced via MDM">Enforced via MDM (Escrow keys to cloud)</option>
-              <option value="Unmanaged">Unmanaged</option>
-              <option value="Manual Keys / Spreadsheet">Manual Keys / Local backup</option>
-              <option value="In Progress / Planned">In Progress / Planned</option>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Disk Encryption (BitLocker / FileVault)</label>
+            <select id="diskEncryption" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+              <option value="Centrally Enforced & Escrowed">Centrally Enforced & Escrowed</option>
+              <option value="Enabled Manually / Keys Not Escrowed">Enabled Manually / Keys Not Escrowed</option>
+              <option value="Unmanaged / Looking to enforce via Hexnode">Unmanaged / Looking to enforce via Hexnode</option>
             </select>
           </div>
 
           <!-- App Deployment -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="appDeploymentMethod">
-              App Deployment Model
-            </label>
-            <select id="appDeploymentMethod" name="appDeploymentMethod" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-purple-500 transition">
-              <option value="Store + Custom PKG/MSI">Store + Custom PKG/MSI</option>
-              <option value="Store Apps Only (VPP / Play for Work)">Store Apps Only (VPP / Managed Play)</option>
-              <option value="Custom PKG / MSI / EXE Silent install">Custom PKG / MSI / EXE Silent install</option>
-              <option value="Manual installation by users/helpdesk">Manual installation by users</option>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">App Deployment Model</label>
+            <select id="appDeployment" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+              <option value="Enterprise Custom (MSI/PKG/EXE scripts)">Enterprise Custom (MSI/PKG/EXE scripts)</option>
+              <option value="Store Apps (VPP / Managed Google Play)">Store Apps (VPP / Managed Google Play)</option>
+              <option value="Hybrid (Store + Custom In-House)">Hybrid (Store + Custom In-House)</option>
+              <option value="Manual User Installs">Manual User Installs</option>
             </select>
           </div>
 
           <!-- Patching Window -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="patchingWindow">
-              Patching & OS Updates
-            </label>
-            <select id="patchingWindow" name="patchingWindow" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-purple-500 transition">
-              <option value="Automated ring-based updates">Automated ring-based updates</option>
-              <option value="WSUS / Local caching server">WSUS / Local caching server</option>
-              <option value="Delayed 30+ days / Controlled approval">Delayed 30+ days / Controlled approval</option>
-              <option value="Ad-hoc / User controlled">Ad-hoc / User controlled</option>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">OS & Patching Window</label>
+            <select id="patchingWindow" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+              <option value="Automated 0-7 Days Cadence">Automated 0-7 Days Cadence</option>
+              <option value="Delayed (30-60 Days Ring Deployment)">Delayed (30-60 Days Ring Deployment)</option>
+              <option value="WSUS / Ad-hoc / End-user Discretion">WSUS / Ad-hoc / End-user Discretion</option>
             </select>
           </div>
 
           <!-- Ticketing & ITSM -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="itsmTool">
-              Ticketing & ITSM Integration
-            </label>
-            <input type="text" id="itsmTool" name="itsmTool" placeholder="e.g. ServiceNow, Jira Service Management, Freshservice, Zendesk"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-purple-500 transition" />
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Ticketing & ITSM Platform</label>
+            <input type="text" id="itsmPlatform" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. ServiceNow, Jira Service Management, Freshservice">
           </div>
 
-          <!-- 3rd-Party Security / EDR -->
+          <!-- 3rd-Party Security -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="edrTool">
-              3rd-Party Security & EDR / ZTNA
-            </label>
-            <input type="text" id="edrTool" name="edrTool" placeholder="e.g. CrowdStrike, Defender for Endpoint, SentinelOne, Zscaler"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-purple-500 transition" />
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Endpoint Security / EDR / ZTNA</label>
+            <input type="text" id="edrPlatform" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. CrowdStrike Falcon, Defender for Endpoint, SentinelOne">
           </div>
-        </div>
 
-        <!-- Identity-Aware Device Access Control -->
-        <div class="p-4 rounded-xl bg-purple-950/30 border border-purple-500/30">
-          <div class="flex items-start gap-3">
-            <div class="p-1.5 bg-purple-500/20 text-purple-300 rounded-md mt-0.5">
-              <i data-lucide="lock" class="w-4 h-4"></i>
-            </div>
-            <div class="flex-1">
-              <label class="block text-xs font-semibold text-purple-200 mb-1" for="identityAwareControl">
-                Identity-Aware Device Access Control
-              </label>
-              <p class="text-xs text-purple-300/80 mb-2">
-                Restrict access to corporate SaaS & resources strictly to compliant, managed devices enrolled in Hexnode UEM?
-              </p>
-              <select id="identityAwareControl" name="identityAwareControl" class="w-full sm:w-96 bg-slate-950 border border-purple-600/50 rounded-lg px-3 py-2 text-sm text-white focus:border-purple-400 transition">
-                <option value="Yes - Critical (Block non-compliant & unmanaged devices)">Yes - Critical (Zero Trust Device Wall)</option>
-                <option value="Yes - Soft warning / Grace period allowed">Yes - Soft warning / 24-hr grace period</option>
-                <option value="Tiered (Restricted to High-Risk Apps)">Tiered (Restricted to High-Risk Apps)</option>
-                <option value="Not required for Phase 1">Not required for Phase 1</option>
-              </select>
-            </div>
+          <!-- Identity-Aware Device Access Control Requirement -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Identity-Aware Access Control Priority</label>
+            <select id="identityAwarePriority" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+              <option value="Critical - Must block unmanaged/unhealthy devices">Critical - Must block unmanaged/unhealthy devices</option>
+              <option value="High - Preferred in phase 2 rollout">High - Preferred in phase 2 rollout</option>
+              <option value="Exploratory - Nice to have">Exploratory - Nice to have</option>
+            </select>
           </div>
         </div>
       </section>
 
-      <!-- SECTION 5: Qualification Scorecard & Commitment to POC -->
-      <section class="bg-slate-900/70 rounded-2xl border border-slate-800/90 p-5 sm:p-7 shadow-xl">
-        <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
-          <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
-            <i data-lucide="check-check" class="w-5 h-5"></i>
-          </div>
+      <!-- SECTION 5: Qualification & Commitment to POC -->
+      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div class="flex items-center gap-2 mb-5">
+          <span class="w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">5</span>
+          <h2 class="text-lg font-bold text-white tracking-tight">Qualification & Commitment to POC (Proof of Concept)</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Commitment Status -->
           <div>
-            <h3 class="text-base sm:text-lg font-semibold text-white">5. Qualification Scorecard & Commitment to POC</h3>
-            <p class="text-xs text-slate-400">Technical fit verdict, proof of concept scope, success metrics, and timeline</p>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Commitment to POC</label>
+            <select id="pocCommitment" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white font-semibold">
+              <option value="Committed - High Urgency">Committed - High Urgency</option>
+              <option value="Conditional on Security Review">Conditional on Security Review</option>
+              <option value="Need Executive Buy-in First">Need Executive Buy-in First</option>
+              <option value="Information Gathering Only">Information Gathering Only</option>
+            </select>
+          </div>
+
+          <!-- Target Go-Live -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Target Go-Live / Cutover Date</label>
+            <input type="text" id="targetGoLive" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500" placeholder="e.g. Q1 2027 / Within 60 Days">
+          </div>
+
+          <!-- POC Duration Scoped -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Agreed POC Duration</label>
+            <select id="pocDuration" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+              <option value="14 Days (Standard)">14 Days (Standard)</option>
+              <option value="30 Days (Complex Multi-OS)">30 Days (Complex Multi-OS)</option>
+              <option value="7 Days Fast-Track">7 Days Fast-Track</option>
+            </select>
+          </div>
+
+          <!-- Commercial Decision Maker Participation -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Decision Maker in POC Review?</label>
+            <select id="decisionMakerInPoc" class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-xs text-white">
+              <option value="Yes - Direct sponsor of POC">Yes - Direct sponsor of POC</option>
+              <option value="No - Technical gatekeeper first">No - Technical gatekeeper first</option>
+              <option value="Attending final readout demo">Attending final readout demo</option>
+            </select>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="technicalFit">
-              Overall Technical Fit
-            </label>
-            <select id="technicalFit" name="technicalFit" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm font-medium text-white focus:border-emerald-500 transition">
-              <option value="Strong Fit (Full Out-of-the-Box Alignment)">🟢 Strong Fit (Full OOTB Match)</option>
-              <option value="Moderate Fit (Minor Scripting / Custom IdP app)">🟡 Moderate Fit (Minor Customization)</option>
-              <option value="PoC Required to Validate Edge Cases">🟠 PoC Required (Verify Edge Case)</option>
-              <option value="Disqualified (Critical Platform Gap)">🔴 Disqualified (Critical Gap)</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="pocStatus">
-              Commitment to POC Status
-            </label>
-            <select id="pocStatus" name="pocStatus" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-emerald-500 transition">
-              <option value="Agreed & Confirmed">Agreed & Confirmed</option>
-              <option value="Under Evaluation / Scoping Call Pending">Under Evaluation / Scoping Call Pending</option>
-              <option value="Not Ready / Exploring Architecture">Not Ready / Exploring Architecture</option>
-              <option value="Direct Purchase / No POC Required">Direct Purchase / No POC Required</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="pocDuration">
-              Target POC Start & Duration
-            </label>
-            <input type="text" id="pocDuration" name="pocDuration" placeholder="e.g. Starts Nov 25 &bull; 14 Days"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-emerald-500 transition" />
-          </div>
-
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="decisionMakerInvolved">
-              Commercial Decision Maker Involved in POC?
-            </label>
-            <select id="decisionMakerInvolved" name="decisionMakerInvolved" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-emerald-500 transition">
-              <option value="Yes (CISO / VP / Director Sponsor)">Yes (CISO / VP / Director Sponsor)</option>
-              <option value="Technical Sponsor only (Need escalation)">Technical Sponsor only (Need escalation)</option>
-              <option value="Procurement driven">Procurement driven</option>
-              <option value="Unknown">Unknown</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="nextActionAgreed">
-              Next Action Agreed
-            </label>
-            <select id="nextActionAgreed" name="nextActionAgreed" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-emerald-500 transition">
-              <option value="1. Technical Deep-Dive & Architecture Review">1. Technical Deep-Dive & Architecture</option>
-              <option value="2. Scoped Hands-On PoC Kickoff">2. Scoped Hands-On PoC Kickoff</option>
-              <option value="3. Commercial Quote & Proposal Review">3. Commercial Quote & Proposal Review</option>
-              <option value="4. Security & Compliance Review">4. Security & Compliance Review</option>
-              <option value="5. Nurture / Future Project">5. Nurture / Future Project</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="followUpDate">
-              Agreed Date for Next Interaction
-            </label>
-            <input type="date" id="followUpDate" name="followUpDate"
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:border-emerald-500 transition" />
-          </div>
-
-          <div class="md:col-span-3">
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="pocSuccessCriteria">
-              POC Success Criteria & Scope Defined
-            </label>
-            <textarea id="pocSuccessCriteria" name="pocSuccessCriteria" rows="2" placeholder="List specific measurable pass/fail criteria (e.g. 1. Seamless Entra ID SCIM provisioning, 2. Conditional Access Geo-fence blocks outside US, 3. BitLocker escrow validated on 5 Windows laptops, 4. Identity-Aware device block working)..."
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-emerald-500 transition"></textarea>
-          </div>
-
-          <div class="md:col-span-3">
-            <label class="block text-xs font-medium text-slate-300 mb-1.5" for="seNotes">
-              SE Internal Debrief & Competitive Notes
-            </label>
-            <textarea id="seNotes" name="seNotes" rows="2" placeholder="Incumbent contract renewal date, potential objections, key stakeholders to win over, pricing notes..."
-              class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-emerald-500 transition"></textarea>
-          </div>
+        <!-- Agreed Success Criteria / Next Steps -->
+        <div class="mt-4">
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5">Agreed POC Success Criteria & Technical Next Steps</label>
+          <textarea id="pocSuccessCriteria" rows="3" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 custom-scroll" placeholder="e.g. 1) Successfully federate Entra ID via SCIM. 2) Deploy BitLocker policy on 5 test Windows laptops. 3) Test Conditional Access by blocking unmanaged device access."></textarea>
         </div>
       </section>
 
-      <!-- Bottom Submission and Quick Action Toolbar -->
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-slate-900 rounded-2xl border border-slate-800">
-        <div class="flex items-center gap-3 text-xs text-slate-400">
-          <i data-lucide="cloud-check" class="w-4 h-4 text-emerald-400"></i>
-          <span>Live cache auto-saved locally. Ready to export to Excel or copy summary.</span>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-end">
-          <button type="button" onclick="copySummaryToClipboard()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-sm font-medium transition cursor-pointer">
-            <i data-lucide="copy" class="w-4 h-4"></i> Copy Summary
-          </button>
-          <button type="button" onclick="exportToExcel()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg text-sm font-semibold shadow-lg shadow-emerald-900/30 transition cursor-pointer">
-            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export to Excel (.xlsx)
-          </button>
-        </div>
-      </div>
     </form>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-slate-950 border-t border-slate-900 py-6 mt-12 text-center text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <p>Hexnode IdP & Unified Endpoint Management &bull; SE Field Qualification Toolkit</p>
-      <p>GitHub Pages Ready &bull; Zero Backend Server Required</p>
-    </div>
-  </footer>
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 px-4 py-3 rounded-xl bg-slate-900 border border-sky-500/40 text-slate-100 text-xs shadow-2xl flex items-center gap-2">
+    <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+    <span id="toastMsg">Notification message</span>
+  </div>
 
-  <!-- Application Logic -->
   <script>
-    lucide.createIcons();
+    const STORAGE_KEY = 'hexnode_se_discovery_form_v3';
 
-    const STORAGE_KEY = 'hexnode_se_discovery_lead_data_v2';
-
-    // Show floating toast notification
-    function showToast(message, isSuccess = true) {
-      const toast = document.getElementById('toastNotification');
-      const msg = document.getElementById('toastMessage');
-      const icon = document.getElementById('toastIcon');
-
-      msg.textContent = message;
-      icon.innerHTML = isSuccess
-        ? '<i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>'
-        : '<i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400"></i>';
-      lucide.createIcons();
-
-      toast.classList.remove('hidden', 'translate-y-2');
-      setTimeout(() => {
-        toast.classList.add('hidden', 'translate-y-2');
-      }, 3500);
-    }
-
-    // Helper: Format Current Date & Time (YYYY-MM-DD HH:MM)
-    function getCurrentFormattedDateTime() {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const day = String(now.getDate()).padStart(2, '0');
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      return `${year}-${month}-${day} ${hours}:${minutes}`;
-    }
-
-    // Toggle Additional Customer Attendee Container
-    function toggleAdditionalAttendee(val) {
-      const container = document.getElementById('additionalAttendeeContainer');
-      if (val === 'Yes') {
-        container.classList.remove('hidden');
-      } else {
-        container.classList.add('hidden');
+    // Auto-populate Call Date & Time on load if empty
+    window.addEventListener('DOMContentLoaded', () => {
+      const dtInput = document.getElementById('callDateTime');
+      if (!dtInput.value) {
+        const now = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const formatted = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+        dtInput.value = formatted;
       }
-    }
+      loadFormData();
+      calculateFleetSum();
+    });
 
-    // Generic Role dropdown toggles custom input
-    function handleRoleSelectionChange(val, customInputId) {
-      const customInput = document.getElementById(customInputId);
-      if (!customInput) return;
-      if (val === 'Other') {
-        customInput.classList.remove('hidden');
-        customInput.focus();
+    // Custom Role toggle helper
+    function toggleCustomRole(selectId, wrapId) {
+      const sel = document.getElementById(selectId);
+      const wrap = document.getElementById(wrapId);
+      if (sel.value === 'Other') {
+        wrap.classList.remove('hidden');
       } else {
-        customInput.classList.add('hidden');
-        customInput.value = '';
+        wrap.classList.add('hidden');
       }
+      saveFormData();
     }
 
-    // Extract all structured form data into a normalized JS object
-    function getFormData() {
-      // Selected checkboxes for Conditional Access
-      const caEngines = Array.from(document.querySelectorAll('input[name="caEngine"]:checked'))
-        .map(el => el.value)
-        .join(', ');
+    // Additional Attendee Toggle helper
+    function setAdditionalAttendee(hasAdditional) {
+      const noBtn = document.getElementById('attendeeToggleNo');
+      const yesBtn = document.getElementById('attendeeToggleYes');
+      const sec = document.getElementById('additionalAttendeeSection');
 
-      // Selected Ownership Models
-      const ownershipModels = Array.from(document.querySelectorAll('input[name="ownershipModel"]:checked'))
-        .map(el => el.value)
-        .join(' / ');
+      if (hasAdditional) {
+        yesBtn.className = 'px-3.5 py-1 rounded text-xs font-medium bg-sky-600 text-white transition';
+        noBtn.className = 'px-3.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white transition';
+        sec.classList.remove('hidden');
+      } else {
+        noBtn.className = 'px-3.5 py-1 rounded text-xs font-medium bg-slate-700 text-white transition';
+        yesBtn.className = 'px-3.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white transition';
+        sec.classList.add('hidden');
+      }
+      saveFormData();
+    }
 
-      // Primary Role resolution (including 'Other')
-      const roleSelect = document.getElementById('primaryRole');
-      const customRole = document.getElementById('customRoleInput').value.trim();
-      const resolvedRole = (roleSelect.value === 'Other' && customRole)
-        ? `Other: ${customRole}`
-        : roleSelect.value;
+    // Toggle OS Quantity input availability
+    function toggleOsQty(checkboxId, inputId) {
+      const cb = document.getElementById(checkboxId);
+      const inp = document.getElementById(inputId);
+      if (cb.checked) {
+        inp.disabled = false;
+        inp.className = "w-full bg-slate-900 border border-slate-700 rounded-md px-2.5 py-1 text-sm font-mono text-right text-white";
+        if (inp.value == 0) inp.value = '';
+        inp.focus();
+      } else {
+        inp.disabled = true;
+        inp.value = 0;
+        inp.className = "w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right";
+      }
+      calculateFleetSum();
+      saveFormData();
+    }
 
-      // Additional Attendee details
-      const hasAdditional = document.getElementById('hasAdditionalAttendee').value;
-      const addName = document.getElementById('additionalName').value.trim();
-      const addEmail = document.getElementById('additionalEmail').value.trim();
-      const addRoleSelect = document.getElementById('additionalRole');
-      const addCustomRole = document.getElementById('additionalCustomRoleInput').value.trim();
-      const resolvedAddRole = (addRoleSelect.value === 'Other' && addCustomRole)
-        ? `Other: ${addCustomRole}`
-        : addRoleSelect.value;
-
-      // Platforms with QTY breakdown
-      const platformBreakdown = [];
-      const platformQtyMap = {};
-      let totalQty = 0;
-
-      const platforms = [
-        "Windows", "macOS", "iOS", "Android", "Linux",
-        "Google ChromeOS", "Apple tvOS", "Apple visionOS", "Android TV", "Dedicated Kiosks"
+    // Calculate real-time sum of OS and Server fleets
+    function calculateFleetSum() {
+      const osFields = [
+        'os_win_qty', 'os_mac_qty', 'os_ios_qty', 'os_android_qty', 
+        'os_linux_qty', 'os_servers_qty', 'os_chrome_qty', 'os_kiosk_qty', 
+        'os_appletv_qty', 'os_androidtv_qty', 'os_visionos_qty'
       ];
-
-      platforms.forEach(p => {
-        const cb = document.querySelector(`input[name="osCheckbox"][data-platform="${p}"]`);
-        const qtyInput = document.getElementById(`qty_${p}`);
-        const qtyVal = parseInt(qtyInput ? qtyInput.value : 0, 10) || 0;
-        const isChecked = cb ? cb.checked : false;
-
-        platformQtyMap[p] = { checked: isChecked, qty: qtyVal };
-
-        if (isChecked) {
-          totalQty += qtyVal;
-          platformBreakdown.push(`${p}: ${qtyVal}`);
-        }
+      let sum = 0;
+      osFields.forEach(id => {
+        const val = parseInt(document.getElementById(id)?.value, 10);
+        if (!isNaN(val) && val > 0) sum += val;
       });
+      document.getElementById('calculatedFleetSum').textContent = sum.toLocaleString();
+    }
+
+    // Helper to get selected values from multi-checkboxes
+    function getCheckedValues(name) {
+      return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
+    }
+
+    // Get Primary Role string (accounting for Other)
+    function getEffectiveRole(selectId, otherId) {
+      const selVal = document.getElementById(selectId)?.value || '';
+      if (selVal === 'Other') {
+        const customVal = document.getElementById(otherId)?.value.trim();
+        return customVal ? `Other (${customVal})` : 'Other';
+      }
+      return selVal;
+    }
+
+    // Collect all data into a clean object
+    function gatherData() {
+      const additionalJoined = !document.getElementById('additionalAttendeeSection').classList.contains('hidden');
 
       return {
-        // Section 1: Call Metadata & Profile (Restructured)
-        callDateTime: document.getElementById('callDateTime').value.trim() || getCurrentFormattedDateTime(),
-        customerName: document.getElementById('customerName').value.trim() || 'Untitled Customer',
-        primaryContact: document.getElementById('primaryContact').value.trim() || 'N/A',
-        primaryRole: resolvedRole,
-        primaryRoleRaw: roleSelect.value,
-        customRoleValue: customRole,
-        emailId: document.getElementById('emailId').value.trim() || 'N/A',
-        mobileNumber: document.getElementById('mobileNumber').value.trim() || 'N/A',
-        hasAdditionalAttendee: hasAdditional,
-        additionalName: addName,
-        additionalEmail: addEmail,
-        additionalRole: resolvedAddRole,
-        additionalRoleRaw: addRoleSelect.value,
-        additionalCustomRoleValue: addCustomRole,
+        // Section 1: Call Metadata & Profile
+        callDateTime: document.getElementById('callDateTime')?.value || '',
+        companyName: document.getElementById('companyName')?.value || '',
+        primaryContactName: document.getElementById('primaryContactName')?.value || '',
+        primaryRole: getEffectiveRole('primaryRoleSelect', 'primaryRoleOther'),
+        emailId: document.getElementById('emailId')?.value || '',
+        mobileNumber: document.getElementById('mobileNumber')?.value || '',
+        additionalAttendeeJoined: additionalJoined ? 'Yes' : 'No',
+        secondaryContactName: additionalJoined ? (document.getElementById('secondaryContactName')?.value || '') : '',
+        secondaryContactEmail: additionalJoined ? (document.getElementById('secondaryContactEmail')?.value || '') : '',
+        secondaryRole: additionalJoined ? getEffectiveRole('secondaryRoleSelect', 'secondaryRoleOther') : '',
 
-        // Section 2: Fleet Scale & Breakdown
-        totalFleetDevices: document.getElementById('totalFleetDevices').value || '0',
-        totalFleetUsers: document.getElementById('totalFleetUsers').value || '0',
-        ownershipModel: ownershipModels || 'None specified',
-        platformBreakdownString: platformBreakdown.length > 0 ? platformBreakdown.join(' | ') : 'None specified',
-        platformQtyMap: platformQtyMap,
-        totalFleetCalculated: totalQty,
+        // Section 2: Fleet Sizing & Breakdown
+        totalDevicesReported: document.getElementById('totalDevicesReported')?.value || '0',
+        totalUsersReported: document.getElementById('totalUsersReported')?.value || '0',
+        calculatedFleetSum: document.getElementById('calculatedFleetSum')?.textContent || '0',
+        incumbentUem: document.getElementById('incumbentUem')?.value || '',
+        ownershipModel: getCheckedValues('ownershipModel').join(', '),
+        onPremServerDetails: document.getElementById('onPremServerDetails')?.value || '',
+        osBreakdown: {
+          windows: document.getElementById('os_win_active')?.checked ? (document.getElementById('os_win_qty')?.value || 0) : 0,
+          macOS: document.getElementById('os_mac_active')?.checked ? (document.getElementById('os_mac_qty')?.value || 0) : 0,
+          iOS: document.getElementById('os_ios_active')?.checked ? (document.getElementById('os_ios_qty')?.value || 0) : 0,
+          android: document.getElementById('os_android_active')?.checked ? (document.getElementById('os_android_qty')?.value || 0) : 0,
+          linux: document.getElementById('os_linux_active')?.checked ? (document.getElementById('os_linux_qty')?.value || 0) : 0,
+          onPremServers: document.getElementById('os_servers_active')?.checked ? (document.getElementById('os_servers_qty')?.value || 0) : 0,
+          chromeOS: document.getElementById('os_chrome_active')?.checked ? (document.getElementById('os_chrome_qty')?.value || 0) : 0,
+          kiosks: document.getElementById('os_kiosk_active')?.checked ? (document.getElementById('os_kiosk_qty')?.value || 0) : 0,
+          appleTV: document.getElementById('os_appletv_active')?.checked ? (document.getElementById('os_appletv_qty')?.value || 0) : 0,
+          androidTV: document.getElementById('os_androidtv_active')?.checked ? (document.getElementById('os_androidtv_qty')?.value || 0) : 0,
+          visionOS: document.getElementById('os_visionos_active')?.checked ? (document.getElementById('os_visionos_qty')?.value || 0) : 0
+        },
 
-        // Section 3: Productivity, IdP & SSO
-        productivitySuite: document.getElementById('productivitySuite').value.trim() || 'N/A',
-        primaryIdP: document.getElementById('primaryIdP').value,
-        scimRequired: document.getElementById('scimRequired').value,
-        ssoAdoption: document.getElementById('ssoAdoption').value,
-        ssoTargetApps: document.getElementById('ssoTargetApps').value.trim() || 'N/A',
-        caTriggers: caEngines || 'None selected',
+        // Section 3: Identity & Conditional Access
+        productivityPlan: document.getElementById('productivityPlan')?.value || '',
+        primaryIdp: document.getElementById('primaryIdp')?.value || '',
+        provisioningMethod: document.getElementById('provisioningMethod')?.value || '',
+        ssoAdoption: document.getElementById('ssoAdoption')?.value || '',
+        mfaDetails: document.getElementById('mfaDetails')?.value || '',
+        businessPain: document.getElementById('businessPain')?.value || '',
+        caTriggers: getCheckedValues('caTrigger').join(', '),
 
-        // Section 4: Incumbent UEM & Security
-        incumbentUem: document.getElementById('incumbentUem').value,
-        encryptionStatus: document.getElementById('encryptionStatus').value,
-        appDeploymentMethod: document.getElementById('appDeploymentMethod').value,
-        patchingWindow: document.getElementById('patchingWindow').value,
-        itsmTool: document.getElementById('itsmTool').value.trim() || 'None',
-        edrTool: document.getElementById('edrTool').value.trim() || 'None',
-        identityAwareControl: document.getElementById('identityAwareControl').value,
+        // Section 4: Security & Ops
+        diskEncryption: document.getElementById('diskEncryption')?.value || '',
+        appDeployment: document.getElementById('appDeployment')?.value || '',
+        patchingWindow: document.getElementById('patchingWindow')?.value || '',
+        itsmPlatform: document.getElementById('itsmPlatform')?.value || '',
+        edrPlatform: document.getElementById('edrPlatform')?.value || '',
+        identityAwarePriority: document.getElementById('identityAwarePriority')?.value || '',
 
-        // Section 5: Scorecard & POC Commitment
-        technicalFit: document.getElementById('technicalFit').value,
-        pocStatus: document.getElementById('pocStatus').value,
-        pocDuration: document.getElementById('pocDuration').value.trim() || 'TBD',
-        decisionMakerInvolved: document.getElementById('decisionMakerInvolved').value,
-        nextActionAgreed: document.getElementById('nextActionAgreed').value,
-        followUpDate: document.getElementById('followUpDate').value || 'TBD',
-        pocSuccessCriteria: document.getElementById('pocSuccessCriteria').value.trim() || 'N/A',
-        seNotes: document.getElementById('seNotes').value.trim() || 'N/A'
+        // Section 5: POC & Commitment
+        pocCommitment: document.getElementById('pocCommitment')?.value || '',
+        targetGoLive: document.getElementById('targetGoLive')?.value || '',
+        pocDuration: document.getElementById('pocDuration')?.value || '',
+        decisionMakerInPoc: document.getElementById('decisionMakerInPoc')?.value || '',
+        pocSuccessCriteria: document.getElementById('pocSuccessCriteria')?.value || ''
       };
     }
 
-    // Toggle platform quantity input state
-    function togglePlatformQty(checkbox) {
-      const platform = checkbox.getAttribute('data-platform');
-      const input = document.getElementById(`qty_${platform}`);
-      if (!input) return;
-
-      if (checkbox.checked) {
-        input.disabled = false;
-        input.classList.remove('opacity-60', 'bg-slate-900/50');
-        input.classList.add('bg-slate-900');
-        if (!input.value || input.value === '0') input.value = '';
-      } else {
-        input.disabled = true;
-        input.classList.add('opacity-60', 'bg-slate-900/50');
-        input.classList.remove('bg-slate-900');
-        input.value = '';
-      }
-      calculateTotalFleet();
-    }
-
-    // Calculate sum of active platform quantities
-    function calculateTotalFleet() {
-      let total = 0;
-      const checkboxes = document.querySelectorAll('input[name="osCheckbox"]');
-      checkboxes.forEach(cb => {
-        if (cb.checked) {
-          const platform = cb.getAttribute('data-platform');
-          const input = document.getElementById(`qty_${platform}`);
-          const count = parseInt(input ? input.value : 0, 10) || 0;
-          total += count;
-        }
-      });
-      const badge = document.getElementById('calculatedTotalBadge');
-      if (badge) badge.textContent = total.toLocaleString();
-    }
-
-    // Auto-Save Form to LocalStorage
-    function saveToLocalStorage() {
-      const data = getFormData();
+    // Auto-save to localStorage
+    function saveFormData() {
+      const data = gatherData();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       const status = document.getElementById('saveStatus');
-      status.classList.remove('opacity-0');
-      setTimeout(() => {
-        status.classList.add('opacity-0');
-      }, 1500);
+      if (status) {
+        status.classList.remove('hidden');
+        setTimeout(() => status.classList.add('hidden'), 1500);
+      }
     }
 
-    // Restore cached form data
-    function restoreFromLocalStorage() {
-      const callDateInput = document.getElementById('callDateTime');
-      if (!callDateInput.value) {
-        callDateInput.value = getCurrentFormattedDateTime();
-      }
+    // Attach real-time listeners for autosave
+    document.getElementById('discoveryForm').addEventListener('input', () => {
+      saveFormData();
+    });
+    document.getElementById('discoveryForm').addEventListener('change', () => {
+      saveFormData();
+    });
 
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) return;
-
+    // Load persisted data
+    function loadFormData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
       try {
-        const data = JSON.parse(saved);
-        if (data.callDateTime) document.getElementById('callDateTime').value = data.callDateTime;
-        if (data.customerName && data.customerName !== 'Untitled Customer') document.getElementById('customerName').value = data.customerName;
-        if (data.primaryContact && data.primaryContact !== 'N/A') document.getElementById('primaryContact').value = data.primaryContact;
+        const d = JSON.parse(raw);
+
+        if (d.callDateTime) document.getElementById('callDateTime').value = d.callDateTime;
+        if (d.companyName) document.getElementById('companyName').value = d.companyName;
+        if (d.primaryContactName) document.getElementById('primaryContactName').value = d.primaryContactName;
+        if (d.emailId) document.getElementById('emailId').value = d.emailId;
+        if (d.mobileNumber) document.getElementById('mobileNumber').value = d.mobileNumber;
 
         // Restore Primary Role
-        if (data.primaryRoleRaw) {
-          document.getElementById('primaryRole').value = data.primaryRoleRaw;
-          handleRoleSelectionChange(data.primaryRoleRaw, 'customRoleInput');
-          if (data.primaryRoleRaw === 'Other' && data.customRoleValue) {
-            document.getElementById('customRoleInput').value = data.customRoleValue;
+        if (d.primaryRole) {
+          if (d.primaryRole.startsWith('Other')) {
+            document.getElementById('primaryRoleSelect').value = 'Other';
+            document.getElementById('primaryRoleOtherWrap').classList.remove('hidden');
+            const match = d.primaryRole.match(/\((.*?)\)/);
+            if (match) document.getElementById('primaryRoleOther').value = match[1];
+          } else {
+            document.getElementById('primaryRoleSelect').value = d.primaryRole;
           }
         }
 
-        if (data.emailId && data.emailId !== 'N/A') document.getElementById('emailId').value = data.emailId;
-        if (data.mobileNumber && data.mobileNumber !== 'N/A') document.getElementById('mobileNumber').value = data.mobileNumber;
-
-        // Restore Additional Attendee
-        if (data.hasAdditionalAttendee) {
-          document.getElementById('hasAdditionalAttendee').value = data.hasAdditionalAttendee;
-          toggleAdditionalAttendee(data.hasAdditionalAttendee);
-        }
-        if (data.additionalName) document.getElementById('additionalName').value = data.additionalName;
-        if (data.additionalEmail) document.getElementById('additionalEmail').value = data.additionalEmail;
-        if (data.additionalRoleRaw) {
-          document.getElementById('additionalRole').value = data.additionalRoleRaw;
-          handleRoleSelectionChange(data.additionalRoleRaw, 'additionalCustomRoleInput');
-          if (data.additionalRoleRaw === 'Other' && data.additionalCustomRoleValue) {
-            document.getElementById('additionalCustomRoleInput').value = data.additionalCustomRoleValue;
+        // Restore Attendee
+        if (d.additionalAttendeeJoined === 'Yes') {
+          setAdditionalAttendee(true);
+          if (d.secondaryContactName) document.getElementById('secondaryContactName').value = d.secondaryContactName;
+          if (d.secondaryContactEmail) document.getElementById('secondaryContactEmail').value = d.secondaryContactEmail;
+          if (d.secondaryRole) {
+            if (d.secondaryRole.startsWith('Other')) {
+              document.getElementById('secondaryRoleSelect').value = 'Other';
+              document.getElementById('secondaryRoleOtherWrap').classList.remove('hidden');
+              const m = d.secondaryRole.match(/\((.*?)\)/);
+              if (m) document.getElementById('secondaryRoleOther').value = m[1];
+            } else {
+              document.getElementById('secondaryRoleSelect').value = d.secondaryRole;
+            }
           }
+        } else {
+          setAdditionalAttendee(false);
         }
 
-        if (data.totalFleetDevices) document.getElementById('totalFleetDevices').value = data.totalFleetDevices;
-        if (data.totalFleetUsers) document.getElementById('totalFleetUsers').value = data.totalFleetUsers;
-
-        if (data.ownershipModel) {
-          const models = data.ownershipModel.split(' / ');
-          document.querySelectorAll('input[name="ownershipModel"]').forEach(cb => {
-            cb.checked = models.includes(cb.value);
-          });
-        }
-
-        if (data.productivitySuite && data.productivitySuite !== 'N/A') document.getElementById('productivitySuite').value = data.productivitySuite;
-        if (data.primaryIdP) document.getElementById('primaryIdP').value = data.primaryIdP;
-        if (data.scimRequired) document.getElementById('scimRequired').value = data.scimRequired;
-        if (data.ssoAdoption) document.getElementById('ssoAdoption').value = data.ssoAdoption;
-        if (data.ssoTargetApps && data.ssoTargetApps !== 'N/A') document.getElementById('ssoTargetApps').value = data.ssoTargetApps;
-
-        if (data.caTriggers) {
-          const list = data.caTriggers.split(', ');
-          document.querySelectorAll('input[name="caEngine"]').forEach(cb => {
-            cb.checked = list.includes(cb.value);
-          });
-        }
-
-        if (data.incumbentUem) document.getElementById('incumbentUem').value = data.incumbentUem;
-        if (data.encryptionStatus) document.getElementById('encryptionStatus').value = data.encryptionStatus;
-        if (data.appDeploymentMethod) document.getElementById('appDeploymentMethod').value = data.appDeploymentMethod;
-        if (data.patchingWindow) document.getElementById('patchingWindow').value = data.patchingWindow;
-        if (data.itsmTool && data.itsmTool !== 'None') document.getElementById('itsmTool').value = data.itsmTool;
-        if (data.edrTool && data.edrTool !== 'None') document.getElementById('edrTool').value = data.edrTool;
-        if (data.identityAwareControl) document.getElementById('identityAwareControl').value = data.identityAwareControl;
-
-        if (data.technicalFit) document.getElementById('technicalFit').value = data.technicalFit;
-        if (data.pocStatus) document.getElementById('pocStatus').value = data.pocStatus;
-        if (data.pocDuration && data.pocDuration !== 'TBD') document.getElementById('pocDuration').value = data.pocDuration;
-        if (data.decisionMakerInvolved) document.getElementById('decisionMakerInvolved').value = data.decisionMakerInvolved;
-        if (data.nextActionAgreed) document.getElementById('nextActionAgreed').value = data.nextActionAgreed;
-        if (data.followUpDate && data.followUpDate !== 'TBD') document.getElementById('followUpDate').value = data.followUpDate;
-        if (data.pocSuccessCriteria && data.pocSuccessCriteria !== 'N/A') document.getElementById('pocSuccessCriteria').value = data.pocSuccessCriteria;
-        if (data.seNotes && data.seNotes !== 'N/A') document.getElementById('seNotes').value = data.seNotes;
+        if (d.totalDevicesReported) document.getElementById('totalDevicesReported').value = d.totalDevicesReported;
+        if (d.totalUsersReported) document.getElementById('totalUsersReported').value = d.totalUsersReported;
+        if (d.incumbentUem) document.getElementById('incumbentUem').value = d.incumbentUem;
+        if (d.onPremServerDetails) document.getElementById('onPremServerDetails').value = d.onPremServerDetails;
 
         // Restore Platform Quantities
-        if (data.platformQtyMap) {
-          Object.keys(data.platformQtyMap).forEach(platform => {
-            const item = data.platformQtyMap[platform];
-            const cb = document.querySelector(`input[name="osCheckbox"][data-platform="${platform}"]`);
-            const input = document.getElementById(`qty_${platform}`);
-            if (cb && input) {
-              cb.checked = !!item.checked;
-              input.disabled = !item.checked;
-              input.value = item.qty || '';
-              if (item.checked) {
-                input.classList.remove('opacity-60', 'bg-slate-900/50');
-                input.classList.add('bg-slate-900');
-              } else {
-                input.classList.add('opacity-60', 'bg-slate-900/50');
-                input.classList.remove('bg-slate-900');
-              }
+        const osMap = {
+          windows: ['os_win_active', 'os_win_qty'],
+          macOS: ['os_mac_active', 'os_mac_qty'],
+          iOS: ['os_ios_active', 'os_ios_qty'],
+          android: ['os_android_active', 'os_android_qty'],
+          linux: ['os_linux_active', 'os_linux_qty'],
+          onPremServers: ['os_servers_active', 'os_servers_qty'],
+          chromeOS: ['os_chrome_active', 'os_chrome_qty'],
+          kiosks: ['os_kiosk_active', 'os_kiosk_qty'],
+          appleTV: ['os_appletv_active', 'os_appletv_qty'],
+          androidTV: ['os_androidtv_active', 'os_androidtv_qty'],
+          visionOS: ['os_visionos_active', 'os_visionos_qty']
+        };
+
+        if (d.osBreakdown) {
+          Object.keys(osMap).forEach(key => {
+            const [cbId, inpId] = osMap[key];
+            const val = parseInt(d.osBreakdown[key], 10);
+            const active = val > 0 || (d.osBreakdown[key] !== 0 && d.osBreakdown[key] !== '0');
+            const cb = document.getElementById(cbId);
+            const inp = document.getElementById(inputId);
+            if (cb && inp) {
+              cb.checked = active;
+              inp.value = active ? val : 0;
+              inp.disabled = !active;
+              inp.className = active 
+                ? "w-full bg-slate-900 border border-slate-700 rounded-md px-2.5 py-1 text-sm font-mono text-right text-white" 
+                : "w-full bg-slate-950/60 border border-slate-800 text-slate-500 rounded-md px-2.5 py-1 text-sm font-mono text-right";
             }
           });
         }
-        calculateTotalFleet();
-      } catch (err) {
-        console.error('Failed to parse cached local data:', err);
+
+        // Section 3 & 4 dropdowns/inputs
+        ['productivityPlan', 'primaryIdp', 'provisioningMethod', 'ssoAdoption', 
+         'mfaDetails', 'businessPain', 'diskEncryption', 'appDeployment', 
+         'patchingWindow', 'itsmPlatform', 'edrPlatform', 'identityAwarePriority', 
+         'pocCommitment', 'targetGoLive', 'pocDuration', 'decisionMakerInPoc', 
+         'pocSuccessCriteria'].forEach(k => {
+          if (d[k] && document.getElementById(k)) document.getElementById(k).value = d[k];
+        });
+
+      } catch (e) {
+        console.warn('Failed to parse cached data', e);
       }
     }
 
-    // Attach event listeners for real-time auto-saving
-    document.getElementById('discoveryForm').addEventListener('input', saveToLocalStorage);
-    document.getElementById('discoveryForm').addEventListener('change', saveToLocalStorage);
+    // Reset Form confirmation
+    function resetFormWithConfirmation() {
+      if (confirm("Reset the discovery form? All unsaved inputs will be cleared.")) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    }
 
-    // EXPORT: SheetJS Excel (.xlsx) Generation
+    // Toast notification
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+
+    // Copy formatted discovery summary to clipboard
+    function copySummaryToClipboard() {
+      const d = gatherData();
+      const osParts = [];
+      if (d.osBreakdown.windows > 0) osParts.push(`Windows: ${d.osBreakdown.windows}`);
+      if (d.osBreakdown.macOS > 0) osParts.push(`macOS: ${d.osBreakdown.macOS}`);
+      if (d.osBreakdown.iOS > 0) osParts.push(`iOS: ${d.osBreakdown.iOS}`);
+      if (d.osBreakdown.android > 0) osParts.push(`Android: ${d.osBreakdown.android}`);
+      if (d.osBreakdown.linux > 0) osParts.push(`Linux: ${d.osBreakdown.linux}`);
+      if (d.osBreakdown.onPremServers > 0) osParts.push(`On-Prem Servers: ${d.osBreakdown.onPremServers}`);
+      if (d.osBreakdown.chromeOS > 0) osParts.push(`ChromeOS: ${d.osBreakdown.chromeOS}`);
+      if (d.osBreakdown.kiosks > 0) osParts.push(`Kiosks: ${d.osBreakdown.kiosks}`);
+      if (d.osBreakdown.appleTV > 0) osParts.push(`Apple TV: ${d.osBreakdown.appleTV}`);
+      if (d.osBreakdown.androidTV > 0) osParts.push(`Android TV: ${d.osBreakdown.androidTV}`);
+      if (d.osBreakdown.visionOS > 0) osParts.push(`visionOS: ${d.osBreakdown.visionOS}`);
+
+      let attendeeLine = "";
+      if (d.additionalAttendeeJoined === 'Yes' && d.secondaryContactName) {
+        attendeeLine = `\n- Additional Customer Attendee: ${d.secondaryContactName} | ${d.secondaryRole} | ${d.secondaryContactEmail}`;
+      }
+
+      let serverDetailsLine = "";
+      if (d.onPremServerDetails) {
+        serverDetailsLine = `\n- On-Prem Server Environment:  ${d.onPremServerDetails}`;
+      }
+
+      const summary = `=====================================================
+HEXNODE IdP + UEM - SALES ENGINEER DISCOVERY SUMMARY
+=====================================================
+- Date & Time:               ${d.callDateTime}
+- Customer Company Name:     ${d.companyName || 'N/A'}
+- Primary Contact & Role:    ${d.primaryContactName || 'N/A'} | ${d.primaryRole || 'N/A'}
+- Email & Phone:             ${d.emailId || 'N/A'} | ${d.mobileNumber || 'N/A'}${attendeeLine}
+- Fleet Sizing & Scale:      Total Devices: ${d.totalDevicesReported} | Total Users: ${d.totalUsersReported} (Sum Breakdown: ${d.calculatedFleetSum})
+- Device & Server Breakdown: ${osParts.length ? osParts.join(' | ') : 'None Specified'}${serverDetailsLine}
+- Ownership Model:           ${d.ownershipModel || 'None'}
+- Productivity & IdP:        Suite: ${d.productivityPlan || 'N/A'} | IdP: ${d.primaryIdp}
+- Provisioning & SSO:        Provisioning: ${d.provisioningMethod} | SSO: ${d.ssoAdoption}
+- Conditional Access:        ${d.caTriggers || 'None'}
+- Current UEM / Incumbent:   ${d.incumbentUem}
+- Security & Operations:     Encryption: ${d.diskEncryption}
+                             App Deployment: ${d.appDeployment}
+                             Patching: ${d.patchingWindow}
+                             ITSM: ${d.itsmPlatform || 'N/A'} | EDR/ZTNA: ${d.edrPlatform || 'N/A'}
+                             Identity-Aware Control: ${d.identityAwarePriority}
+- Primary Pain Point:        ${d.businessPain || 'N/A'}
+- Commitment to POC:         ${d.pocCommitment} (Agreed Duration: ${d.pocDuration})
+- Target Cutover / Go-Live:  ${d.targetGoLive || 'N/A'}
+- Decision Maker in POC:     ${d.decisionMakerInPoc}
+- Agreed Success Criteria:   ${d.pocSuccessCriteria || 'Pending follow-up'}
+=====================================================`;
+
+      navigator.clipboard.writeText(summary).then(() => {
+        showToast("Summary copied to clipboard!");
+      }).catch(() => {
+        showToast("Clipboard copy failed. Check browser permissions.");
+      });
+    }
+
+    // Export to multi-tab Excel Workbook (.xlsx)
     function exportToExcel() {
-      const d = getFormData();
-      const customerSafe = (d.customerName.replace(/[^a-zA-Z0-9_-]/g, '_') || 'Customer');
-      const datePart = d.callDateTime.slice(0, 10).replace(/[^0-9-]/g, '');
-      const filename = `Hexnode_Discovery_${customerSafe}_${datePart || 'Lead'}.xlsx`;
+      if (typeof XLSX === 'undefined') {
+        alert("Excel export library is still loading. Please check your internet connection and try again.");
+        return;
+      }
 
-      const additionalAttendeeSummary = d.hasAdditionalAttendee === 'Yes'
-        ? `${d.additionalName || 'N/A'} (${d.additionalRole}) - ${d.additionalEmail || 'N/A'}`
-        : 'None';
+      const d = gatherData();
+      const safeCompany = (d.companyName || "Discovery").replace(/[^a-zA-Z0-9_-]/g, "_");
+      const filename = `Hexnode_SE_Discovery_${safeCompany}.xlsx`;
 
-      // Sheet 1: Human-readable Discovery Report
-      const summaryRows = [
-        ["HEXNODE SALES ENGINEERING DISCOVERY & LEAD QUALIFICATION", ""],
+      const osParts = [];
+      if (d.osBreakdown.windows > 0) osParts.push(`Windows: ${d.osBreakdown.windows}`);
+      if (d.osBreakdown.macOS > 0) osParts.push(`macOS: ${d.osBreakdown.macOS}`);
+      if (d.osBreakdown.iOS > 0) osParts.push(`iOS: ${d.osBreakdown.iOS}`);
+      if (d.osBreakdown.android > 0) osParts.push(`Android: ${d.osBreakdown.android}`);
+      if (d.osBreakdown.linux > 0) osParts.push(`Linux: ${d.osBreakdown.linux}`);
+      if (d.osBreakdown.onPremServers > 0) osParts.push(`On-Prem Servers: ${d.osBreakdown.onPremServers}`);
+      if (d.osBreakdown.chromeOS > 0) osParts.push(`ChromeOS: ${d.osBreakdown.chromeOS}`);
+      if (d.osBreakdown.kiosks > 0) osParts.push(`Kiosks: ${d.osBreakdown.kiosks}`);
+      if (d.osBreakdown.appleTV > 0) osParts.push(`Apple TV: ${d.osBreakdown.appleTV}`);
+      if (d.osBreakdown.androidTV > 0) osParts.push(`Android TV: ${d.osBreakdown.androidTV}`);
+      if (d.osBreakdown.visionOS > 0) osParts.push(`visionOS: ${d.osBreakdown.visionOS}`);
+
+      // SHEET 1: Formatted Discovery Report
+      const reportRows = [
+        ["HEXNODE IdP + UEM - TECHNICAL DISCOVERY REPORT", ""],
+        ["Generated", new Date().toISOString()],
+        ["", ""],
+        ["[ 1. CALL METADATA & CUSTOMER PROFILE ]", ""],
         ["Call Date & Time", d.callDateTime],
-        ["Customer Company Name", d.customerName],
-        ["Primary Contact", d.primaryContact],
+        ["Customer Company Name", d.companyName],
+        ["Primary Contact Name", d.primaryContactName],
         ["Primary Role & Persona", d.primaryRole],
         ["Email ID", d.emailId],
         ["Mobile Number", d.mobileNumber],
-        ["Additional Customer Attendee", additionalAttendeeSummary],
+        ["Additional Customer Attendee?", d.additionalAttendeeJoined],
+        ["Attendee Name", d.secondaryContactName],
+        ["Attendee Role & Persona", d.secondaryRole],
+        ["Attendee Email", d.secondaryContactEmail],
         ["", ""],
-        ["FLEET SIZING & BREAKDOWN", ""],
-        ["Fleet Sizing (Total Scale)", `Total Devices: ${d.totalFleetDevices} | Total Users: ${d.totalFleetUsers}`],
+        ["[ 2. FLEET SIZING, BREAKDOWN & ON-PREM SERVERS ]", ""],
+        ["Total Devices Reported", d.totalDevicesReported],
+        ["Total Identity Users", d.totalUsersReported],
+        ["Calculated Breakdown Sum", d.calculatedFleetSum],
+        ["Platform Breakdown Summary", osParts.join(" | ") || "None"],
+        ["Windows Devices", d.osBreakdown.windows],
+        ["macOS Devices", d.osBreakdown.macOS],
+        ["iOS / iPadOS Devices", d.osBreakdown.iOS],
+        ["Android Devices", d.osBreakdown.android],
+        ["Linux Endpoints", d.osBreakdown.linux],
+        ["On-Prem Servers", d.osBreakdown.onPremServers],
+        ["On-Prem Server Details", d.onPremServerDetails],
+        ["ChromeOS Devices", d.osBreakdown.chromeOS],
+        ["Dedicated Kiosks", d.osBreakdown.kiosks],
+        ["Apple TV (tvOS)", d.osBreakdown.appleTV],
+        ["Android TV", d.osBreakdown.androidTV],
+        ["Apple visionOS", d.osBreakdown.visionOS],
+        ["Incumbent UEM / MDM", d.incumbentUem],
         ["Ownership Model", d.ownershipModel],
-        ["Device Breakdown (Platforms & QTY)", d.platformBreakdownString],
-        ["Sum of Device Breakdown Quantities", d.totalFleetCalculated],
         ["", ""],
-        ["PRODUCTIVITY, IDP & SSO", ""],
-        ["Productivity Suite & Plan", d.productivitySuite],
-        ["Primary Identity Provider (IdP)", d.primaryIdP],
-        ["Provisioning Method", d.scimRequired],
+        ["[ 3. PRODUCTIVITY SUITE, IdP & CONDITIONAL ACCESS ]", ""],
+        ["Productivity Suite & License Tier", d.productivityPlan],
+        ["Primary Identity Provider", d.primaryIdp],
+        ["User Provisioning Method", d.provisioningMethod],
         ["SSO Adoption Status", d.ssoAdoption],
-        ["SSO Target Applications", d.ssoTargetApps],
-        ["Conditional Access Triggers (Hexnode Supported)", d.caTriggers],
+        ["MFA Architecture", d.mfaDetails],
+        ["Conditional Access Triggers (Supported)", d.caTriggers],
+        ["Core Business Driver / Pain Point", d.businessPain],
         ["", ""],
-        ["CURRENT UEM & SECURITY OPERATIONS", ""],
-        ["Current UEM / Incumbent", d.incumbentUem],
-        ["BitLocker / FileVault Encryption", d.encryptionStatus],
-        ["App Deployment Model", d.appDeploymentMethod],
-        ["Patching & Updates Window", d.patchingWindow],
-        ["Ticketing & ITSM Integration", d.itsmTool],
-        ["3rd-Party Security / EDR / ZTNA", d.edrTool],
-        ["Identity-Aware Device Access Control", d.identityAwareControl],
+        ["[ 4. SECURITY & IT OPERATIONS POSTURE ]", ""],
+        ["Disk Encryption (BitLocker / FileVault)", d.diskEncryption],
+        ["App Deployment Strategy", d.appDeployment],
+        ["OS Patching Window", d.patchingWindow],
+        ["ITSM Platform", d.itsmPlatform],
+        ["EDR / ZTNA Platform", d.edrPlatform],
+        ["Identity-Aware Device Control Priority", d.identityAwarePriority],
         ["", ""],
-        ["QUALIFICATION & COMMITMENT TO POC", ""],
-        ["Technical Fit Verdict", d.technicalFit],
-        ["Commitment to POC Status", d.pocStatus],
-        ["Target POC Duration & Timeline", d.pocDuration],
-        ["Commercial Decision Maker Involved in POC", d.decisionMakerInvolved],
-        ["Next Action Agreed", d.nextActionAgreed],
-        ["Follow-up Date", d.followUpDate],
-        ["POC Success Criteria / Scope Defined", d.pocSuccessCriteria],
-        ["SE Debrief & Competitive Notes", d.seNotes]
+        ["[ 5. QUALIFICATION & COMMITMENT TO POC ]", ""],
+        ["Commitment to POC", d.pocCommitment],
+        ["Target Go-Live / Cutover Date", d.targetGoLive],
+        ["Agreed POC Duration", d.pocDuration],
+        ["Decision Maker in POC Review?", d.decisionMakerInPoc],
+        ["Agreed Success Criteria & Next Steps", d.pocSuccessCriteria]
       ];
 
-      // Sheet 2: CRM Flat Data Ingestion
-      const flatTableRows = [
-        {
-          "Date & Time": d.callDateTime,
-          "Customer Company Name": d.customerName,
-          "Primary Contact": d.primaryContact,
-          "Primary Role & Persona": d.primaryRole,
-          "Email ID": d.emailId,
-          "Mobile": d.mobileNumber,
-          "Has Additional Attendee": d.hasAdditionalAttendee,
-          "Additional Attendee Name": d.hasAdditionalAttendee === 'Yes' ? d.additionalName : "",
-          "Additional Attendee Email": d.hasAdditionalAttendee === 'Yes' ? d.additionalEmail : "",
-          "Additional Attendee Role": d.hasAdditionalAttendee === 'Yes' ? d.additionalRole : "",
-          "Total Devices": d.totalFleetDevices,
-          "Total Users": d.totalFleetUsers,
-          "Ownership Model": d.ownershipModel,
-          "Device Breakdown": d.platformBreakdownString,
-          "Productivity Suite": d.productivitySuite,
-          "IdP": d.primaryIdP,
-          "Provisioning": d.scimRequired,
-          "SSO Adoption": d.ssoAdoption,
-          "Conditional Access Triggers": d.caTriggers,
-          "Current UEM / Incumbent": d.incumbentUem,
-          "Encryption": d.encryptionStatus,
-          "App Deployment": d.appDeploymentMethod,
-          "Patching": d.patchingWindow,
-          "ITSM": d.itsmTool,
-          "EDR / Security": d.edrTool,
-          "Identity-Aware Access Control": d.identityAwareControl,
-          "Technical Fit": d.technicalFit,
-          "Commitment to POC": d.pocStatus,
-          "POC Scope & Criteria": d.pocSuccessCriteria,
-          "POC Timeline": d.pocDuration,
-          "Decision Maker Involved": d.decisionMakerInvolved,
-          "Next Action": d.nextActionAgreed,
-          "Follow-up Date": d.followUpDate,
-          "SE Notes": d.seNotes
-        }
+      // SHEET 2: CRM Flat Data Row (Easy upload into Salesforce / HubSpot / Zoho)
+      const crmHeaders = [
+        "Call_DateTime", "Company_Name", "Primary_Contact", "Primary_Role", "Email", "Mobile",
+        "Additional_Attendee", "Attendee_Name", "Attendee_Role", "Attendee_Email",
+        "Total_Devices", "Total_Users", "Windows_Count", "Mac_Count", "iOS_Count", "Android_Count", 
+        "Linux_Count", "OnPrem_Servers_Count", "OnPrem_Server_Details", "ChromeOS_Count", "Kiosk_Count", "Fleet_Sum", "Ownership", "Incumbent_UEM",
+        "Productivity_Plan", "IdP_Source", "SCIM_Provisioning", "SSO_Adoption", "MFA_Type", "CA_Triggers", "Pain_Point",
+        "Encryption_State", "App_Deployment", "Patch_Window", "ITSM_Tool", "EDR_Tool", "Identity_Aware_Access",
+        "POC_Commitment", "Target_Go_Live", "POC_Duration", "DM_In_POC", "POC_Success_Criteria"
       ];
 
+      const crmDataRow = [
+        d.callDateTime, d.companyName, d.primaryContactName, d.primaryRole, d.emailId, d.mobileNumber,
+        d.additionalAttendeeJoined, d.secondaryContactName, d.secondaryRole, d.secondaryContactEmail,
+        d.totalDevicesReported, d.totalUsersReported, d.osBreakdown.windows, d.osBreakdown.macOS, d.osBreakdown.iOS, d.osBreakdown.android,
+        d.osBreakdown.linux, d.osBreakdown.onPremServers, d.onPremServerDetails, d.osBreakdown.chromeOS, d.osBreakdown.kiosks, d.calculatedFleetSum, d.ownershipModel, d.incumbentUem,
+        d.productivityPlan, d.primaryIdp, d.provisioningMethod, d.ssoAdoption, d.mfaDetails, d.caTriggers, d.businessPain,
+        d.diskEncryption, d.appDeployment, d.patchingWindow, d.itsmPlatform, d.edrPlatform, d.identityAwarePriority,
+        d.pocCommitment, d.targetGoLive, d.pocDuration, d.decisionMakerInPoc, d.pocSuccessCriteria
+      ];
+
+      // Build Workbook
       const wb = XLSX.utils.book_new();
+      const wsReport = XLSX.utils.aoa_to_sheet(reportRows);
+      wsReport['!cols'] = [{ wch: 38 }, { wch: 75 }];
+      XLSX.utils.book_append_sheet(wb, wsReport, "Discovery Report");
 
-      const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
-      wsSummary['!cols'] = [{ wch: 40 }, { wch: 65 }];
-      XLSX.utils.book_append_sheet(wb, wsSummary, "Discovery Report");
-
-      const wsTable = XLSX.utils.json_to_sheet(flatTableRows);
-      XLSX.utils.book_append_sheet(wb, wsTable, "CRM Flat Data");
+      const wsCrm = XLSX.utils.aoa_to_sheet([crmHeaders, crmDataRow]);
+      XLSX.utils.book_append_sheet(wb, wsCrm, "CRM Flat Data");
 
       XLSX.writeFile(wb, filename);
-      showToast(`Exported "${filename}" successfully!`);
+      showToast("Excel workbook downloaded successfully!");
     }
-
-    // Copy clean summary matching user template to clipboard
-    function copySummaryToClipboard() {
-      const d = getFormData();
-      const attendeeInfo = d.hasAdditionalAttendee === 'Yes'
-        ? `\n- Additional Attendee:       ${d.additionalName || 'N/A'} | Role: ${d.additionalRole} | Email: ${d.additionalEmail || 'N/A'}`
-        : '';
-
-      const text = `- Date & Time:               ${d.callDateTime}
-- Customer Company Name:     ${d.customerName}
-- Primary Contact:           ${d.primaryContact}
-- Primary Role & Persona:    ${d.primaryRole}
-- Contact Details:           Email: ${d.emailId} | Mobile: ${d.mobileNumber}${attendeeInfo}
-- Fleet Sizing & Scale:      Total Devices: ${d.totalFleetDevices} | Total Users: ${d.totalFleetUsers}
-- Device Breakdown:          ${d.platformBreakdownString}
-- Ownership Model:           ${d.ownershipModel}
-- Productivity, IdP & SSO:   ${d.productivitySuite}
-                             IdP: ${d.primaryIdP}
-                             Provisioning: ${d.scimRequired}
-                             SSO Adoption: ${d.ssoAdoption}
-                             CA Triggers: ${d.caTriggers}
-- Current UEM / Incumbent:   ${d.incumbentUem}
-- Security & Operations:     BitLocker/FileVault: ${d.encryptionStatus}
-                             App Deployment: ${d.appDeploymentMethod}
-                             Patching Window: ${d.patchingWindow}
-                             Ticketing & ITSM: ${d.itsmTool}
-                             3rd-Party Security: ${d.edrTool}
-                             Identity-Aware Access: ${d.identityAwareControl}
-- Commitment to POC:         Status: ${d.pocStatus}
-                             Timeline: ${d.pocDuration}
-                             Decision Maker Involved: ${d.decisionMakerInvolved}
-                             Success Criteria: ${d.pocSuccessCriteria}
-- Qualification Fit:         ${d.technicalFit}
-- Next Action:               ${d.nextActionAgreed} (Date: ${d.followUpDate})
-- SE Debrief Notes:          ${d.seNotes}`;
-
-      const tempTextArea = document.createElement('textarea');
-      tempTextArea.value = text;
-      document.body.appendChild(tempTextArea);
-      tempTextArea.select();
-      try {
-        document.execCommand('copy');
-        showToast("Discovery summary copied to clipboard!");
-      } catch (err) {
-        showToast("Failed to copy automatically", false);
-      }
-      document.body.removeChild(tempTextArea);
-    }
-
-    // Reset Form
-    function confirmReset() {
-      if (window.confirm("Are you sure you want to clear this discovery form? This will remove all currently entered values.")) {
-        document.getElementById('discoveryForm').reset();
-        localStorage.removeItem(STORAGE_KEY);
-        document.getElementById('callDateTime').value = getCurrentFormattedDateTime();
-        toggleAdditionalAttendee('No');
-        calculateTotalFleet();
-        showToast("Form cleared & cache reset.");
-      }
-    }
-
-    // Window Load setup
-    window.onload = function() {
-      restoreFromLocalStorage();
-    };
   </script>
 </body>
 </html>
