@@ -63,9 +63,6 @@
           <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
           <span>Export Excel (.xlsx)</span>
         </button>
-        <button type="button" onclick="exportToJSON()" class="hidden md:inline-flex items-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs rounded-lg transition-all cursor-pointer">
-          <i data-lucide="download" class="w-4 h-4"></i> JSON
-        </button>
         <button type="button" onclick="confirmReset()" class="p-2 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-lg transition" title="Clear / Reset Form">
           <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
         </button>
@@ -794,25 +791,6 @@
       // Save File
       XLSX.writeFile(wb, filename);
       showToast(`Exported "${filename}" successfully!`);
-    }
-
-    // EXPORT 2: Raw JSON file export
-    function exportToJSON() {
-      const d = getFormData();
-      const customerSafe = (d.customerName.replace(/[^a-zA-Z0-9_-]/g, '_') || 'Customer');
-      const filename = `Hexnode_Discovery_${customerSafe}.json`;
-
-      const blob = new Blob([JSON.stringify(d, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      showToast("JSON downloaded successfully.");
     }
 
     // Clipboard Summary Helper
